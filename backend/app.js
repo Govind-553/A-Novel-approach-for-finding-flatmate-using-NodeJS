@@ -145,20 +145,19 @@ app.get('/service-recommendations', (req, res) => {
     });
 });
 
-// Serve roommate recommendations based on student cluster
 app.get('/roommate-recommendations', (req, res) => {
     const email = req.cookies.email;
     if (!email) return res.status(401).json({ success: false });
 
-    const getClusterQuery = 'SELECT cluster FROM students WHERE email = ?';
+    const getClusterQuery = 'SELECT match_cluster FROM students WHERE email = ?';
     pool.query(getClusterQuery, [email], (err, result) => {
         if (err || result.length === 0) return res.status(500).json({ success: false });
 
-        const studentCluster = result[0].cluster;
+        const studentCluster = result[0].match_cluster;
         const roommateQuery = `
             SELECT fULL_name, email, contact_number, food_type, room_type, amenities, profile_pic 
             FROM students 
-            WHERE cluster = ? AND email != ?`;
+            WHERE match_cluster = ? AND email != ?`;
 
         pool.query(roommateQuery, [studentCluster, email], (err, results) => {
             if (err) return res.status(500).json({ success: false });
@@ -238,87 +237,6 @@ app.get('/data', (req, res) => {
     .catch(err => {
         console.error(err);
         res.status(500).send('Internal Server Error');
-    });
-});
-
-// Route for student profile page
-app.get('/profilepage', (req, res) => {
-
-    const email = req.query.email || req.cookies.email; 
-
-    if (!email) {
-        return res.status(400).send('Missing email parameter');
-    }
-
-    const query = 'SELECT * FROM STUDENTS WHERE email = ?';
-    pool.query(query, [email], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).send('Error fetching profile data');
-        }
-        if (result.length > 0) {
-            // Profile exists
-            const user = result[0];
-            fs.readFile(path.join(__dirname, '../frontend/profilepage', 'index.html'), 'utf8', (err, content) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send('Error loading profile page');
-                }
-
-                let modifiedContent = content.replace('{{userData}}', JSON.stringify(user));
-
-                const profileImage = user.profile_pic;  
-
-                if (!profileImage) {
-                    console.error('Profile image is missing or null');
-                    return res.status(500).send('Profile image is missing');
-                }
-
-                const detectImageType = (buffer) => {
-                    const jpgMagicNumber = [0xff, 0xd8, 0xff];
-                    const pngMagicNumber = [0x89, 0x50, 0x4e, 0x47];
-
-                    if (buffer.slice(0, 3).equals(Buffer.from(jpgMagicNumber))) {
-                        return 'jpeg';
-                    } else if (buffer.slice(0, 4).equals(Buffer.from(pngMagicNumber))) {
-                        return 'png';
-                    } else {
-                        return null;  
-                    }
-                };
-
-                // Detect the image type from the binary data
-                const imageType = detectImageType(profileImage);
-
-                if (!imageType) {
-                    console.error('Unsupported or unknown image type');
-                    return res.status(500).send('Unsupported or unknown image type');
-                }
-
-                let contentType;
-                switch (imageType) {  
-                    case 'jpeg':
-                        contentType = 'image/jpeg';
-                        break;
-                    case 'png':
-                        contentType = 'image/png';
-                        break;
-                    default:
-                        console.error('Unsupported image type:', imageType);
-                        return res.status(500).send('Unsupported image type');
-                }
-
-                // Convert the binary image data to Base64
-                const base64Image = Buffer.from(profileImage, 'binary').toString('base64');
-                const profileImageSrc = `data:${contentType};base64,${base64Image}`;
-
-                modifiedContent = modifiedContent.replace('{{profileImage}}', profileImageSrc);
-
-                return res.status(200).send(modifiedContent);
-            });
-        } else {
-            return res.status(404).send('User not found');
-        }
     });
 });
 
@@ -428,11 +346,11 @@ app.post('/register-user', (req, res) => {
     });
 });
 
-//Save profile functionality 
-app.post('/saveProfile', (req, res) => {
+// Update profile image
+app.post('/updateProfileImage', (req, res) => {
     const form = new formidable.IncomingForm();
-    form.uploadDir = path.join(__dirname, '../frontend/public', 'uploads');
-    form.keepExtensions = true;
+    form.uploadDir = path.join(__dirname, '../frontend/public', 'Uploads');
+    form.keepExtensions = false; 
 
     if (!fs.existsSync(form.uploadDir)) {
         fs.mkdirSync(form.uploadDir, { recursive: true });
@@ -440,78 +358,169 @@ app.post('/saveProfile', (req, res) => {
 
     form.parse(req, (err, fields, files) => {
         if (err) {
-            return res.status(500).send('Error parsing form data');
+            console.error('Form parsing error:', err);
+            return res.status(500).json({ success: false, message: 'Error parsing form data: ' + err.message });
+        }
+        const file = files.profilePic[0];
+        if (!file || !file.filepath || file.size === 0) {
+            return res.status(400).json({ success: false, message: 'No valid image file provided or file path missing' });
         }
 
-        const processImageUpload = () => {
-            return new Promise((resolve, reject) => {
-                if (files.profileImage && files.profileImage.size > 0) {
-                    if (files.profileImage.size > 5000000) {
-                        return reject('Image size exceeds 5MB limit');
-                    }
+        const oldPath = file.filepath;
+        const mimeType = file.mimetype || 'image/png';
+        const extension = mimeType === 'image/jpeg' ? '.jpg' : '.png';
+        const newFileName = Date.now() + '_profile_' + Math.random().toString(36).substr(2, 5) + extension;
+        const newPath = path.join(form.uploadDir, newFileName);
 
-                    const oldPath = files.profileImage.filepath;
-                    const fileExtension = path.extname(files.profileImage.originalFilename);
-                    const newFileName = Date.now() + '_' + files.profileImage.originalFilename;
-                    const newPath = path.join(form.uploadDir, newFileName);
+        fs.rename(oldPath, newPath, (err) => {
+            if (err) {
+                console.error('File rename error:', err);
+                return res.status(500).json({ success: false, message: 'Error moving uploaded file: ' + err.message });
+            }
 
-                    fs.rename(oldPath, newPath, (err) => {
-                        if (err) {
-                            return reject('Error moving uploaded file');
-                        }
-
-                        fs.readFile(newPath, (err, data) => {
-                            if (err) {
-                                return reject('Error reading image file');
-                            }
-                            resolve({ imagePath: newPath, imageData: data });
-                        });
-                    });
-                } else {
-                    resolve({ imagePath: null, imageData: null });
+            fs.readFile(newPath, (err, imageData) => {
+                if (err) {
+                    console.error('File read error:', err);
+                    fs.unlink(newPath, () => {});
+                    return res.status(500).json({ success: false, message: 'Error reading image file: ' + err.message });
                 }
-            });
-        };
 
-        processImageUpload()
-            .then(({ imagePath, imageData }) => {
                 const updateQuery = `
                     UPDATE STUDENTS 
-                    SET 
-                        full_name = ?, 
-                        email = ?, 
-                        password = ?, 
-                        address = ?, 
-                        contact_number = ?, 
-                        year = ?, 
-                        branch = ?, 
-                        about_yourself = ?, 
-                        profile_pic = ? 
+                    SET profile_pic = ? 
                     WHERE email = ?
                 `;
 
-                pool.query(updateQuery, [
-                    fields.fullName,
-                    fields.email,
-                    fields.password,
-                    fields.address,
-                    fields.contactNumber,
-                    fields.Year,
-                    fields.Branch,
-                    fields.AboutYourself,
-                    imageData,
-                    fields.email
-                ], (err, result) => {
+                pool.query(updateQuery, [imageData, fields.email], (err, result) => {
                     if (err) {
-                        return res.status(500).send('Error updating profile');
+                        console.error('Database update error:', err);
+                        fs.unlink(newPath, () => {});
+                        return res.status(500).json({ success: false, message: 'Error updating profile image: ' + err.message });
                     }
-
-                    res.send('Profile updated successfully.');
+                    res.json({ success: true, message: 'Profile image updated successfully' });
                 });
-            })
-            .catch((error) => {
-                res.status(400).send(error);
             });
+        });
+    });
+});
+
+// Save other profile fields
+app.post('/saveProfileFields', (req, res) => {
+    const form = new formidable.IncomingForm();
+
+    form.parse(req, (err, fields, files) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Error parsing form data: ' + err.message });
+        }
+
+        const updateQuery = `
+            UPDATE STUDENTS 
+            SET 
+                full_name = ?, 
+                email = ?, 
+                password = ?, 
+                address = ?, 
+                contact_number = ?, 
+                year = ?, 
+                branch = ?, 
+                about_yourself = ? 
+            WHERE email = ?
+        `;
+
+        pool.query(updateQuery, [
+            fields.fullName,
+            fields.email,
+            fields.password,
+            fields.address,
+            fields.contactNumber,
+            fields.Year,
+            fields.Branch,
+            fields.AboutYourself,
+            fields.email
+        ], (err, result) => {
+            if (err) {
+                return res.status(500).json({ success: false, message: 'Error updating profile: ' + err.message });
+            }
+            res.json({ success: true, message: 'Profile updated successfully' });
+        });
+    });
+});
+
+// Route for student profile page
+app.get('/profilepage', (req, res) => {
+    const email = req.query.email || req.cookies.email;
+
+    if (!email) {
+        return res.status(400).send('Missing email parameter');
+    }
+
+    const query = 'SELECT * FROM STUDENTS WHERE email = ?';
+    pool.query(query, [email], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error fetching profile data');
+        }
+        if (result.length > 0) {
+            const user = result[0];
+            fs.readFile(path.join(__dirname, '../frontend/profilepage', 'index.html'), 'utf8', (err, content) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).send('Error loading profile page');
+                }
+
+                let modifiedContent = content.replace('{{userData}}', JSON.stringify(user));
+
+                const profileImage = user.profile_pic;
+
+                if (!profileImage) {
+                    modifiedContent = modifiedContent.replace('{{profileImage}}', '/img/User.png');
+                    return res.status(200).send(modifiedContent);
+                }
+
+                const detectImageType = (buffer) => {
+                    const jpgMagicNumber = [0xff, 0xd8, 0xff];
+                    const pngMagicNumber = [0x89, 0x50, 0x4e, 0x47];
+
+                    if (buffer.slice(0, 3).equals(Buffer.from(jpgMagicNumber))) {
+                        return 'jpeg';
+                    } else if (buffer.slice(0, 4).equals(Buffer.from(pngMagicNumber))) {
+                        return 'png';
+                    }
+                    return null;
+                };
+
+                const imageType = detectImageType(profileImage);
+
+                if (!imageType) {
+                    console.error('Unsupported or unknown image type');
+                    modifiedContent = modifiedContent.replace('{{profileImage}}', '/img/User.png');
+                    return res.status(200).send(modifiedContent);
+                }
+
+                let contentType;
+                switch (imageType) {
+                    case 'jpeg':
+                        contentType = 'image/jpeg';
+                        break;
+                    case 'png':
+                        contentType = 'image/png';
+                        break;
+                    default:
+                        console.error('Unsupported image type:', imageType);
+                        modifiedContent = modifiedContent.replace('{{profileImage}}', '/img/User.png');
+                        return res.status(200).send(modifiedContent);
+                }
+
+                const base64Image = Buffer.from(profileImage).toString('base64');
+                const profileImageSrc = `data:${contentType};base64,${base64Image}`;
+
+                modifiedContent = modifiedContent.replace('{{profileImage}}', profileImageSrc);
+
+                return res.status(200).send(modifiedContent);
+            });
+        } else {
+            return res.status(404).send('User not found');
+        }
     });
 });
 
@@ -699,129 +708,108 @@ app.post('/profile-update', (req, res) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
         if (err) {
-            console.error('Error parsing form:', err);
-            return res.status(500).send('Error processing form');
+            console.error('Form parsing error:', err);
+            return res.status(500).send('Form parsing error');
         }
 
         console.log('Received fields:', fields);
 
-        // Since formidable gives values as arrays, extract single values
-        const email = fields.email?.[0];
-        if (!email) return res.status(400).send('Email is required');
+        const email = fields.email?.[0]; // formidable returns fields as arrays
+        if (!email) {
+            console.error('Email field missing in request');
+            return res.status(400).send('Email missing');
+        }
 
-        const businessName = fields.businessName?.[0];
-        const password = fields.password?.[0];
-        const contactNumber = fields.contactNumber?.[0];
-        const address = fields.address?.[0];
-        const service = fields.service?.[0];
-        const priceChartLink = fields.priceChartLink?.[0];
-
+        const businessName = fields.businessName?.[0] || '';
+        const password = fields.password?.[0] || '';
+        const contactNumber = fields.contactNumber?.[0] || '';
+        const address = fields.address?.[0] || '';
+        const service = fields.service?.[0] || '';
+        const priceChartLink = fields.priceChartLink?.[0] || '';
         let extraFields = {};
+
         if (fields.extra_fields?.[0]) {
             try {
                 extraFields = JSON.parse(fields.extra_fields[0]);
-                console.log('Parsed extraFields:', extraFields);
-            } catch (err) {
-                console.error('Invalid JSON in extra_fields:', err);
+                console.log('Parsed extra_fields:', extraFields);
+            } catch (e) {
+                console.error('Invalid extra fields JSON:', e);
                 return res.status(400).send('Invalid extra_fields format');
             }
         }
 
         let query = `
-            UPDATE services
-            SET business_Name = ?, 
-                password = ?,
-                contact_number = ?,
-                address = ?,
-                service = ?,
-                price_chart_link = ?
+            UPDATE services SET 
+            business_Name = ?, 
+            password = ?, 
+            contact_number = ?, 
+            address = ?, 
+            service = ?, 
+            price_chart_link = ?
         `;
-        const params = [
-            businessName,
-            password,
-            contactNumber,
-            address,
-            service,
-            priceChartLink
-        ];
-        switch (service) {
-            case 'Food':
-                query += ', food_type = ?';
-                params.push(extraFields.food_type || null);
-                break;
-            case 'Laundry':
-                query += ', laundry_service = ?';
-                params.push(extraFields.laundry_service || null);
-                break;
-            case 'Broker':
-                query += `, room_type = ?, amenities = ?, pricing_value = ?, landmark = ?, availability = ?`;
-                params.push(extraFields.room_type || null);
-                params.push(Array.isArray(extraFields.amenities) ? extraFields.amenities.join(',') : null);
-                params.push(extraFields.pricing_value || null);
-                params.push(Array.isArray(extraFields.landmark) ? extraFields.landmark.join(',') : null);
-                params.push(extraFields.availability || null);
-                break;
-            default:
-                console.warn('Unknown service type:', service);
+        const params = [businessName, password, contactNumber, address, service, priceChartLink];
+
+        if (service === 'Food') {
+            query += `, food_type = ?`;
+            params.push(extraFields.food_type || '');
+        } else if (service === 'Laundry') {
+            query += `, laundry_service = ?`;
+            params.push(extraFields.laundry_service || '');
+        } else if (service === 'Broker') {
+            query += `, room_type = ?, amenities = ?, pricing_value = ?, landmark = ?, availability = ?`;
+            params.push(Array.isArray(extraFields.room_type) ? extraFields.room_type.join(',') : '');
+            params.push(Array.isArray(extraFields.amenities) ? extraFields.amenities.join(',') : '');
+            params.push(extraFields.pricing_value || '');
+            params.push(Array.isArray(extraFields.landmark) ? extraFields.landmark.join(',') : '');
+            params.push(extraFields.availability || '');
         }
-        query += ' WHERE email = ?';
+
+        query += ` WHERE email = ?`;
         params.push(email);
 
-        console.log('Executing query:\n', query, '\nWith params:', params);
+        console.log('Executing query:', query);
+        console.log('Query params:', params);
 
-        db.query(query, params, (dbErr, result) => {
+        pool.query(query, params, (dbErr, result) => {
             if (dbErr) {
                 console.error('Database update error:', dbErr);
                 return res.status(500).send('Database error');
             }
-
-            console.log('Update result:', result);
             res.send('Profile updated successfully');
         });
     });
 });
 
-//Route for data fetching of services providers profile
+// Fetch service profile data
 app.get('/serviceprofile', (req, res) => {
     const email = req.query.email || req.cookies.email;
-
-    if (!email) {
-        return res.status(400).send('Missing email parameter');
-    }
+    if (!email) return res.status(400).send('Missing email');
 
     const query = 'SELECT * FROM services WHERE email = ?';
     pool.query(query, [email], (err, result) => {
         if (err) {
             console.error('Database error:', err);
-            return res.status(500).send('Error fetching profile data');
+            return res.status(500).send('Error fetching data');
         }
-
-        if (!result || result.length === 0) {
+        if (result.length === 0) {
             return res.status(404).send('Service provider not found');
         }
 
         const service = result[0];
-
-        // Determine which extra fields to send based on service type
         let extraFields = {};
-        switch (service.service) {
-            case 'Food':
-                extraFields.food_type = service.food_type || '';
-                break;
-            case 'Laundry':
-                extraFields.laundry_service = service.laundry_service || '';
-                break;
-            case 'Broker':
-                extraFields.room_type = service.room_type || '';
-                extraFields.amenities = service.amenities || '';
-                extraFields.pricing_value = service.pricing_value || '';
-                extraFields.landmark = service.landmark || '';
-                extraFields.availability = service.availability || '';
-                break;
-            default:
-                extraFields = {};
+
+        if (service.service === 'Food') {
+            extraFields.food_type = service.food_type || '';
+        } else if (service.service === 'Laundry') {
+            extraFields.laundry_service = service.laundry_service || '';
+        } else if (service.service === 'Broker') {
+            extraFields.room_type = (service.room_type || '').split(',').map(v => v.trim());
+            extraFields.amenities = (service.amenities || '').split(',').map(v => v.trim());
+            extraFields.pricing_value = service.pricing_value || '';
+            extraFields.landmark = (service.landmark || '').split(',').map(v => v.trim());
+            extraFields.availability = service.availability || '';
         }
-        // Prepare data with default values
+
         const data = {
             businessName: service.business_Name || '',
             email: service.email || '',
@@ -830,16 +818,16 @@ app.get('/serviceprofile', (req, res) => {
             service: service.service || '',
             password: service.password || '',
             priceChartLink: service.price_chart_link || '',
-            extraFields: JSON.stringify(extraFields) // Convert to JSON string for client
+            extraFields: JSON.stringify(extraFields)
         };
-        // Read the HTML file
-        fs.readFile(path.join(__dirname, '../frontend/serviceprofile', 'profile.html'), 'utf8', (err, content) => {
+
+        fs.readFile(path.join(__dirname, '../frontend/serviceprofile', 'profile.html'), 'utf8', (err, html) => {
             if (err) {
                 console.error('File read error:', err);
-                return res.status(500).send('Error loading service profile page');
+                return res.status(500).send('Error loading profile page');
             }
-            // Replace placeholders in the HTML content
-            const modifiedContent = content
+
+            const filledHtml = html
                 .replace('{{businessName}}', data.businessName)
                 .replace('{{email}}', data.email)
                 .replace('{{address}}', data.address)
@@ -848,8 +836,7 @@ app.get('/serviceprofile', (req, res) => {
                 .replace('{{password}}', data.password)
                 .replace('{{priceChartLink}}', data.priceChartLink)
                 .replace('{{extraFields}}', data.extraFields);
-
-            return res.status(200).send(modifiedContent);
+            res.send(filledHtml);
         });
     });
 });
