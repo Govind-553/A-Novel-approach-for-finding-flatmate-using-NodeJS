@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flatmate.com</title>
-    <link rel="icon" href="/img/home.png" type="image/x-icon">
+    <title>Flatmate</title>
+    <link rel="icon" href="/img/home.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap"
         rel="stylesheet">        
 <style>
@@ -784,7 +782,7 @@ h2 {
             </div>
 
             <div class="image-content">
-                <img src="<%= '/img/laptopuser.png' %>" alt="Illustration of person working on a laptop">
+                <img src="/img/laptopuser.png" alt="Illustration of person working on a laptop">
             </div>
         </div>
 </section>
@@ -793,7 +791,7 @@ h2 {
         <div class="grid-container">
             <!-- Left side (Image) -->
             <div class="image-section">
-                <img src="<%= '/img/Aboutus.jpg' %>" alt="About Us Image">
+                <img src="/img/Aboutus.jpg" alt="About Us Image">
             </div>
     
             <!-- Right side (Description) -->
@@ -852,29 +850,7 @@ h2 {
 
     <div class="swiper profilesSwiper container">
         <div class="swiper-wrapper content">
-            <% profiles.forEach(user => { %>
-                <div class="swiper-slide card">
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="<%= user.profile_pic %>" alt="User pic">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;"><%= user.full_name %></span>
-                            <span class="profession" style="font-weight: 800; font-size: 20px;"><%= user.year %>-<%= user.branch %></span>
-                        </div>
-                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Me</button>
-                        <div class="popup">
-                            <h5>Thank You for visiting My Profile!</h5>
-                            <h5>Here are my contact details:</h5>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: <%= user.contact_number %></li>
-                                <li style="font-size: 18px;">Email: <%= user.email %></li>
-                            </ul>
-                            <button type="button" onclick="closePopup(this)" style="margin-top: 20px;">OK</button>
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
+
         </div>
     </div>
     <!-- Pagination and navigation -->
@@ -888,29 +864,7 @@ h2 {
     <h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
     <div class="swiper foodSwiper container">
         <div class="swiper-wrapper content">
-            <% services.filter(service => service.service === 'Food').forEach(service => { %>
-                <div class="swiper-slide card">
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="/img/foodservice.jpg" alt="food-service">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
-                        </div>
-                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
-                        <div class="popup" style="margin-top: 20px;">
-                            <h5>Thank you for visiting our Service!</h5>
-                            <h5 style="text-align: left;">Connect with us using the details:</h5>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: <%= service.contact_number %></li>
-                                <li style="font-size: 18px;">Email: <%= service.email %></li>
-                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
-                            </ul>
-                            <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
+
         </div>
     </div>
     <div class="swiper-button-next food-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
@@ -922,29 +876,7 @@ h2 {
     <h3 style="position: relative; left: 700px; top: -35px;">Laundry</h3>
     <div class="swiper laundrySwiper container">
         <div class="swiper-wrapper content">
-            <% services.filter(service => service.service === 'Laundry').forEach(service => { %>
-                <div class="swiper-slide card">
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="/img/laundryservice.jpg" alt="food-service">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
-                        </div>
-                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
-                        <div class="popup" style="margin-top: 20px;">
-                            <h5>Thank you for visiting our Service!</h5>
-                            <h5 style="text-align: left;">Connect with us using the details:</h5>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: <%= service.contact_number %></li>
-                                <li style="font-size: 18px;">Email: <%= service.email %></li>
-                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
-                            </ul>
-                            <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
+
         </div>
     </div>
     <div class="swiper-button-next laundry-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
@@ -956,173 +888,89 @@ h2 {
     <h3 style="position: relative; left: 700px; top: -35px;">Brokers</h3>
     <div class="swiper brokerSwiper container">
         <div class="swiper-wrapper content">
-            <% services.filter(service => service.service === 'Broker').forEach(service => { %>
-                <div class="swiper-slide card">
-                    <div class="card-content">
-                        <div class="image">
-                            <img src="/img/brokerservice.jpg" alt="food-service">
-                        </div>
-                        <div class="name-profession">
-                            <span class="name" style="font-size: 24px;"><%= service.business_Name %></span>
-                        </div>
-                        <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
-                        <div class="popup" style="margin-top: 20px;">
-                            <h5>Thank you for visiting our Service!</h5>
-                            <h5 style="text-align: left;">Connect with us using the details:</h5>
-                            <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                                <li style="font-size: 18px;">Contact No: <%= service.contact_number %></li>
-                                <li style="font-size: 18px;">Email: <%= service.email %></li>
-                                <li onclick="window.location.href='<%= service.price_chart_link %>';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
-                            </ul>
-                            <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
-                        </div>
-                    </div>
-                </div>
-            <% }) %>
+
         </div>
     </div>
     <div class="swiper-button-next broker-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
     <div class="swiper-button-prev broker-prev" style="position: relative; top: -250px !important;"></div>
     <div class="swiper-pagination broker-pagination"></div>
+</section> 
+
+<section id="footer" style="position: relative; bottom: -50px;">
+<footer>
+        <div class="feet">
+        <h1>Flatmate</h1>
+            <p>
+                Introducing our innovative platform designed to help
+                students find the perfect roommates and accommodations. 
+                Free registration for students ensures easy access,
+                while PG owners, meal providers, and other service
+                vendors can expand their reach with our subscription
+                service. Built with plain HTML, CSS, JavaScript, Node.js,
+                and MySQL, our website features advanced preference 
+                matching algorithms along with search & filter options 
+                for a seamless experience.
+            </p>
+            <div class="copyright">
+            <p>&copy; 2025 Flatmate. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="feet2">
+            <p>Quick links</p>
+            <a href="#header">Home</a>
+            <a href="#profiles">Profiles</a>
+            <a href="#services">Services</a>
+            <a href="#overview">Overview</a>
+            <a href="/team">Our Team</a>
+        </div>
+        <div class="contact">
+            <p>Connect with us</p>
+            <a href="" class="icon-link facebook"><i class="fab fa-facebook fa-lg"></i></a>
+            <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
+            <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
+        </div>
+</footer>
+<button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
 </section>
 
 <!-- Include Swiper CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
-// search functionality script
-document.getElementById('search-button').addEventListener('click', function () {
-    const searchQuery = document.getElementById('search-input').value.toLowerCase();
-    let firstMatchFound = false;
 
-    const swiperSections = [
-        {
-            selector: '.profilesSwiper',
-            filter: user => user.getAttribute('data-type') === 'profiles',
-            scrollClass: '.profilesSwiper'
-        },
-        {
-            selector: '.foodSwiper',
-            filter: service => service.getAttribute('data-type') === 'Food',
-            scrollClass: '.foodSwiper'
-        },
-        {
-            selector: '.laundrySwiper',
-            filter: service => service.getAttribute('data-type') === 'Laundry',
-            scrollClass: '.laundrySwiper'
-        },
-        {
-            selector: '.brokerSwiper',
-            filter: service => service.getAttribute('data-type') === 'Broker',
-            scrollClass: '.brokerSwiper'
-        }
-    ];
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('/data');
+        if (!response.ok) throw new Error('Failed to fetch data');
+        const { services, profiles } = await response.json();
 
-    swiperSections.forEach(section => {
-        const swiperContainer = document.querySelector(section.selector);
-        const slides = swiperContainer.querySelectorAll('.swiper-slide');
-
-        if (searchQuery === '') {
-            // If search input is empty, reset all slides to be visible
-            slides.forEach(slide => {
-                slide.style.display = 'block';
-            });
-            swiperContainer.swiper.update();
-            return;
-        }
-
-        let hasMatch = false;
-
-        slides.forEach(slide => {
-            const name = slide.querySelector('.name')?.textContent.toLowerCase() || '';
-            const type = slide.getAttribute('data-type')?.toLowerCase() || '';
-
-            // Match against name or service type
-            if (name.includes(searchQuery) || type.includes(searchQuery)) {
-                slide.style.display = 'block';
-                hasMatch = true;
-            } else {
-                slide.style.display = 'none';
-            }
-        });
-
-        swiperContainer.swiper.update();
-
-        // Scroll smoothly to the first matching section
-        if (hasMatch && !firstMatchFound) {
-            document.querySelector(section.scrollClass).scrollIntoView({ behavior: 'smooth' });
-            firstMatchFound = true;
-        }
-    });
-});
-
-document.getElementById('clear-button').addEventListener('click', function () {
-    document.getElementById('search-input').value = '';
-    const swiperSections = [
-        '.profilesSwiper',
-        '.foodSwiper',
-        '.laundrySwiper',
-        '.brokerSwiper'
-    ];
-
-    swiperSections.forEach(selector => {
-        const swiperContainer = document.querySelector(selector);
-        const slides = swiperContainer.querySelectorAll('.swiper-slide');
-        slides.forEach(slide => {
-            slide.style.display = 'block';
-        });
-        swiperContainer.swiper.update();
-    });
-});
-
-// about-us section tabs script
-        function showTab(tab) {
-            document.querySelectorAll('.tab').forEach(button => {
-                button.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.querySelector(`.${tab}`).classList.add('active');
-            document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
-        }
-
-// Initialize the tabs to show the register pages for students and service providers        
-const rentTab = document.querySelector('button[onclick="showTab(\'rent\')"]');
-const findTab = document.querySelector('button[onclick="showTab(\'find\')"]');
-const getStartedBtn = document.querySelector('.get-started');
-const rentContent = document.querySelector('.tab-content.rent');
-const findContent = document.querySelector('.tab-content.find');
-
-// Function to show tab content and update active states
-function showTab(tabName) {
-    rentTab.classList.remove('active');
-    findTab.classList.remove('active');
-    rentContent.classList.remove('active');
-    findContent.classList.remove('active');
-
-    // Add active class to selected tab and content
-    if (tabName === 'rent') {
-        rentTab.classList.add('active');
-        rentContent.classList.add('active');
-    } else if (tabName === 'find') {
-        findTab.classList.add('active');
-        findContent.classList.add('active');
+        renderProfiles(profiles);
+        renderServices(services, 'Food', '.foodSwiper .swiper-wrapper', 'foodservice.jpg');
+        renderServices(services, 'Laundry', '.laundrySwiper .swiper-wrapper', 'laundryservice.jpg');
+        renderServices(services, 'Broker', '.brokerSwiper .swiper-wrapper', 'brokerservice.jpg');
+        
+        initializeSwipers();
+        
+    } catch (error) {
+        console.error('Error loading data:', error);
     }
+});
+
+// Make popup functions global
+window.openPopup = function(button) {
+    const popup = button.nextElementSibling;
+    popup.classList.add("open-popup");
+    popup.style.display = 'block';
 }
-// Add click event to Get Started button
-getStartedBtn.addEventListener('click', function() {
-    if (rentTab.classList.contains('active')) {
-        window.location.href = '/registrationpage';
-    } else if (findTab.classList.contains('active')) {
-        window.location.href = '/serviceregister';
-    }
-});
-showTab('rent');
 
-// Initialize Swiper Sliders script
-document.addEventListener('DOMContentLoaded', function () {
-    const profilesSwiper = new Swiper(".profilesSwiper", {
+window.closePopup = function(button) {
+    const popup = button.parentElement;
+    popup.classList.remove("open-popup");
+    popup.style.display = 'none';
+}
+
+function initializeSwipers() {
+    new Swiper(".profilesSwiper", {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 3,
@@ -1138,7 +986,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     });
 
-    const foodSwiper = new Swiper(".foodSwiper", {
+    new Swiper(".foodSwiper", {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 3,
@@ -1154,7 +1002,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     });
 
-    const laundrySwiper = new Swiper(".laundrySwiper", {
+    new Swiper(".laundrySwiper", {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 3,
@@ -1170,7 +1018,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     });
 
-    const brokerSwiper = new Swiper(".brokerSwiper", {
+    new Swiper(".brokerSwiper", {
         slidesPerView: 3,
         spaceBetween: 40,
         slidesPerGroup: 3,
@@ -1185,67 +1033,259 @@ document.addEventListener('DOMContentLoaded', function () {
             prevEl: ".broker-prev",
         },
     });
-// popup functionality
-    function openPopup(button) {
-        const popup = button.nextElementSibling;
-        popup.classList.add("open-popup");
-        popup.style.display = 'block';
-    }
+}
 
-    function closePopup(button) {
-        const popup = button.parentElement;
-        popup.classList.remove("open-popup");
-        popup.style.display = 'none';
-    }
-
-// filter functionality
-    document.getElementById('filterButton').addEventListener('click', () => {
-        const dropdown = document.getElementById('filterDropdown');
-        if (dropdown.style.display === 'none') {
-            dropdown.style.display = 'block';
-        } else {
-            dropdown.style.display = 'none';
-            resetFilters();
-        }
-    });
-
-    document.getElementById('applyFilters').addEventListener('click', () => {
-        const selectedYear = document.getElementById('yearFilter').value;
-        const selectedBranch = document.getElementById('branchFilter').value;
-
-        const profileContainer = document.querySelector('.profilesSwiper .swiper-wrapper');
-
-        profileContainer.querySelectorAll('.swiper-slide.card').forEach(card => {
-            const professionText = card.querySelector('.profession').textContent.trim();
-            const [userYear, userBranch] = professionText.split('-').map(str => str.trim());
-
-            const yearMatch = selectedYear === "All Years" || userYear === selectedYear;
-            const branchMatch = selectedBranch === "All Branches" || userBranch === selectedBranch;
-
-            card.style.display = (yearMatch && branchMatch) ? "block" : "none";
+function setupSearchAndFilter() {
+    // Search functionality
+    const searchButton = document.getElementById('search-button');
+    if (searchButton) {
+        searchButton.addEventListener('click', function () {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            let firstMatchFound = false;
+        
+            const swiperSections = [
+                {
+                    selector: '.profilesSwiper',
+                    filter: user => user.getAttribute('data-type') === 'profiles',
+                    scrollClass: '.profilesSwiper'
+                },
+                {
+                    selector: '.foodSwiper',
+                    filter: service => service.getAttribute('data-type') === 'Food',
+                    scrollClass: '.foodSwiper'
+                },
+                {
+                    selector: '.laundrySwiper',
+                    filter: service => service.getAttribute('data-type') === 'Laundry',
+                    scrollClass: '.laundrySwiper'
+                },
+                {
+                    selector: '.brokerSwiper',
+                    filter: service => service.getAttribute('data-type') === 'Broker',
+                    scrollClass: '.brokerSwiper'
+                }
+            ];
+        
+            swiperSections.forEach(section => {
+                const swiperContainer = document.querySelector(section.selector);
+                const slides = swiperContainer.querySelectorAll('.swiper-slide');
+        
+                if (searchQuery === '') {
+                    slides.forEach(slide => {
+                        slide.style.display = 'block';
+                    });
+                    if (swiperContainer.swiper) swiperContainer.swiper.update();
+                    return;
+                }
+        
+                let hasMatch = false;
+        
+                slides.forEach(slide => {
+                    const name = slide.querySelector('.name')?.textContent.toLowerCase() || '';
+                    const type = slide.getAttribute('data-type')?.toLowerCase() || '';
+        
+                    if (name.includes(searchQuery) || type.includes(searchQuery)) {
+                        slide.style.display = 'block';
+                        hasMatch = true;
+                    } else {
+                        slide.style.display = 'none';
+                    }
+                });
+        
+                if (swiperContainer.swiper) swiperContainer.swiper.update();
+        
+                if (hasMatch && !firstMatchFound) {
+                    document.querySelector(section.scrollClass).scrollIntoView({ behavior: 'smooth' });
+                    firstMatchFound = true;
+                }
+            });
         });
+    }
 
-        if (typeof profilesSwiper !== 'undefined') {
-            profilesSwiper.update();
-            profilesSwiper.slideTo(0);
-        }
-        document.getElementById('filterDropdown').style.display = 'none';
-    });
+    const clearButton = document.getElementById('clear-button');
+    if (clearButton) {
+        clearButton.addEventListener('click', function () {
+            document.getElementById('search-input').value = '';
+            const swiperSections = [
+                '.profilesSwiper',
+                '.foodSwiper',
+                '.laundrySwiper',
+                '.brokerSwiper'
+            ];
+        
+            swiperSections.forEach(selector => {
+                const swiperContainer = document.querySelector(selector);
+                const slides = swiperContainer.querySelectorAll('.swiper-slide');
+                slides.forEach(slide => {
+                    slide.style.display = 'block';
+                });
+                if (swiperContainer.swiper) swiperContainer.swiper.update();
+            });
+        });
+    }
+
+    // Filter functionality
+    const filterButton = document.getElementById('filterButton');
+    if (filterButton) {
+        filterButton.addEventListener('click', () => {
+            const dropdown = document.getElementById('filterDropdown');
+            if (dropdown.style.display === 'none') {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+                resetFilters();
+            }
+        });
+    }
+
+    const applyFilters = document.getElementById('applyFilters');
+    if (applyFilters) {
+        applyFilters.addEventListener('click', () => {
+            const selectedYear = document.getElementById('yearFilter').value;
+            const selectedBranch = document.getElementById('branchFilter').value;
+    
+            const profileContainer = document.querySelector('.profilesSwiper .swiper-wrapper');
+    
+            profileContainer.querySelectorAll('.swiper-slide.card').forEach(card => {
+                const professionText = card.querySelector('.profession').textContent.trim();
+                const [userYear, userBranch] = professionText.split('-').map(str => str.trim());
+    
+                const yearMatch = selectedYear === "All Years" || userYear === selectedYear;
+                const branchMatch = selectedBranch === "All Branches" || userBranch === selectedBranch;
+    
+                card.style.display = (yearMatch && branchMatch) ? "block" : "none";
+            });
+    
+            const profilesSwiper = document.querySelector('.profilesSwiper').swiper;
+            if (profilesSwiper) {
+                profilesSwiper.update();
+                profilesSwiper.slideTo(0);
+            }
+            document.getElementById('filterDropdown').style.display = 'none';
+        });
+    }
 
     function resetFilters() {
         document.getElementById('yearFilter').value = "All Years";
         document.getElementById('branchFilter').value = "All Branches";
-
+    
         document.querySelectorAll('.profilesSwiper .swiper-wrapper .swiper-slide.card').forEach(card => {
             card.style.display = "block";
         });
-
-        if (typeof profilesSwiper !== 'undefined') {
+    
+        const profilesSwiper = document.querySelector('.profilesSwiper').swiper;
+        if (profilesSwiper) {
             profilesSwiper.update();
             profilesSwiper.slideTo(0);
         }
     }
-});
+}
+
+// Initialize search and filter
+setupSearchAndFilter();
+setupTabs();
+
+function setupTabs() {
+    // about-us section tabs script
+    window.showTab = function(tab) {
+        document.querySelectorAll('.tab').forEach(button => {
+            button.classList.remove('active');
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+        });
+        const tabContent = document.querySelector(`.${tab}`);
+        const tabButton = document.querySelector(`.tab[onclick="showTab('${tab}')"]`);
+        if (tabContent) tabContent.classList.add('active');
+        if (tabButton) tabButton.classList.add('active');
+    }
+
+    // Initialize the tabs to show the register pages for students and service providers        
+    const rentTab = document.querySelector('button[onclick="showTab(\'rent\')"]');
+    const findTab = document.querySelector('button[onclick="showTab(\'find\')"]');
+    const getStartedBtn = document.querySelector('.get-started');
+    const rentContent = document.querySelector('.tab-content.rent');
+    const findContent = document.querySelector('.tab-content.find');
+
+    // Add click event to Get Started button
+    if (getStartedBtn) {
+        getStartedBtn.addEventListener('click', function() {
+            // Re-query active state or cache elements?
+            // The global showTab toggles 'active' class on the buttons.
+            const activeRent = document.querySelector('button[onclick="showTab(\'rent\')"].active');
+            const activeFind = document.querySelector('button[onclick="showTab(\'find\')"].active');
+
+            if (activeRent) {
+                window.location.href = '/registrationpage';
+            } else if (activeFind) {
+                window.location.href = '/serviceregister';
+            }
+        });
+    }
+    
+    // Initialize default tab
+    showTab('rent');
+}
+
+function renderProfiles(profiles) {
+    const container = document.querySelector('.profilesSwiper .swiper-wrapper');
+    if (!container) return;
+    
+    container.innerHTML = profiles.map(user => `
+        <div class="swiper-slide card" data-type="profiles">
+            <div class="card-content">
+                <div class="image">
+                    <img src="${user.profile_pic || '/img/default-profile.png'}" alt="User pic">
+                </div>
+                <div class="name-profession">
+                    <span class="name" style="font-size: 24px;">${user.fULL_name}</span>
+                    <span class="profession" style="font-weight: 800; font-size: 20px;">${user.year}-${user.branch}</span>
+                </div>
+                <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Me</button>
+                <div class="popup">
+                    <h5>Thank You for visiting My Profile!</h5>
+                    <h5>Here are my contact details:</h5>
+                    <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
+                        <li style="font-size: 18px;">Contact No: ${user.contact_number}</li>
+                        <li style="font-size: 18px;">Email: ${user.email}</li>
+                    </ul>
+                    <button type="button" onclick="closePopup(this)" style="margin-top: 20px;">OK</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderServices(services, type, selector, imageName) {
+    const container = document.querySelector(selector);
+    if (!container) return;
+
+    const filteredServices = services.filter(s => s.service === type);
+    
+    container.innerHTML = filteredServices.map(service => `
+        <div class="swiper-slide card" data-type="${type}">
+            <div class="card-content">
+                <div class="image">
+                    <img src="/img/${imageName}" alt="${type}-service">
+                </div>
+                <div class="name-profession">
+                    <span class="name" style="font-size: 24px;">${service.business_Name}</span>
+                </div>
+                <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
+                <div class="popup" style="margin-top: 20px;">
+                    <h5>Thank you for visiting our Service!</h5>
+                    <h5 style="text-align: left;">Connect with us using the details:</h5>
+                    <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
+                        <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
+                        <li style="font-size: 18px;">Email: ${service.email}</li>
+                        <li onclick="window.location.href='${service.price_chart_link}';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
+                    </ul>
+                    <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
 // srcoll to top button script 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1284,45 +1324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 </script>
-
-<section id="footer" style="position: relative; bottom: -50px;">
-<footer>
-        <div class="feet">
-        <h1>Flatmate</h1>
-            <p>
-                Introducing our innovative platform designed to help
-                students find the perfect roommates and accommodations. 
-                Free registration for students ensures easy access,
-                while PG owners, meal providers, and other service
-                vendors can expand their reach with our subscription
-                service. Built with plain HTML, CSS, JavaScript, Node.js,
-                and MySQL, our website features advanced preference 
-                matching algorithms along with search & filter options 
-                for a seamless experience.
-            </p>
-            <div class="copyright">
-            <p>&copy; 2024 Flatmate. All rights reserved.</p>
-            </div>
-        </div>
-        <div class="feet2">
-            <p>Quick links</p>
-            <a href="#header">Home</a>
-            <a href="/loginpage">Login</a>
-            <a href="#profiles">Profiles</a>
-            <a href="#services">Services</a>
-            <a href="#overview">Overview</a>
-            <a href="/teampage">Our Team</a>
-        </div>
-        <div class="contact">
-            <p>Connect with us</p>
-            <a href="" class="icon-link facebook"><i class="fab fa-facebook fa-lg"></i></a>
-            <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
-            <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
-        </div>
-</footer>
-<button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
-</section>
-
 <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="xCaWqrLm8qcQ-LK2nfnNd";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>

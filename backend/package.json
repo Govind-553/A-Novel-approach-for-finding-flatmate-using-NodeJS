@@ -2,22 +2,24 @@
   "name": "a-novel-approach-for-finding-flatmate-using-node.js",
   "version": "1.0.0",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "nodemon": "nodemon app.js"
   },
   "keywords": [],
-  "author": "QuadCoders@2024-25",
+  "author": "QuadCoders@2025",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.6.1",
-    "ejs": "^3.1.10",
     "express": "^4.21.1",
-    "formidable": "^3.5.2",
     "fs": "^0.0.1-security",
-    "mysql": "^2.18.1",
-    "nodemailer": "^6.10.1",
+    "mongoose": "^8.8.2",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
     "path": "^0.12.7",
     "razorpay": "^2.9.6",
     "ws": "^8.18.1"

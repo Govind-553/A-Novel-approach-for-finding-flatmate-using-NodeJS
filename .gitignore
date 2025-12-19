@@ -1,5 +1,8 @@
+# Hidden files and directories
 venv 
 node_modules/
 .env 
-.vscode
+.vscode   
 
+# Migrating to new database - Mongodb Atlas
+migrate.js 

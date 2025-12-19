@@ -51,7 +51,7 @@
             font-weight: 400;
             font-style: normal;
         }
-
+    
     #header p {
         color: whitesmoke;
         font-weight: 750;
@@ -61,7 +61,89 @@
         top: 420px; 
         letter-spacing: 0.1rem;
     }
-    
+
+    .chat-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    animation: pulse 2s infinite;
+    z-index: 10;
+}
+
+    .chat-icon:hover {
+    background-color: #333; 
+    transform: scale(1.1);
+}
+
+.popping-text {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    background-color: #fff;
+    color: #000;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 14px;
+    animation: pop 2s infinite;
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
+
+.popping-text span {
+    margin-right: 10px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #000;
+    padding: 0;
+    line-height: 1;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+   
     .fas, .fab {
         color: inherit;
     }
@@ -176,8 +258,8 @@
             background: #333;
             color: #fff;
     }
-        
-footer {
+    
+    footer {
     background-color: rgb(53, 49, 49);
     color: rgb(165, 160, 160);
     font-family: 'Calistoga', cursive;
@@ -207,6 +289,7 @@ footer .feet p {
     font-weight:bold;
     margin-top: 5px;
 }
+
 footer .feet2, footer .contact {
     max-width: 20%;
 }
@@ -278,7 +361,7 @@ footer .contact a:hover i {
     }
 }
     
-    .scroll-top-btn {
+.scroll-top-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
@@ -726,13 +809,199 @@ h2 {
     }
 }
 
+.service-providers-section {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    margin-top: 30px;
+}
+
+.service-providers-section h2 {
+    font-size: 28px;
+    color: #222;
+    font-weight: 600;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.service-providers-table-container {
+    overflow-x: auto;
+    margin: 0 auto;
+    width: 90%;
+}
+
+.service-providers-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 600px;
+}
+
+.service-providers-table th,
+.service-providers-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 15px;
+}
+
+.service-providers-table th {
+    background-color: #007bff;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-providers-table tr:hover {
+    background-color: #f5faff;
+    transition: background-color 0.3s ease;
+}
+
+.service-providers-table td a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.service-providers-table td a:hover {
+    text-decoration: underline;
+}
+
+.decorated-heading {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-weight: bold;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.decorated-heading::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #007bff;
+  margin: 10px auto 0;
+  border-radius: 2px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .service-providers-section h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .service-providers-table-container {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .service-providers-table {
+        font-size: 14px;
+        min-width: unset;
+    }
+
+    .service-providers-table th,
+    .service-providers-table td {
+        padding: 10px 12px;
+    }
+}
+.roommate-section {
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #eef4ff;
+    border-radius: 10px;
+    width: 90%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.roommate-section h2 {
+    text-align: center;
+    font-size: 26px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+
+.roommate-section .card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 260px;
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 15px;
+    position: relative;
+    min-height: 300px;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.image-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 120px;
+    background-color: #d2b8a6;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.image-container img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    background-color: #fff;
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.card h3 {
+    margin: 190px 0 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+.card p {
+    font-size: 14px;
+    color: #444;
+    margin: 5px 10px;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
 </style>
 </head>
 <body>
 <div class="navbar">
 <div class="navbar-left">
-            <h1 style="position: relative; right: -20px; font-size: 50px;">Flatmate</h1>
+    <h1 style="position: relative; right: -20px; font-size: 50px;">Flatmate</h1>
 </div>
+        
 <div class="navbar-center" style="position: relative;">
     <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates" style="padding-right: 35px;">
     <button id="search-button" class="icon-link search icon">
@@ -742,10 +1011,10 @@ h2 {
         <i class="fas fa-times"></i>
     </button>
 </div>
-  
+
 <div class="navbar-right">
-        <button onclick="showLogoutPopup()">Log out</button>
-        <div id="logoutPopup"
+          <button onclick="showLogoutPopup()">Log out</button>
+          <div id="logoutPopup"
             style="visibility: hidden; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%;
              background-color: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;">
             <div
@@ -788,18 +1057,25 @@ h2 {
               border-radius: 5px; 
               cursor: pointer;">No</button>
             </div>
-        </div>
+          </div> 
         <button onclick="document.getElementById('services').scrollIntoView({ behavior: 'smooth' });">Services</button>
-
-        <button onclick="location.href='/serviceprofile'" class="icon-link profile-icon" >
-              <i class="fas fa-user 
-        fa-lg"></i></button>
+        <button onclick="location.href='/'" class="icon-link bell-icon"><i class="fas fa-bell fa-lg"></i></button>   
+        <button onclick="location.href='/profilepage'" class="icon-link profile-icon" ><i class="fas fa-user fa-lg"></i></button>
 </div>
 </div>
 
 <header id="header">
-        <h1>Welcome to Flatmate</h1>
-        <p>The perfect solution for the PG students and service providers.</p>
+    <div class="popping-text">
+        <span>🌟🔍 Recommended Service Providers Tailored Just for You!</span>
+        <button class="close-btn">&times;</button>
+    </div>
+    <div class="chat-icon" onclick="scrollToSection()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+        </svg>
+    </div>
+    <h1>Welcome to Flatmate</h1>
+    <p>The perfect solution for the PG students and service providers.</p>
 </header>
 
 <section id="overview" class="how-it-works" style="margin-top: -122px;">
@@ -895,6 +1171,65 @@ h2 {
   <div class="swiper-pagination profiles-pagination"></div>
 </section>
 
+<section class="roommate-section">
+    <h2>🧑‍🤝‍🧑 Preferable Roommate Matches</h2>
+    <div id="roommate-cards-container" class="cards-wrapper"></div>
+</section>
+
+<section id="service-providers-section" class="service-providers-section">
+<h1 class="decorated-heading">🌐 Recommended Service Providers for You</h1>
+    <h2>🍱 Food Services</h2>
+    <div class="service-providers-table-container">
+        <table class="service-providers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Food Type</th>
+                    <th>Price Chart</th>
+                </tr>
+            </thead>
+            <tbody id="food-table-body"></tbody>
+        </table>
+    </div>
+
+    <h2>🧺 Laundry Services</h2>
+    <div class="service-providers-table-container">
+        <table class="service-providers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Service Type</th>
+                    <th>Price Chart</th>
+                </tr>
+            </thead>
+            <tbody id="laundry-table-body"></tbody>
+        </table>
+    </div>
+
+    <h2>🏠 Broker Services</h2>
+    <div class="service-providers-table-container">
+        <table class="service-providers-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Room Type</th>
+                    <th>Amenities</th>
+                    <th>Price</th>
+                    <th>Landmark</th>
+                    <th>Price Chart</th>
+                </tr>
+            </thead>
+            <tbody id="broker-table-body"></tbody>
+        </table>
+    </div>
+</section>
+
 <section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
   <h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
   <h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
@@ -932,10 +1267,130 @@ h2 {
   <div class="swiper-pagination broker-pagination"></div>
 </section>
 
+<section id="footer" style="position: relative; bottom: -220px;">
+<footer>
+        <div class="feet">
+        <h1>Flatmate</h1>
+            <p>
+                Introducing our innovative platform designed to help
+                students find the perfect roommates and accommodations. 
+                Free registration for students ensures easy access,
+                while PG owners, meal providers, and other service
+                vendors can expand their reach with our subscription
+                service. Built with plain HTML, CSS, JavaScript, Node.js,
+                and MySQL, our website features advanced preference 
+                matching algorithms along with search & filter options 
+                for a seamless experience.
+            </p>
+            <div class="copyright">
+            <p>&copy; 2024 Flatmate. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="feet2">
+            <p>Quick links</p>
+            <a href="#header">Home</a>
+            <a href="#about-us">About Us</a>
+            <a href="#profiles">Profiles</a>
+            <a href="#services">Services</a>
+            <a href="#overview">Overview</a>
+            <a href="/teampage">Our Team</a>
+        </div>
+        <div class="contact">
+            <p>Connect with us</p>
+            <a href="" class="icon-link facebook"><i class="fab fa-facebook fa-lg"></i></a>
+            <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
+            <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
+        </div>
+</footer>
+<button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
+</section>
+
 <!-- Include Swiper CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
+    
+// Function to scroll to the service providers section   
+ function scrollToSection() {
+            document.getElementById('service-providers-section').scrollIntoView({ 
+                behavior: 'smooth'
+            });
+        }   
+
+// Show the popping text on page load
+    window.addEventListener('load', function() {
+        const poppingText = document.querySelector('.popping-text');
+        poppingText.style.display = 'flex';
+    });
+    document.querySelector('.close-btn').addEventListener('click', function() {
+        const poppingText = document.querySelector('.popping-text');
+        poppingText.style.display = 'none';
+    });
+
+// Script to handle data fetching of service providers
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/service-recommendations', { credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                alert('Failed to load recommendations');
+                return;
+            }
+            populateTable('food-table-body', data.foodServices, ['business_Name', 'email', 'contact_number', 'food_type', 'price_chart_link']);
+            populateTable('laundry-table-body', data.laundryServices, ['business_Name', 'email', 'contact_number', 'laundry_service', 'price_chart_link']);
+            populateTable('broker-table-body', data.brokerServices, ['business_Name', 'email', 'contact_number', 'room_type', 'amenities', 'pricing_value', 'landmark', 'price_chart_link']);
+        })
+        .catch(err => {
+            console.error('Error fetching recommendations:', err);
+        });
+});
+function populateTable(tableId, data, keys) {
+    const tbody = document.getElementById(tableId);
+    tbody.innerHTML = '';
+
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        keys.forEach(key => {
+            const td = document.createElement('td');
+            if (key === 'price_chart_link') {
+                td.innerHTML = `<a href="${row[key]}">View Chart</a>`;
+            } else {
+                td.textContent = row[key] || '';
+            }
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+}    
+
+// function to show the matching students profiles using K-Means clustering
+window.addEventListener('DOMContentLoaded', () => {
+    fetch('/roommate-recommendations', { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const container = document.getElementById('roommate-cards-container');
+            container.innerHTML = '';
+            data.roommates.forEach(user => {
+                const card = `
+    <div class="card">
+        <div class="image-container">
+            <img src="${user.profile_pic}" alt="Profile Picture">
+        </div>
+        <h3>${user.fULL_name}</h3>
+        <p><strong>Email:</strong> ${user.email}</p>
+        <p><strong>Phone:</strong> ${user.contact_number}</p>
+        <p><strong>Food:</strong> ${user.food_type}</p>
+        <p><strong>Room Type:</strong> ${user.room_type}</p>
+        <p><strong>Amenities:</strong> ${user.amenities}</p>
+    </div>
+`;
+container.innerHTML += card;
+});
+}
+});
+});
+
 // search-input script for searching profiles and services
 document.getElementById('search-button').addEventListener('click', function () {
     const searchQuery = document.getElementById('search-input').value.toLowerCase();
@@ -1049,7 +1504,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <img src="${user.profile_pic}" alt="${user.full_name}'s pic" class="user-image">
                         </div>
                         <div class="name-profession">
-                            <span class="name" style="font-size: 24px;">${user.full_name}</span>
+                            <span class="name" style="font-size: 24px;">${user.fULL_name}</span>
                             <span class="profession" style="font-weight: 800; font-size: 20px;">${user.year} - ${user.branch}</span>
                         </div>
                         <button class="message-button" onclick="openPopup(this)" style="font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal;">Contact Me</button>
@@ -1243,7 +1698,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function logout() {
-        window.location.href = '/mainpage';
+        window.location.href = '/';
     }
 
     function closeLogoutPopup() {
@@ -1305,42 +1760,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 </script>
 
-<section id="footer" style="position: relative; bottom: -220px;">
-    <footer>
-        <div class="feet">
-        <h1>Flatmate</h1>
-            <p>
-                Introducing our innovative platform designed to help
-                students find the perfect roommates and accommodations. 
-                Free registration for students ensures easy access,
-                while PG owners, meal providers, and other service
-                vendors can expand their reach with our subscription
-                service. Built with plain HTML, CSS, JavaScript, Node.js,
-                and MySQL, our website features advanced preference 
-                matching algorithms along with search & filter options 
-                for a seamless experience.
-            </p>
-            <div class="copyright">
-            <p>&copy; 2024 Flatmate. All rights reserved.</p>
-            </div>
-        </div>
-        <div class="feet2">
-            <p>Quick links</p>
-            <a href="#header">Home</a>
-            <a href="#about-us">About Us</a>
-            <a href="#profiles">Profiles</a>
-            <a href="#services">Services</a>
-            <a href="#overview">Overview</a>
-            <a href="/teampage">Our Team</a>
-        </div>
-        <div class="contact">
-            <p>Connect with us</p>
-            <a href="" class="icon-link facebook"><i class="fab fa-facebook fa-lg"></i></a>
-            <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
-            <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
-        </div>
-</footer>
-<button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
-</section>
 </body>
 </html>
