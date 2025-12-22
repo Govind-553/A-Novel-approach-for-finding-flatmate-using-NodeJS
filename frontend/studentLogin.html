@@ -5,187 +5,281 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login</title>
     <link rel="icon" href="/img/Login.png" type="image/jpg">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    min-height: 100vh;
+    background: url(/img/loginpage.jpg) center / cover no-repeat fixed;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+/* Login Card */
+.login-container {
+    background-color: snow;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+/* Heading */
+.login-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+/* Labels */
+.login-container label {
+    display: block;
+    text-align: left;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* Inputs */
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    font-weight: 400;
+}
+
+.login-container input:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 6px rgba(243,156,18,0.5);
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.password-container input {
+    padding-right: 44px; 
+}
+
+#togglePassword {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+    font-size: 1.05rem;
+    line-height: 1;
+    margin-top: -8px;
+}
+
+/* Button */
+.login-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-container button:hover {
+    background-color: #0056b3;
+    transform: scale(1.03);
+}
+
+.auth-links {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+}
+
+.auth-links span {
+    font-weight: 500;
+    color: #333;
+}
+
+.auth-links a {
+    font-weight: 500;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.forgot-link {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Modal Overlay */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    display: none; 
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    background: #ffffff;
+    width: 100%;
+    max-width: 380px;
+    padding: 32px 28px;
+    border-radius: 18px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    animation: modalPop 0.35s ease;
+}
+
+/* Animation */
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
     }
-    body { 
-        background-image: url(/img/loginpage.jpg);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f0f0f0;
-        box-shadow: 0px 80px 80px 40px;
-        padding: 20px; /* Add padding to body for small screens */
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
-    
+}
+
+.modal-box h3 {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    color: #111;
+}
+
+.modal-box p {
+    font-size: 0.95rem;
+}
+
+/* Links */
+.modal-box a {
+    color: #007bff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.modal-box a:hover {
+    text-decoration: underline;
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    border: none;
+    background: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #777;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background: transparent;
+    color: #007bff;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-outline:hover {
+    background-color: #007bff;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 123, 255, 0.35);
+}
+
+.btn-outline:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 123, 255, 0.25);
+}
+
+.btn-outline i {
+    font-size: 0.95rem;
+}
+
+/* Small phones (≤360px) */
+@media (max-width: 360px) {
     .login-container {
-        background-color: snow;
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 100%; /* Use 100% width on small screens */
-        max-width: 350px; /* Limit the maximum width on larger screens */
-        text-align: center;
+        padding: 18px;
     }
-    
     .login-container h1 {
-        margin-bottom: 20px;
+        font-size: 1.5rem;
     }
-    
-    .login-container label {
-        display: block;
-        margin-bottom: 5px;
-        text-align: left;
-    }
-    
-    .login-container input {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        transition: border 0.3s ease, box-shadow 0.3s ease;
-    }
+}
 
-    .login-container input:focus {
-        border: 1px solid #f39c12;
-        box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+/* Tablets */
+@media (min-width: 600px) {
+    .login-container {
+        max-width: 400px;
+        padding: 30px;
     }
+}
 
-    .password-container {
-        position: relative;
-        width: 100%;
+/* Laptops & Desktops */
+@media (min-width: 1024px) {
+    .login-container {
+        max-width: 420px;
     }
-
-    #togglePassword {
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        cursor: pointer;
-        color: #D0B8A8;
-    }
-    
-    .login-container button {
-        width: 95%;
-        padding: 10px;
-        margin-top: 8px;
-        border: none;
-        background-color: #007bff;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-    
-    .login-container button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05);
-    }
-
-    .sign-up {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-    }
-
-    .sign-up span {
-        font-weight: 600;
-    }
-    .sign-up a {
-        font-weight: 700;
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    .sign-up a:hover {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-    
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        padding: 20px;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5);
-    }
-    
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border-radius: 10px;
-        width: 90%; 
-        max-width: 325px; 
-        text-align: center;
-    }
-
-    .modal-content h3 {
-        font-size: 24px;
-        font-weight: bold;
-    }
-
-    .modal-content p {
-        margin-top: 40px;
-    }
-
-    .modal-content a {
-        color: #007bff;
-        font-size: 20px;
-        font-weight: semi-bold;
-        text-decoration: none;
-        margin-bottom: 15px;
-    }
-    .modal-content a:hover {
-        color: #0056b3;
-        text-decoration: underline;
-    }
-    
-    .close-btn {
-        color: #333;
-        float: right;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    /* Additional responsive styles for different screen sizes */
-    @media (min-width: 481px) and (max-width: 768px) {
-        .login-container {
-            padding: 30px;
-        }
-        .modal-content {
-            padding: 25px;
-        }
-    }
-
-    @media (min-width: 769px) {
-        .login-container {
-            padding: 40px;
-        }
-        .modal-content {
-            padding: 30px;
-        }
-    }
+}
 </style>
+
 </head>
 <body>
     <div class="login-container">
@@ -200,66 +294,97 @@
             </div>
             <button type="submit">Login</button>
             <br><br>
-            <div class="sign-up">
-                <span>Don't have an account?</span><a href="/registrationpage">Sign Up</a>
-            </div> 
+            <div class="auth-links">
+                <span>Don't have an account?</span>
+                <a href="/registrationpage">Sign Up</a>
+                <a href="/forgot-password" class="forgot-link">Forgot password?</a>
+            </div>
         </form>
     </div>
     
-    <!-- Modal structure for invalid credentials message -->
-    <div id="errorModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">×</span>
-            <h3>Invalid Credentials</h3>
-            <p><a href="/loginpage" onclick="closeModal()">Try again</a> or
-               <a href="/registrationpage">Register</a></p>
-        </div>
+<div id="errorModal" class="modal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3>Invalid Credentials</h3>
+<p class="modal-actions">
+    <a href="/loginpage" class="btn-outline" onclick="handleTryAgain(event)">
+        <i class="fas fa-rotate-left"></i>
+        Try again
+    </a>
+    <a href="/registrationpage" class="btn-outline">
+        <i class="fas fa-user-plus"></i>
+        Register
+    </a>
+</p>
     </div>
+</div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+<script>
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const errorModal = document.getElementById('errorModal');
+    const togglePassword = document.getElementById('togglePassword');
 
-            const formData = new URLSearchParams(new FormData(event.target));
+    /* ---------- Utility: Clear Form ---------- */
+    function clearLoginForm() {
+        emailInput.value = '';
+        passwordInput.value = '';
+    }
 
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: formData,
-                credentials: 'include'
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = '/homepage';
-                } else {
-                    showErrorModal();
-                }
-            })
-            .catch(error => {
-                console.error('Error during login:', error);
-            });
+    /* ---------- Form Submit ---------- */
+    loginForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const formData = new URLSearchParams(new FormData(loginForm));
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData,
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            clearLoginForm(); // clear fields on every submit
+
+            if (data.success) {
+                window.location.href = '/homepage';
+            } else {
+                showErrorModal();
+            }
+        })
+        .catch(error => {
+            console.error('Error during login:', error);
+            clearLoginForm();
         });
+    });
 
-        function showErrorModal() {
-            document.getElementById('errorModal').style.display = 'block';
-        }
+    /* ---------- Modal Controls ---------- */
+    function showErrorModal() {
+        errorModal.style.display = 'flex';
+    }
 
-        function closeModal() {
-            document.getElementById('errorModal').style.display = 'none';
-        }
+    function closeModal() {
+        errorModal.style.display = 'none';
+        clearLoginForm();
+    }
 
-        const togglePassword = document.querySelector('#togglePassword');
-        const passwordInput = document.querySelector('#password');
+    function handleTryAgain(event) {
+        event.preventDefault();
+        closeModal();
+    }
 
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.type === 'password' ? 'text' : 'password';
-            passwordInput.type = type;
-            togglePassword.classList.toggle('fa-eye');
-            togglePassword.classList.toggle('fa-eye-slash');
-        });
-    </script>
+    /* ---------- Password Toggle ---------- */
+    togglePassword.addEventListener('click', () => {
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        togglePassword.classList.toggle('fa-eye');
+        togglePassword.classList.toggle('fa-eye-slash');
+    });
+</script>
+
 </body>
 </html>

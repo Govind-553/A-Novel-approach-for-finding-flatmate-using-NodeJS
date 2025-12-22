@@ -31,9 +31,6 @@ export const loginStudent = async (req, res) => {
 // Register
 export const registerStudent = async (req, res) => {
     try {
-        console.log('Register body:', req.body);
-        console.log('Register file:', req.file);
-
         const { fullName, email, password, address, contactNumber, Year, Branch, AboutYourself, foodType, roomType, pricingValue } = req.body;
         
         const amenities = Array.isArray(req.body.amenities) ? req.body.amenities.join(', ') : req.body.amenities || '';

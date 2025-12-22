@@ -24,4 +24,7 @@ router.post('/saveProfile', upload.single('profileImage'), async (req, res) => {
 router.post('/saveProfile', upload.single('profileImage'), saveProfileFields); // I'll consolidate logic there?
 router.post('/saveProfileFields', upload.none(), saveProfileFields); // Legacy support
 
+// Student Profile Page
+router.get('/studentprofile', getProfilePage);
+
 export default router;
