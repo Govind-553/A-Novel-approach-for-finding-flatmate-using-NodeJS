@@ -6,3 +6,5 @@ node_modules/
 
 # Migrating to new database - Mongodb Atlas
 migrate.js 
+
+uploads/
