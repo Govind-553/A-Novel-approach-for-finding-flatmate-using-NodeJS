@@ -11,846 +11,1102 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap"
-        rel="stylesheet">        
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap" rel="stylesheet">        
 <style>
+    :root {
+        --primary-color: #D0B8A8;
+        --secondary-color: #333;
+        --accent-color: #FF676D;
+        --bg-light: #f6f5ee;
+        --text-dark: #2f415e;
+        --white: #fff;
+    }
+
     body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 24px;
-            overflow-x: hidden;
-        }
-    header {
-        width: 100%;
-        height: 695px;
         margin: 0;
-        margin-top: 130px;
-        background-image: url(/img/Homebackground.jpg);
-        background-size: 1536px 570px; 
-        background-repeat: no-repeat;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        overflow-x: hidden;
     }
 
-    #header h1 {
-            position: relative; 
-            left: 825px;
-            text-align: center;
-            transform: translateX(-50%);
-            top: 20px; 
-            font-size: 55px;  
-            background: url('https://media.giphy.com/media/U3qYN8S0j3bpK/giphy.gif') repeat; 
-            background-position: 40% 50%; 
-            background-clip: text; 
-            -webkit-background-clip: text; 
-            color: transparent; 
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2); 
-            font-family: 'Oleo Script', system-ui; 
-            font-weight: 400;
-            font-style: normal;
-        }
-
-    #header p {
-        color: whitesmoke;
-        font-weight: 750;
-        font-family: DM Serif Display, serif; 
-        position: relative; 
-        left: 400px; 
-        top: 420px; 
-        letter-spacing: 0.1rem;
+    /* Navbar */
+    .navbar {
+        margin: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #c0c0c0;
+        padding: 10px 40px;
+        box-shadow: 0 4px 30px 10px rgba(0,0,0,0.1);
+        width: 100%;
+        height: 110px;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+        box-sizing: border-box; 
     }
 
-        .fas, .fab {
-            color: inherit;
-        }
-
-        /* icon links to display as large circles */
-        .icon-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 10px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            color: white;
-            font-size: 24px;
-            transition: transform 0.3s ease;
-        }
-
-        .icon-link .profile-icon {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .icon-link:hover {
-            transform: scale(1.1);
-            color: white;
-        }
-
-        .navbar {
-            margin: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #c0c0c0;
-            padding: 10px 20px;
-            margin-top: -135px;
-            box-shadow: 0 4px 30px 10px;
-            width: 100%;
-            height: 90px;
-            position: fixed;
-            z-index: 1000
-        }
-
-        .navbar-left h1 {
-            margin: 0;
-            font-family: 'Calistoga', cursive;
-        }
+    .navbar-left h1 {
+        margin: 0;
+        font-family: 'Calistoga', cursive;
+        font-size: 50px;
+        line-height: 1;
+    }
 
     .navbar-center {
-        flex-grow: 1;
+        flex: 1; 
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
+        margin: 0 20px; 
     }
-    .navbar-center  input { 
-        padding: 5px;
-        width: 450px;
-        height: 25px;
-        border: 1px solid #ccc;
-        Outline: none;
-        border-radius: 10px; /* Rounded corners */
-        transition: width 0.3s ease;
-    }
-    .search-box:focus{
-      width: 500px;
-    }
-     .navbar-center #search-button {
-        height: 35px;
-        padding: 5px 10px;
-        font-size: 16px;
-        color: #333;
-        border: none;
-        border-radius: 10px; /* Rounded corners */
-        cursor: pointer;
-    }
-    .navbar-center #clear-button {
-        height: 35px;
-        padding: 5px 10px;
-        font-size: 16px;
-        color: #333;
-        border: none;
-        border-radius: 10px; /* Rounded corners */
-        cursor: pointer;
-    }
-        .navbar-right {
-            display: flex;
-            position: relative;
-            left: -100px;
-            padding: 30px;
-            gap: 20px;
-            font-size: 35px;
-        }
 
-       .navbar-right button {
-            text-decoration: none;
-            color: #333;
-            padding: 6px 15px;
-            border-radius: 20px;
-            margin: 0 10px;
-            font-weight: 600;
-            background: transparent;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
+    .search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        max-width: 500px; 
+    }
+
+    .navbar-center input { 
+        width: 100%;
+        height: 40px;
+        padding: 5px 70px 5px 15px; 
+        border: 1px solid #ccc;
+        outline: none;
+        border-radius: 20px;
+        transition: box-shadow 0.3s ease;
+        font-size: 16px;
+    }
+
+    .navbar-center input:focus {
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
     }
     
-    .navbar-right button:hover {
-            background: #333;
-            color: #fff;
+    .search-icons-group {
+        position: absolute;
+        right: 10px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        height: 100%;
     }
 
-footer {
-    background-color: rgb(53, 49, 49);
-    color: rgb(165, 160, 160);
-    font-family: 'Calistoga', cursive;
-    padding: 40px 100px;
+    .navbar-center .icon-link {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 5px;
+        color: #666;
+        font-size: 16px;
+        margin: 0;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .navbar-center .icon-link:hover {
+        background-color: rgba(0,0,0,0.1);
+        color: #333;
+        transform: none; 
+    }
+
+    .navbar-right {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    gap: 60px;
 }
 
-footer .feet {
-    max-width: 40%;
-    margin-top: -25px;
+.navbar-right button.nav-link {
+    font-size: 19px;
+    padding: 10px 26px;
+    border-radius: 30px;
+    cursor: pointer;
 }
-footer .feet h1 {
-    font-size: 48px;
-    color: white;
-    margin-bottom: 20px;
-}
-footer .feet p {
-    font-size: 18px;
-    line-height: 1.8;
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-}
-.feet .copyright p {
-    font-size: 14px;
-    font-weight:bold;
-    margin-top: 5px;
-}
-footer .feet2, footer .contact {
-    max-width: 20%;
-}
-footer .feet2 p, footer .contact p {
-    font-size: 28px;
-    font-weight: bold;
-    color: rgb(165, 160, 160);
-    margin-top: 40px;
-    margin-bottom: 25px;
+    
+    .navbar-right button.nav-link:hover {
+        background: #333;
+        color: #fff;
+    }
+
+    .profile-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
-footer .feet2 a {
-    text-decoration: none;
-    color: rgb(165, 160, 160);
-    font-family: Arial, Helvetica, sans-serif;
-    display: block;
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 20px;
-    transition: transform 0.3s ease;
-}
-footer .feet2 a:hover {
-    text-decoration: underline;
-    color: white;
+.profile-icon i {
+    font-size: 32px;
 }
 
-footer .contact a {
-    text-decoration: none;
-    color: rgb(165, 160, 160);
-    font-family: Arial, Helvetica, sans-serif;
-    display: inline-block;
-    margin-bottom: 10px;
-    margin-right: 2px;
-    font-size: 24px;
-}
+    /* Header/Hero */
+    header {
+        width: 100%;
+        height: 775px; 
+        margin-top: 90px;
+        background-image: url(/img/Homebackground.jpg);
+        background-size: 100% 100%; 
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+    }
 
-footer .contact a:last-child {
-    margin-right: 0;
-}
+    #header h1 {
+        position: absolute; 
+        left: 52%;
+        transform: translateX(-50%);
+        top: 60px; 
+        text-align: center;
+        width: 100%;
+        margin: 0;
+        font-size: clamp(32px, 4vw, 65px);
+        background: url('https://media.giphy.com/media/U3qYN8S0j3bpK/giphy.gif') repeat; 
+        background-position: 40% 50%; 
+        background-clip: text; 
+        -webkit-background-clip: text; 
+        color: transparent; 
+        text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2); 
+        font-family: 'Oleo Script', system-ui; 
+        font-weight: 400;
+        font-style: normal;
+        padding: 0 10px;
+    }
 
-footer .contact a i {
-    transition: transform 0.3s ease;
-}
+    #header p {
+        color: whitesmoke;
+        font-weight: 750;
+        font-family: 'DM Serif Display', serif; 
+        position: absolute; 
+        left: 52%;
+        transform: translateX(-50%);
+        bottom: 50px; 
+        letter-spacing: 0.1rem;
+        margin: 0;
+        text-align: center;
+        width: 100%;
+        font-size: 1.5vw;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
 
-footer .contact a:hover i {
-    transform: scale(1.2);
-}
+    .icon-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: white;
+        font-size: 20px;
+        transition: transform 0.3s ease;
+    }
 
-@media (max-width: 768px) {
-    footer {
+    .icon-link:not(.navbar-center .icon-link):hover {
+        transform: scale(1.1);
+    }
+
+    .fas, .fab {
+        color: inherit;
+    }
+    
+    /* Popups */
+    .user-popup {
+        width: 160px; 
+        position: absolute;
+        top: 50px; 
+        right: 0;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        display: none; 
+        visibility: hidden;
+        z-index: 1001;
+    }
+    
+    .user-popup.open-popup {
+       display: block;
+       visibility: visible;
+    }
+
+    .user-popup h6 {
+        font-family: 'DM Serif Display', serif; 
+        font-size: 15px; 
+        font-weight: 600; 
+        margin: 5px 0 10px 0;
+        text-align: center;
+        line-height: 1.3;
+    }
+
+    .user-popup button {
+        font-family: 'DM Serif Display', serif;
+        font-weight: 700; 
+        font-size: 14px; 
+        width: 100%; 
+        padding: 5px;
+        border-radius: 15px; 
+        background: #D0B8A8;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .popup {
+        width: 300px;
+        background-color: #fff;
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.1);
+        text-align: center;
+        padding: 20px 30px;
+        color: #333;
+        visibility: hidden;
+        transition: transform 0.4s, top 0.4s;
+        box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+        z-index: 10000;
+    }
+
+    .open-popup {
+        visibility: visible;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .popup p, .popup ul {
+        color: black;
+        text-align: left;
+    }
+    
+    .popup h2 {
+        font-size: 32px;
+        font-weight: 500;
+        margin: 10px 0;
+    }
+
+    .popup button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 10px 0;
+        background-color: #D0B8A8;
+        color: #fff;
+        border: 0;
+        outline: none;
+        font-size: 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sections */
+    .how-it-works {
+        background-color: #f6f5ee;
+        padding: 60px 20px;
+        display: flex;
+        justify-content: center;
+        margin-top: 0;
+    }
+    .content-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+        max-width: 1200px;
+        width: 100%;
+    }
+    .text-content {
+        text-align: left;
+    }
+
+    h2 {
+        font-size: 2.2rem;
+        color: #2f415e;
+        margin-bottom: 20px;
+    }
+    .tabs {
+        display: flex;
+        margin-bottom: 20px;
+        flex-wrap: wrap; 
+        gap: 10px;
+    }
+    .tab {
+        padding: 10px 20px;
+        font-size: 1rem;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        color: #8a8d91;
+        outline: none;
+        font-weight: 600;
+    }
+    .tab.active {
+        color: #2f415e;
+        border-bottom: 3px solid #34d399;
+    }
+    .checklist {
+        list-style: none;
+        padding: 0; 
+        margin-bottom: 30px;
+    }
+    .checklist li {
+        font-size: 16px;
+        color: #2f415e;
+        margin: 15px 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .checkmark {
+        background-color: #34d399; 
+        color: white;            
+        border-radius: 50%;      
+        width: 24px;             
+        height: 24px;            
+        display: flex;           
+        align-items: center;     
+        justify-content: center; 
+        font-size: 14px; 
+        margin-right: 15px; 
+        flex-shrink: 0; 
+    }
+    .get-started {
+        background-color: #ffffff;
+        border: 2px solid #2f415e;
+        color: #2f415e;
+        font-size: 1.1rem;
+        padding: 12px 30px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-weight: 600;
+    }
+    .get-started:hover {
+        background-color: #2f415e;
+        color: #ffffff;
+    }
+    .tab-content {
+        display: none;
+    }
+    .tab-content.active {
+        display: block;
+    }
+    .image-content {
+        display: flex;
+        justify-content: center;
+    }
+    .image-content img {
+        width: 100%; 
+        max-width: 550px;
+        height: auto; 
+        object-fit: cover;
+    }
+    
+    /* About Section */
+    .about-section {
+        padding: 60px 20px;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 40px;
+        max-width: 1200px;
+        width: 100%;
+        align-items: center;
+    }
+    .image-section img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+    .image-section img:hover{
+        transform: scale(1.02);
+    }
+    .description-section {
+        padding: 20px;
+    }
+    .description-section h2 {
+        font-size: 2.5rem;
+        margin-top: 0; 
+        margin-bottom: 25px;
+    }
+    .description-section p {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        margin-bottom: 25px;
+        color: #555;
+    }
+    .learn-more {
+        background-color: var(--primary-color);
+        color: #fff;
+        padding: 12px 30px;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-family: 'DM Serif Display', serif;
+    }
+    .learn-more:hover {
+        background-color: #bfa08e;
+    }
+
+    /* Profiles & Services Section Headers */
+    .section-header-container {
+        font-family: 'DM Serif Display', serif; 
+        letter-spacing: 0.05rem; 
+        position: relative; 
+        text-align: center;
+        padding-top: 40px;
+    }
+    
+    .section-header-title {
+        font-size: 3rem;
+        margin: 20px 0;
+        color: #333;
+    }
+
+    .section-header-container h3 {
+        font-size: 2rem;
+        margin: 10px 0 30px;
+        color: #666;
+    }
+
+    .filter-container {
+        max-width: 1200px;
+        margin: 0 auto 20px;
+        padding: 0 40px;
+        display: flex;
+        justify-content: flex-end;
+        position: relative;
+    }
+    
+    .filter-btn {
+        background-color: #D0B8A8; 
+        padding: 10px 20px; 
+        cursor: pointer; 
+        font-size: 16px; 
+        display: inline-flex; 
+        align-items: center; 
+        border-radius: 8px;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    #filterDropdown {
+        display: none; 
+        background-color: #fff; 
+        padding: 20px; 
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        width: 200px; 
+        position: absolute; 
+        top: 50px; 
+        right: 40px; 
+        z-index: 50;
+        text-align: left;
+        border: 1px solid #eee;
+    }
+    
+    #filterDropdown label { 
+        font-size: 14px; 
+        font-weight: 600;
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+    #filterDropdown select { 
+        margin-bottom: 15px; 
+        width: 100%; 
+        padding: 8px; 
+        border-radius: 5px; 
+        border: 1px solid #ddd;
+    }
+    #filterDropdown button { 
+        background-color: #D0B8A8; 
+        padding: 10px; 
+        width: 100%; 
+        cursor: pointer; 
+        border-radius: 5px; 
+        border: none; 
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Cards & Swiper */
+    .swiper {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 50px 60px !important; /* Add side padding for navigation arrows */
+        box-sizing: border-box;
+    }
+
+    .card {
+        max-width: 350px;
+        width: 100%;
+        height: 420px !important;
+        position: relative;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
         flex-direction: column;
         align-items: center;
+        box-sizing: border-box;
+        margin: 0 auto; /* Center in slide */
+    }
+
+    .card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        transform: translateY(-10px) !important;
+    }
+
+    .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 140px;
+        width: 100%;
+        background: #D0B8A8;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .card-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 20px 20px;
+        position: relative;
+        z-index: 100;
+        width: 100%;
+        box-sizing: border-box;
+        height: 100%;
+    }
+
+    .card .image {
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        padding: 4px;
+        background-color: #fff;
+        margin-top: 60px; /* Push down to overlap with bg */
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .card .image img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .name-profession {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        color: black;
         text-align: center;
+        flex-grow: 1;
+    }
+
+    .name-profession .name {
+        font-size: 24px;
+        font-weight: 700;
+        color: #333;
+    }
+    .name-profession .profession {
+        font-size: 16px;
+        font-weight: 500;
+        margin-top: 5px;
+        color: #666;
+    }
+
+    .card-btn {
+        background: #FF676D;
+        outline: none;
+        border: none;
+        color: #fff;
+        padding: 10px 30px;
+        border-radius: 25px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(255, 103, 109, 0.3);
+    }
+    
+    .card-btn.secondary {
+        background-color: #D0B8A8;
+        font-family: 'DM Serif Display', serif;
+        font-size: 18px;
+        font-weight: 400;
+        box-shadow: 0 4px 10px rgba(208, 184, 168, 0.4);
+    }
+    
+    .card-btn:hover {
+         transform: translateY(-2px);
+         box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+
+    .swiper-pagination {
+        bottom: 0 !important;
+    }
+
+    .swiper-pagination-bullet {
+        height: 8px;
+        width: 8px;
+        transition: width 0.3s;
+        border-radius: 4px;
+        background: #D0B8A8;
+        opacity: 0.5;
+    }
+    
+    .swiper-pagination-bullet-active {
+        width: 24px;
+        background: #FF676D;
+        opacity: 1;
+    }
+
+    .swiper-button-prev, .swiper-button-next {
+        color: #D0B8A8;
+        transition: all 0.3s ease;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.8);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .swiper-button-prev::after, .swiper-button-next::after {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .swiper-button-prev:hover, .swiper-button-next:hover {
+        background: #fff;
+        color: #FF676D;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Footer */
+    #footer-section {
+        background-color: rgb(53, 49, 49);
+        position: relative;
+    }
+
+    footer {
+        color: rgb(165, 160, 160);
+        font-family: 'Calistoga', cursive;
+        padding: 60px 100px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap; 
+        gap: 60px;
+        max-width: 1400px;
+        margin: 0 auto;
     }
 
     footer .feet {
-        max-width: 90%;
-        margin-bottom: 30px;
+        max-width: 400px;
+        flex: 2;
+    }
+    footer .feet h1 {
+        font-size: 40px;
+        color: white;
+        margin-bottom: 20px;
+        margin-top: 0;
+    }
+    footer .feet p {
+        font-size: 16px;
+        line-height: 1.8;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        font-weight: 400;
+    }
+    .feet .copyright p {
+        font-size: 14px;
+        opacity: 0.7;
+        margin-top: 20px;
+    }
+    footer .feet2, footer .contact {
+        flex: 1;
+        min-width: 150px;
+    }
+    footer .feet2 p, footer .contact p {
+        font-size: 24px;
+        color: white;
+        margin-top: 0;
+        margin-bottom: 25px;
     }
 
-    footer .feet2, footer .contact {
-        max-width: 100%;
-        margin-bottom: 20px;
+    footer .feet2 a {
+        text-decoration: none;
+        color: rgb(165, 160, 160);
+        font-family: 'Poppins', sans-serif;
+        display: block;
+        text-align: left;
+        margin-bottom: 12px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    footer .feet2 a:hover {
+        color: white;
+        padding-left: 5px;
     }
 
     footer .contact a {
-        margin-right: 15px;
+        text-decoration: none;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        margin-right: 10px;
+        font-size: 18px;
+        transition: all 0.3s ease;
     }
-}
+    
+    footer .contact a:hover {
+        background: #FF676D;
+        transform: translateY(-3px);
+    }
 
-.scroll-top-btn {
+    .scroll-top-btn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 40px;
+      width: 50px;
+      height: 50px;
       font-size: 24px;
-      font-weight: 900;
       background-color: #D0B8A8;
       color: white;
-      padding: 5px;
+      padding: 0;
       border: none;
       border-radius: 50%;
       cursor: pointer;
       display: none;
+      z-index: 999;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
     }
 
     .scroll-top-btn:hover {
       background-color: #333;
+      transform: translateY(-3px);
     }
 
-        .popup {
-            width: 300px;
-            height: 400px;
-            background-color: #fff;
-            border-radius: 10px;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.1);
-            text-align: center;
-            padding: 0 30px 35px;
-            color: #333;
-            visibility: hidden;
-            transition: transform 0.4s, top 0.4s;
-        }
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
 
-        .open-popup {
-            visibility: visible;
-            top: 50%;
-            transform: translate(-50%, -50%) scale(1);
-        }
+    ::-webkit-scrollbar-track {
+        background-color: #f1f1f1;
+    }
 
-        .popup p {
-            color: black;
-            position: relative;
-            left: 5px;
-        }
+    ::-webkit-scrollbar-thumb {
+        background-color: #D0B8A8;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: #bfa08e;
+    }
 
-        .popup h2 {
-            font-size: 38px;
-            font-weight: 500;
-            margin: 30px 0 10px;
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .navbar {
+            padding: 10px 20px;
         }
-
-        .popup button {
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px 0;
-            background-color: #D0B8A8;
-            color: #fff;
-            border: 0;
-            outline: none;
-            font-size: 18px;
-            border-radius: 4px;
-            cursor: pointer;
-            box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+        
+        header {
+            height: 500px; 
         }
-
-        ::-webkit-scrollbar {
-            width: 10px;
+        
+        #header h1 {
+            font-size: 48px;
         }
-
-        ::-webkit-scrollbar-track {
-            background-color: rgb(255, 255, 255);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: #D0B8A8;
-            border-radius: 10px;
-        }
-
-        #section {
-            position: relative;
-            height: 450px;
-            width: 1075px;
-            display: flex;
-            align-items: center;
-        }
-        .swiper {
-            width: 1200px;
-            margin: 20px;
-        }
-
-        .card {
-            width: 350px !important;
-            height: 400px !important;
-            position: relative;
-            background: #fff;
-            border-radius: 20px;
-            margin: 20px 20px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease,
-            box-shadow 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.6);
-            transform: scale(1.05) !important;
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            height: 40%;
-            width: 100%;
-            background: #D0B8A8;
-            border-radius: 20px 20px 0 0;
-        }
-
-        .card .card-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 30px;
-            position: relative;
-            z-index: 100;
-        }
-
-        section .card .image {
-            height: 140px;
-            width: 140px;
-            border-radius: 50%;
-            padding: 3px;
-            background-color: snow;
-        }
-
-        section .card .image img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 1px solid black;
-        }
-
-        .card .name-profession {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-            color: black;
-        }
-
-        .name-profession .name {
+        
+        #header p {
             font-size: 20px;
-            font-weight: 600;
-            margin-top: 20px;
         }
+    }
 
-        .name-profession .profession {
-            font-size: 15px;
-            font-weight: 500;
-            margin-top: 45px;
+    @media (max-width: 768px) {
+        .navbar {
+            flex-direction: column;
+            height: auto;
+            min-height: 120px; /* Accommodate stacked elements */
+            padding: 15px 20px;
         }
-
-        .card .message-button {
-            width: 50%;
-            display: flex;
-            justify-content: space-around;
-            margin-top: 45px;
+        
+        .navbar-left {
+            margin-bottom: 15px;
         }
-
-        .card .message-button {
-            background: #FF676D;
-            outline: none;
-            border: none;
-            color: #fff;
-            padding: 8px 22px;
-            border-radius: 20px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-.card .button {
+        
+        .navbar-center {
             width: 100%;
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
+            margin: 0 0 15px 0;
+            order: 2; 
         }
-.card .button button {
-            background: #FF676D;
-            outline: none;
-            border: none;
-            color: #fff;
-            padding: 8px 22px;
-            border-radius: 20px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        
+        .navbar-right {
+           width: 100%;
+           justify-content: center;
+           margin-bottom: 0;
+           order: 3;
         }
-
-.button button:hover {
-            background: #6616d0;
+        
+        .search-container {
+            max-width: 100%;
         }
 
-.swiper-pagination {
-            position: relative;
-            top: 550px !important;
-            left: 50px !important;
+        header {
+            margin-top: 180px; 
+            height: 400px;
         }
-
-.swiper-pagination-bullet {
-            height: 7px;
-            width: 26px;
-            border-radius: 25px;
-            background: #FF676D;
+        
+        #header h1 {
+            font-size: 36px;
+            top: 60px;
         }
-
-.swiper-button-prev {
-            position: relative;
-            left: -1115px;
-            top: 360px !important;
-            opacity: 0.7;
-            color: #FF676D;
-            transition: all 0.3s ease;
+        
+        #header p {
+            font-size: 16px;
+            bottom: 30px;
         }
-
-.swiper-button-prev:hover {
-            opacity: 1;
-            color: #D0B8A8;
+        
+        .content-container, .grid-container {
+            grid-template-columns: 1fr;
+            text-align: center;
         }
-.swiper-button-next {
-            position: relative;
-            right: -80px;
-            top: 360px !important;
-            opacity: 0.7;
-            color: #FF676D;
-            transition: all 0.3s ease;
+        
+        .text-content {
+            text-align: center;
         }
-
-.swiper-button-next:hover {
-            opacity: 1;
-            color: #D0B8A8;
+        
+        .tabs {
+            justify-content: center;
         }
-.how-it-works {
-    background-color: #f6f5ee;
-    padding: 40px 20px;
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-}
-.content-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    align-items: center;
-    max-width: 1200px;
-}
-.text-content {
-    text-align: left;
-}
-
-h2 {
-    font-size: 1.8rem;
-    color: #2f415e;
-    margin-bottom: 20px;
-}
-.tabs {
-    display: flex;
-    margin-bottom: 20px;
-}
-.tab {
-    padding: 10px 20px;
-    font-size: 1rem;
-    background: none;
-    border: none;
-    border-bottom: 2px solid transparent;
-    cursor: pointer;
-    color: #8a8d91;
-    outline: none;
-}
-.tab.active {
-    color: #2f415e;
-    border-bottom: 2px solid #34d399;
-}
-.checklist {
-    list-style: none;
-    margin-bottom: 20px;
-}
-.checklist li {
-    font-size: 15px;
-    color: #2f415e;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-}
-
-.checkmark {
-    background-color: green; 
-    color: white;            
-    border-radius: 50%;      
-    width: 20px;             
-    height: 20px;            
-    display: flex;           
-    align-items: center;     
-    justify-content: center; 
-    font-size: 12px; 
-    margin-right: 10px; 
-}
-.get-started {
-    background-color: #ffffff;
-    border: 2px solid #2f415e;
-    color: #2f415e;
-    font-size: 1.1rem;
-    padding: 10px 20px;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.get-started:hover {
-    background-color: #2f415e;
-    color: #ffffff;
-}
-.tab-content {
-    display: none;
-}
-.tab-content.active {
-    display: block;
-}
-.image-content {
-    display: flex;
-    justify-content: center;
-}
-.image-content img {
-    width: 543px;
-    height: 337px;
-    object-fit: cover;
-}
-.about-section {
-    padding: 50px 20px;
-    background-color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 30px;
-    max-width: 1200px;
-    width: 100%;
-    align-items: center;
-}
-.image-section img {
-    width: 500px;
-    height: 330px;
-    position: relative;
-    top: -20px;
-    background-repeat: no-repeat;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
-}
-.image-section img:hover{
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-}
-.description-section {
-    padding: 20px;
-}
-.description-section h2 {
-    font-size: 2rem;
-    margin-top: 40px;
-    margin-bottom: 20px;
-}
-.description-section p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-.learn-more {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 5px;
-}
-.learn-more:hover {
-    background-color: #0056b3;
-}
-/* Responsive Design for Smaller Screens */
-@media (max-width: 768px) {
-    .grid-container {
-        grid-template-columns: 1fr;
-        text-align: center;
+        
+        .image-section img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        footer {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        footer .feet2 a {
+            text-align: center;
+        }
+        
+        /* Swiper Fixes for Mobile */
+        .swiper {
+            padding: 20px 0 50px !important; 
+        }
+        
+        .swiper-button-prev, .swiper-button-next {
+            display: none; 
+        }
     }
-
-    .image-section img {
-        width: 100%;
-        height: auto;
-    }
-}
-
 </style>
 </head>
 <body>
 <div class="navbar">
-<div class="navbar-left">
-        <h1 style="position: relative; right: -20px; font-size: 50px;">Flatmate</h1>
-</div>
-<div class="navbar-center" style="position: relative;">
-    <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates" style="padding-right: 35px;">
-    <button id="search-button" class="icon-link search icon">
-        <i class="fas fa-search"></i>
-    </button>
-    <button id="clear-button" class="icon-link clear icon">
-        <i class="fas fa-times"></i>
-    </button>
-</div>
-
-<div class="navbar-right">
-        <button onclick="location.href='/loginpage'">Sign in</button>
-
-        <button onclick="location.href='/servicelogin'">Services</button>
-
-        <button onclick="openPopup(this)" class="icon-link profile-icon"><i class="fas fa-user 
-                fa-lg"></i></button>
-        <div class="popup" style="width: 150px; height: 120px; margin-top: 130px; margin-left: 138px;">
-        <h6 style="font-family: DM Serif Display, serif; font-size: 16px; 
-        font-weight: 600; padding: 5px; margin-top: 5px;">
-        Please Login to view and edit your profile details!</h6>
-            <button type="button" onclick="closePopup(this)"
-            style="font-family: DM Serif Display, serif;
-            font-weight: 700; font-size: 16px; width: 160px; height: 40px;
-             border-radius: 20px; position: relative; top: -40px; left: -5px;">OK</button>
+    <div class="navbar-left">
+        <h1>Flatmate</h1>
+    </div>
+    <div class="navbar-center">
+        <div class="search-container">
+            <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates">
+            <div class="search-icons-group">
+                <button id="search-button" class="icon-link search icon">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="clear-button" class="icon-link clear icon">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
         </div>
-</div>
-    <script>
-        function openPopup(button) {
-            const popup = button.nextElementSibling;
-            popup.classList.add("open-popup");
-            popup.style.display = 'block';
-        }
+    </div>
 
-        function closePopup(button) {
-            const popup = button.parentElement;
-            popup.classList.remove("open-popup");
-            popup.style.display = 'none';
-        }
-    </script>
+    <div class="navbar-right">
+        <button class="nav-link" onclick="location.href='/loginpage'">Sign in</button>
+        <button class="nav-link" onclick="location.href='/servicelogin'">Services</button>
+        
+        <div style="position: relative;">
+            <button onclick="openUserPopup(this)" class="icon-link profile-icon" style="background: none; border:none; padding:0; height:auto; width:auto;">
+                <i class="fas fa-user fa-lg" style="color: black;"></i>
+            </button>
+            <div class="user-popup">
+                <h6>Please Login to view and edit your profile details!</h6>
+                <button type="button" onclick="closeUserPopup(this)">OK</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <header id="header">
-        <h1>Welcome to Flatmate</h1>
-        <p>The perfect solution for the PG students and service providers.</p>
+    <h1>Welcome to Flatmate</h1>
+    <p>The perfect solution for the PG students and service providers.</p>
 </header>
 
-<section id="overview" class="how-it-works" style="margin-top: -122px;">
-        <div class="content-container">
-            <div class="text-content">
-                <h2>How Flatmate Works</h2>
-                <div class="tabs">
-                    <button class="tab active" onclick="showTab('rent')">Quick Profile Publish</button>
-                    <button class="tab" onclick="showTab('find')">Showcase Your Services</button>
-                </div>
-
-                <div class="tab-content rent active">
-                    <ul class="checklist">
-                        <li>
-                            <span class="checkmark"> <i class="fas fa-check"></i></span>
-                            Go to the Sign-Up page to create an account.
-                        </li>
-                        <li>
-                            <span class="checkmark"> <i class="fas fa-check"></i></span>
-                            Complete the form to make your profile visible on the site.
-                        </li>
-                        <li>
-                            <span class="checkmark"> <i class="fas fa-check"></i></span>
-                            Log in to update your profile on the homepage as needed.
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="tab-content find">
-                    <ul class="checklist">
-                        <li>
-                            <span class="checkmark"> <i class="fas fa-check"></i></span>
-                            Complete the signup form.
-                        </li>
-                        <li>
-                            <span class="checkmark"> <i class="fas fa-check"></i></span>
-                            Choose a plan to publish your business.
-                        </li>
-                        <li>
-                            <span class="checkmark"> <i class="fas fa-check"></i></span>
-                            Your services will be available to customers upon registration.
-                        </li>
-                    </ul>
-                </div>
-                <button class="get-started">Get Started</button>
+<section id="overview" class="how-it-works">
+    <div class="content-container">
+        <div class="text-content">
+            <h2>How Flatmate Works</h2>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('rent')">Quick Profile Publish</button>
+                <button class="tab" onclick="showTab('find')">Showcase Your Services</button>
             </div>
 
-            <div class="image-content">
-                <img src="/img/laptopuser.png" alt="Illustration of person working on a laptop">
+            <div class="tab-content rent active">
+                <ul class="checklist">
+                    <li>
+                        <span class="checkmark"> <i class="fas fa-check"></i></span>
+                        Go to the Sign-Up page to create an account.
+                    </li>
+                    <li>
+                        <span class="checkmark"> <i class="fas fa-check"></i></span>
+                        Complete the form to make your profile visible on the site.
+                    </li>
+                    <li>
+                        <span class="checkmark"> <i class="fas fa-check"></i></span>
+                        Log in to update your profile on the homepage as needed.
+                    </li>
+                </ul>
             </div>
+
+            <div class="tab-content find">
+                <ul class="checklist">
+                    <li>
+                        <span class="checkmark"> <i class="fas fa-check"></i></span>
+                        Complete the signup form.
+                    </li>
+                    <li>
+                        <span class="checkmark"> <i class="fas fa-check"></i></span>
+                        Choose a plan to publish your business.
+                    </li>
+                    <li>
+                        <span class="checkmark"> <i class="fas fa-check"></i></span>
+                        Your services will be available to customers upon registration.
+                    </li>
+                </ul>
+            </div>
+            <button class="get-started">Get Started</button>
         </div>
+
+        <div class="image-content">
+            <img src="/img/laptopuser.png" alt="Illustration of person working on a laptop">
+        </div>
+    </div>
 </section>
     
-<section class="about-section" style="margin-top: 40px;">
-        <div class="grid-container">
-            <!-- Left side (Image) -->
-            <div class="image-section">
-                <img src="/img/Aboutus.jpg" alt="About Us Image">
-            </div>
-    
-            <!-- Right side (Description) -->
-            <div class="description-section">
-                <h2>Why Flatmate?</h2>
-                <p>
-                    Welcome to our platform! We help students find 
-                    roommates and rooms easily. Our goal is to make 
-                    it simple for you to connect with your perfect flatmate 
-                    or find the right accommodation with just a few clicks. 
-                </p>
-                <p>
-                   We ensure that all listings are secure and 
-                   verified for your safety. Students can register 
-                   for free to search for roommates and rooms, while 
-                   service providers like PG owners and meal makers 
-                   can list their services at an affordable subscription fee. 
-                   Join us today and start your hassle-free journey to 
-                   finding your next home!
-                </p>
-                <button class="learn-more" onclick="window.location.href='https://drive.google.com/file/d/11ublwVwbwZjxBtR6AOUO6mcdZAMQ4OKi/view?usp=drive_link'">Learn More</button>
-            </div>
+<section class="about-section">
+    <div class="grid-container">
+        <!-- Left side (Image) -->
+        <div class="image-section">
+            <img src="/img/Aboutus.jpg" alt="About Us Image">
         </div>
+
+        <!-- Right side (Description) -->
+        <div class="description-section">
+            <h2>Why Flatmate?</h2>
+            <p>
+                Welcome to our platform! We help students find 
+                roommates and rooms easily. Our goal is to make 
+                it simple for you to connect with your perfect flatmate 
+                or find the right accommodation with just a few clicks. 
+            </p>
+            <p>
+               We ensure that all listings are secure and 
+               verified for your safety. Students can register 
+               for free to search for roommates and rooms, while 
+               service providers like PG owners and meal makers 
+               can list their services at an affordable subscription fee. 
+               Join us today and start your hassle-free journey to 
+               finding your next home!
+            </p>
+            <button class="learn-more" onclick="window.location.href='https://drive.google.com/file/d/11ublwVwbwZjxBtR6AOUO6mcdZAMQ4OKi/view?usp=drive_link'">Learn More</button>
+        </div>
+    </div>
 </section>
 
-<section id="profiles" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: -25px;">
-    <h1 style="position: relative; left: 690px;">Profiles</h1>
+<section id="profiles" class="section-header-container">
+    <h1 class="section-header-title">Profiles</h1>
 
-    <div style="text-align: right; margin-bottom: 20px; position: relative;"></div>
-    <button id="filterButton" style="background-color: #D0B8A8; padding: 10px; cursor: pointer; font-size: 16px; display: inline-flex; align-items: center; position:relative; left: 10px; top: -80px; border-radius: 5px;">
-        <i class="fas fa-filter" style="margin-right: 5px;"></i> Filter
-    </button>
-    
-    <div id="filterDropdown" style="display: none; background-color: #fff; padding: 10px; border: 0.5px solid #ccc; width: 140px; height: 200px; position: absolute; top: 70px; right: 1355px; z-index: 1;">
-        <label for="yearFilter" style="font-size: 16px;">Year:</label>
-        <select id="yearFilter" style="margin-bottom: 5px; width: 100%; padding: 5px; border-radius: 5px;">
-            <option value="All Years">All Years</option>
-            <option value="FE">FE</option>
-            <option value="SE">SE</option>
-            <option value="TE">TE</option>
-            <option value="BE">BE</option>
-        </select>
-        <br>
-        <label for="branchFilter" style="font-size: 16px;">Branch:</label>
-        <select id="branchFilter" style="margin-bottom: 5px; width: 100%; padding: 5px; border-radius: 5px;">
-            <option value="All Branches">All Branches</option>
-            <option value="INFT">INFT</option>
-            <option value="CMPN">CMPN</option>
-            <option value="ELEC">ELEC</option>
-            <option value="EXTC">EXTC</option>
-            <option value="ECS">ECS</option>
-        </select>
-        <br>
-        <button id="applyFilters" style="background-color: #D0B8A8; padding: 5px; margin-top: 10px; width: 100%; cursor: pointer; border-radius: 5px;">Apply Filters</button>
+    <div class="filter-container">
+        <button id="filterButton" class="filter-btn">
+            <i class="fas fa-filter" style="margin-right: 5px;"></i> Filter
+        </button>
+        
+        <div id="filterDropdown">
+            <label for="yearFilter">Year:</label>
+            <select id="yearFilter">
+                <option value="All Years">All Years</option>
+                <option value="FE">FE</option>
+                <option value="SE">SE</option>
+                <option value="TE">TE</option>
+                <option value="BE">BE</option>
+            </select>
+            <br>
+            <label for="branchFilter">Branch:</label>
+            <select id="branchFilter">
+                <option value="All Branches">All Branches</option>
+                <option value="INFT">INFT</option>
+                <option value="CMPN">CMPN</option>
+                <option value="ELEC">ELEC</option>
+                <option value="EXTC">EXTC</option>
+                <option value="ECS">ECS</option>
+            </select>
+            <br>
+            <button id="applyFilters">Apply Filters</button>
+        </div>
     </div>
 
     <div class="swiper profilesSwiper container">
         <div class="swiper-wrapper content">
-
+            <!-- Content injected by JS -->
         </div>
     </div>
     <!-- Pagination and navigation -->
@@ -859,47 +1115,47 @@ h2 {
     <div class="swiper-pagination profiles-pagination"></div>
 </section>
 
-<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
-    <h1 style="position: relative; left: 685px; top: -35px;">Services</h1>
-    <h3 style="position: relative; left: 720px; top: -20px;">Food</h3>
+<section id="services-food" class="section-header-container">
+    <h1 class="section-header-title">Services</h1>
+    <h3>Food</h3>
     <div class="swiper foodSwiper container">
         <div class="swiper-wrapper content">
-
+            <!-- Content injected by JS -->
         </div>
     </div>
-    <div class="swiper-button-next food-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
-    <div class="swiper-button-prev food-prev" style="position: relative; top: -250px !important;"></div>
+    <div class="swiper-button-next food-next"></div>
+    <div class="swiper-button-prev food-prev"></div>
     <div class="swiper-pagination food-pagination"></div>
 </section>
 
-<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
-    <h3 style="position: relative; left: 700px; top: -35px;">Laundry</h3>
+<section id="services-laundry" class="section-header-container">
+    <h3>Laundry</h3>
     <div class="swiper laundrySwiper container">
         <div class="swiper-wrapper content">
-
+             <!-- Content injected by JS -->
         </div>
     </div>
-    <div class="swiper-button-next laundry-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
-    <div class="swiper-button-prev laundry-prev" style="position: relative; top: -250px !important;"></div>
+    <div class="swiper-button-next laundry-next"></div>
+    <div class="swiper-button-prev laundry-prev"></div>
     <div class="swiper-pagination laundry-pagination"></div>
 </section>
 
-<section id="services" style="font-family: DM Serif Display, serif; letter-spacing: 0.1rem; font-size: 28px; font-weight: 400; font-style: normal; position: relative; top: 50px;">
-    <h3 style="position: relative; left: 700px; top: -35px;">Brokers</h3>
+<section id="services-brokers" class="section-header-container">
+    <h3>Brokers</h3>
     <div class="swiper brokerSwiper container">
         <div class="swiper-wrapper content">
-
+             <!-- Content injected by JS -->
         </div>
     </div>
-    <div class="swiper-button-next broker-next" style="position: relative; top: -230px !important; left: 1480px !important;"></div>
-    <div class="swiper-button-prev broker-prev" style="position: relative; top: -250px !important;"></div>
+    <div class="swiper-button-next broker-next"></div>
+    <div class="swiper-button-prev broker-prev"></div>
     <div class="swiper-pagination broker-pagination"></div>
 </section> 
 
-<section id="footer" style="position: relative; bottom: -50px;">
-<footer>
+<section id="footer-section">
+    <footer>
         <div class="feet">
-        <h1>Flatmate</h1>
+            <h1>Flatmate</h1>
             <p>
                 Introducing our innovative platform designed to help
                 students find the perfect roommates and accommodations. 
@@ -912,14 +1168,14 @@ h2 {
                 for a seamless experience.
             </p>
             <div class="copyright">
-            <p>&copy; 2025 Flatmate. All rights reserved.</p>
+                <p>&copy; 2025 Flatmate. All rights reserved.</p>
             </div>
         </div>
         <div class="feet2">
             <p>Quick links</p>
             <a href="#header">Home</a>
             <a href="#profiles">Profiles</a>
-            <a href="#services">Services</a>
+            <a href="#services-food">Services</a>
             <a href="#overview">Overview</a>
             <a href="/team">Our Team</a>
         </div>
@@ -929,15 +1185,14 @@ h2 {
             <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
             <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
         </div>
-</footer>
-<button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
+    </footer>
+    <button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
 </section>
 
 <!-- Include Swiper CSS & JS -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
-
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('/data');
@@ -969,11 +1224,25 @@ window.closePopup = function(button) {
     popup.style.display = 'none';
 }
 
+function openUserPopup(button) {
+        const popup = button.nextElementSibling;
+        popup.classList.add("open-popup");
+    }
+
+    function closeUserPopup(button) {
+        const popup = button.parentElement;
+        popup.classList.remove("open-popup");
+    }
+
 function initializeSwipers() {
     new Swiper(".profilesSwiper", {
-        slidesPerView: 3,
-        spaceBetween: 40,
-        slidesPerGroup: 3,
+        slidesPerView: 1, /* Default to 1 (mobile) */
+        spaceBetween: 20,
+        breakpoints: {
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 40 },
+        },
+        slidesPerGroup: 1,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
@@ -987,14 +1256,18 @@ function initializeSwipers() {
     });
 
     new Swiper(".foodSwiper", {
-        slidesPerView: 3,
-        spaceBetween: 40,
-        slidesPerGroup: 3,
+        slidesPerView: 1,
+        spaceBetween: 20,
+        breakpoints: {
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 40 },
+        },
+        slidesPerGroup: 1,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
-            el: ".food-pagination",
-            clickable: true,
+             el: ".food-pagination",
+             clickable: true,
         },
         navigation: {
             nextEl: ".food-next",
@@ -1003,9 +1276,13 @@ function initializeSwipers() {
     });
 
     new Swiper(".laundrySwiper", {
-        slidesPerView: 3,
-        spaceBetween: 40,
-        slidesPerGroup: 3,
+        slidesPerView: 1,
+        spaceBetween: 20,
+        breakpoints: {
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 40 },
+        },
+        slidesPerGroup: 1,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
@@ -1019,9 +1296,13 @@ function initializeSwipers() {
     });
 
     new Swiper(".brokerSwiper", {
-        slidesPerView: 3,
-        spaceBetween: 40,
-        slidesPerGroup: 3,
+        slidesPerView: 1,
+        spaceBetween: 20,
+        breakpoints: {
+            768: { slidesPerView: 2, spaceBetween: 20 },
+            1024: { slidesPerView: 3, spaceBetween: 40 },
+        },
+        slidesPerGroup: 1,
         loop: true,
         loopFillGroupWithBlank: true,
         pagination: {
@@ -1072,7 +1353,7 @@ function setupSearchAndFilter() {
         
                 if (searchQuery === '') {
                     slides.forEach(slide => {
-                        slide.style.display = 'block';
+                        slide.style.display = 'flex'; // Changed from block to flex for card layout
                     });
                     if (swiperContainer.swiper) swiperContainer.swiper.update();
                     return;
@@ -1085,7 +1366,7 @@ function setupSearchAndFilter() {
                     const type = slide.getAttribute('data-type')?.toLowerCase() || '';
         
                     if (name.includes(searchQuery) || type.includes(searchQuery)) {
-                        slide.style.display = 'block';
+                        slide.style.display = 'flex'; // Changed to flex
                         hasMatch = true;
                     } else {
                         slide.style.display = 'none';
@@ -1117,7 +1398,7 @@ function setupSearchAndFilter() {
                 const swiperContainer = document.querySelector(selector);
                 const slides = swiperContainer.querySelectorAll('.swiper-slide');
                 slides.forEach(slide => {
-                    slide.style.display = 'block';
+                    slide.style.display = 'flex'; // Changed to flex
                 });
                 if (swiperContainer.swiper) swiperContainer.swiper.update();
             });
@@ -1129,7 +1410,7 @@ function setupSearchAndFilter() {
     if (filterButton) {
         filterButton.addEventListener('click', () => {
             const dropdown = document.getElementById('filterDropdown');
-            if (dropdown.style.display === 'none') {
+            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
                 dropdown.style.display = 'block';
             } else {
                 dropdown.style.display = 'none';
@@ -1153,7 +1434,7 @@ function setupSearchAndFilter() {
                 const yearMatch = selectedYear === "All Years" || userYear === selectedYear;
                 const branchMatch = selectedBranch === "All Branches" || userBranch === selectedBranch;
     
-                card.style.display = (yearMatch && branchMatch) ? "block" : "none";
+                card.style.display = (yearMatch && branchMatch) ? "flex" : "none"; // Changed to flex
             });
     
             const profilesSwiper = document.querySelector('.profilesSwiper').swiper;
@@ -1170,7 +1451,7 @@ function setupSearchAndFilter() {
         document.getElementById('branchFilter').value = "All Branches";
     
         document.querySelectorAll('.profilesSwiper .swiper-wrapper .swiper-slide.card').forEach(card => {
-            card.style.display = "block";
+            card.style.display = "flex"; // Changed to flex
         });
     
         const profilesSwiper = document.querySelector('.profilesSwiper').swiper;
@@ -1201,17 +1482,11 @@ function setupTabs() {
     }
 
     // Initialize the tabs to show the register pages for students and service providers        
-    const rentTab = document.querySelector('button[onclick="showTab(\'rent\')"]');
-    const findTab = document.querySelector('button[onclick="showTab(\'find\')"]');
     const getStartedBtn = document.querySelector('.get-started');
-    const rentContent = document.querySelector('.tab-content.rent');
-    const findContent = document.querySelector('.tab-content.find');
 
     // Add click event to Get Started button
     if (getStartedBtn) {
         getStartedBtn.addEventListener('click', function() {
-            // Re-query active state or cache elements?
-            // The global showTab toggles 'active' class on the buttons.
             const activeRent = document.querySelector('button[onclick="showTab(\'rent\')"].active');
             const activeFind = document.querySelector('button[onclick="showTab(\'find\')"].active');
 
@@ -1238,18 +1513,18 @@ function renderProfiles(profiles) {
                     <img src="${user.profile_pic || '/img/default-profile.png'}" alt="User pic">
                 </div>
                 <div class="name-profession">
-                    <span class="name" style="font-size: 24px;">${user.fULL_name}</span>
-                    <span class="profession" style="font-weight: 800; font-size: 20px;">${user.year}-${user.branch}</span>
+                    <span class="name">${user.fULL_name}</span>
+                    <span class="profession">${user.year}-${user.branch}</span>
                 </div>
-                <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 30px;">Contact Me</button>
+                <button class="card-btn secondary" onclick="openPopup(this)">Contact Me</button>
                 <div class="popup">
                     <h5>Thank You for visiting My Profile!</h5>
                     <h5>Here are my contact details:</h5>
-                    <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                        <li style="font-size: 18px;">Contact No: ${user.contact_number}</li>
-                        <li style="font-size: 18px;">Email: ${user.email}</li>
+                    <ul class="popup-list">
+                        <li>Contact No: ${user.contact_number}</li>
+                        <li>Email: ${user.email}</li>
                     </ul>
-                    <button type="button" onclick="closePopup(this)" style="margin-top: 20px;">OK</button>
+                    <button type="button" onclick="closePopup(this)">OK</button>
                 </div>
             </div>
         </div>
@@ -1269,16 +1544,16 @@ function renderServices(services, type, selector, imageName) {
                     <img src="/img/${imageName}" alt="${type}-service">
                 </div>
                 <div class="name-profession">
-                    <span class="name" style="font-size: 24px;">${service.business_Name}</span>
+                    <span class="name">${service.business_Name}</span>
                 </div>
-                <button class="message-button" onclick="openPopup(this)" style="background-color: #D0B8A8; font-family: DM Serif Display, serif; font-size: 20px; font-weight: 400; font-style: normal; margin-top: 40px;">Contact Us</button>
+                <button class="card-btn secondary service-contact-btn" onclick="openPopup(this)">Contact Us</button>
                 <div class="popup" style="margin-top: 20px;">
                     <h5>Thank you for visiting our Service!</h5>
                     <h5 style="text-align: left;">Connect with us using the details:</h5>
-                    <ul style="list-style-type: none; position: relative; text-align: left; left: -30px;">
-                        <li style="font-size: 18px;">Contact No: ${service.contact_number}</li>
-                        <li style="font-size: 18px;">Email: ${service.email}</li>
-                        <li onclick="window.location.href='${service.price_chart_link}';" style="font-size: 18px;">View Price Chart: <i class="fas fa-file file-icon" style="cursor: pointer; color: #333;"></i></li>
+                    <ul class="popup-list">
+                        <li>Contact No: ${service.contact_number}</li>
+                        <li>Email: ${service.email}</li>
+                        <li onclick="window.location.href='${service.price_chart_link}';" style="cursor: pointer;">View Price Chart: <i class="fas fa-file file-icon"></i></li>
                     </ul>
                     <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
                 </div>
@@ -1294,7 +1569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (scrollBtn) {
             window.onscroll = function () {
                 if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                    scrollBtn.style.display = 'block';
+                    scrollBtn.style.display = 'flex';
                 } else {
                     scrollBtn.style.display = 'none';
                 }
@@ -1324,8 +1599,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 </script>
-<script>
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="xCaWqrLm8qcQ-LK2nfnNd";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-</script>
+
 </body>
 </html>
