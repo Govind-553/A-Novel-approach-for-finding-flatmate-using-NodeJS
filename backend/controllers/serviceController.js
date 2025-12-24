@@ -72,7 +72,7 @@ export const registerServiceSession = (req, res) => {
 
 // Update Service Profile
 export const updateServiceProfile = async (req, res) => {
-    const email = req.body.email; // Body parser
+    const email = (req.body.email || req.cookies.email || '').trim(); // Body parser or cookie
     if (!email) return res.status(400).send('Email missing');
 
     const serviceType = req.body.service;
@@ -84,7 +84,6 @@ export const updateServiceProfile = async (req, res) => {
             console.error(e);
         }
     }
-
     const updateData = {
         business_Name: req.body.businessName,
         password: req.body.password,
@@ -113,8 +112,8 @@ export const updateServiceProfile = async (req, res) => {
         await Service.findOneAndUpdate({ email }, updateData);
         res.send('Profile updated successfully');
     } catch (err) {
-        console.error(err);
-        res.status(500).send('Database error');
+        console.error('[updateServiceProfile] Database error:', err);
+        res.status(500).send('Database error: ' + err.message);
     }
 };
 

@@ -155,34 +155,6 @@ button:hover {
   color: #0056b3;
 }
 
-#amenities,
-#landmark {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-#amenities .checkbox-group,
-#landmark .checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-#amenities input[type="checkbox"],
-#landmark input[type="checkbox"] {
-  margin: 0;
-  padding: 0;
-  width: auto;
-  margin-right: 10px; /* Increased space between checkbox and label */
-}
-
-#amenities label,
-#landmark label {
-  font-weight: 100;  
-  margin: 0;
-  white-space: nowrap;
-}
 
 .overlay {
     position: fixed;
@@ -338,30 +310,6 @@ button:hover {
         </div>
       </div>
       <div class="form-group">
-        <label for="foodType">Select your food type:</label> 
-        <select id="foodType" name="foodType" required>
-          <option value="Veg">Veg</option>
-          <option value="Non-Veg">Non-Veg</option>
-          <option value="Both">Both</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="amenities">Select Laundry & Room amenities required:</label>
-        <div id="amenities">
-          <label><input type="checkbox" name="amenities" value="Wash & Iron">Wash & Iron</label>
-          <label><input type="checkbox" name="amenities" value="Dry Cleaning">Dry Cleaning</label>
-          <label><input type="checkbox" name="amenities" value="Pickup & Delivery Service">Pickup & Delivery Service</label>
-          <label><input type="checkbox" name="amenities" value="Express Service">Express Service</label>
-          <label><input type="checkbox" name="amenities" value="Wi-Fi">Wi-Fi</label>
-          <label><input type="checkbox" name="amenities" value="AC">AC</label>
-          <label><input type="checkbox" name="amenities" value="Non-AC">Non-AC</label>
-          <label><input type="checkbox" name="amenities" value="Furnished">Furnished</label>
-          <label><input type="checkbox" name="amenities" value="Parking">Parking</label>
-        </div>
-      </div>
-    </div>
-    <div class="container-2">
-      <div class="form-group">
         <label for="contactNumber">Contact number:</label>
         <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
       </div>
@@ -387,31 +335,6 @@ button:hover {
       <div class="form-group">
         <label for="AboutYourself">About Yourself:</label>
         <input type="text" placeholder="Describe yourself" id="AboutYourself" name="AboutYourself" required>
-      </div>
-      <div class="form-group">
-        <label for="roomType">Select room type:</label>
-        <select id="roomType" name="roomType" required>
-          <option value="Single">Single</option>
-          <option value="Shared">Shared</option>
-          <option value="Apartment">Apartment</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="pricingValue">Select Price Range of PGs:</label>
-        <select id="pricingValue" name="pricingValue" required>
-          <option value="low">₹5000 - 8000</option>
-          <option value="medium">₹8000 - 10000</option>
-          <option value="high">₹10000 - 15000</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="landmark">Select Landmark:</label>
-        <div id="landmark">
-          <label><input type="checkbox" name="landmark" value="Near Railway Station">Near Railway Station</label>
-          <label><input type="checkbox" name="landmark" value="Near Market">Near Market</label>
-          <label><input type="checkbox" name="landmark" value="Near College">Near College</label>
-          <label><input type="checkbox" name="landmark" value="Near Metro">Near Metro</label>
-        </div>
       </div>
     </div>
     <div class="bottom-section">

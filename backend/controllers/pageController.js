@@ -13,7 +13,7 @@ export const getData = async (req, res) => {
      try {
         const [services, students] = await Promise.all([
              Service.find({}).select('business_Name contact_number email service price_chart_link'),
-             Student.find({}).select('fULL_name year branch contact_number email profile_pic')
+             Student.find({}).select('fULL_name year branch contact_number email profile_pic github linkedin instagram portfolio')
         ]);
 
         const profiles = students.map(user => {
@@ -24,6 +24,10 @@ export const getData = async (req, res) => {
                 branch: user.branch,
                 contact_number: user.contact_number,
                 email: user.email,
+                github: user.github,
+                linkedin: user.linkedin,
+                instagram: user.instagram,
+                portfolio: user.portfolio,
                 profile_pic: profilePicBase64
             };
         });

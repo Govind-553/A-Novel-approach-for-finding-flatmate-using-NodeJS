@@ -101,7 +101,6 @@ export const updateProfileImage = async (req, res) => {
 export const saveProfileFields = async (req, res) => {
     const email = req.body.email || req.cookies.email;
     if (!email) return res.status(400).send('Email missing');
-
     // Handle Image Upload
     if (req.file) {
         try {
@@ -114,7 +113,6 @@ export const saveProfileFields = async (req, res) => {
             return res.status(500).send('Error updating profile picture');
         }
     }
-
     // Handle Text Fields Update
     try {
         await Student.findOneAndUpdate({ email }, {
@@ -124,7 +122,17 @@ export const saveProfileFields = async (req, res) => {
             contact_number: req.body.contactNumber,
             year: req.body.Year,
             branch: req.body.Branch,
-            about_yourself: req.body.AboutYourself
+            branch: req.body.Branch,
+            about_yourself: req.body.AboutYourself,
+            github: req.body.github,
+            linkedin: req.body.linkedin,
+            instagram: req.body.instagram,
+            portfolio: req.body.portfolio,
+            food_type: req.body.foodType,
+            room_type: req.body.roomType,
+            amenities: req.body.amenities ? (Array.isArray(req.body.amenities) ? req.body.amenities.join(',') : req.body.amenities) : undefined,
+            pricing_value: req.body.pricingValue,
+            landmark: req.body.landmark ? (Array.isArray(req.body.landmark) ? req.body.landmark.join(',') : req.body.landmark) : undefined
         });
         res.send('Profile updated successfully.');
     } catch (error) {

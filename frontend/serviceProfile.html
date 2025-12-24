@@ -321,7 +321,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (serviceSelect.value === 'Food') {
             updatedExtraFields.food_type = document.getElementById('food_type')?.value || '';
         } else if (serviceSelect.value === 'Laundry') {
-            updatedExtraFields.laundry_service = document.getElementById('laundry_service')?.value || '';
+            updatedExtraFields.laundry_service = Array.from(document.querySelectorAll('input[name="laundry_service[]"]:checked'))
+                .map(cb => cb.value).join(',');
         } else if (serviceSelect.value === 'Broker') {
             updatedExtraFields.room_type = document.getElementById('room_type')?.value || '';
             updatedExtraFields.amenities = Array.from(document.querySelectorAll('input[name="amenities[]"]:checked'))
@@ -374,9 +375,9 @@ document.addEventListener('DOMContentLoaded', function () {
             createDropdown(extraFieldsContainer, 'food_type', 'Select Food Type you offer:', 
                 ['Veg', 'Non-Veg', 'All → Veg, Non-Veg, Jain meal, Chinese'], existingData.food_type);
         } else if (serviceType === 'Laundry') {
-            createDropdown(extraFieldsContainer, 'laundry_service', 'Select Laundry Services you offer:', 
+            createCheckboxGroup(extraFieldsContainer, 'laundry_service', 'Select Laundry Services you offer:', 
                 ['Wash & Iron', 'Dry Cleaning', 'Pickup & Delivery Service', 'Subscription Plans', 'Express Service'], 
-                existingData.laundry_service);
+                existingData.laundry_service ? existingData.laundry_service.split(',') : []);
         } else if (serviceType === 'Broker') {
             createDropdown(extraFieldsContainer, 'room_type', 'Select available Room Types:', 
                 ['Single', 'Shared', 'Apartment'], existingData.room_type);
