@@ -15,6 +15,12 @@ const StudentSchema = new mongoose.Schema({
   amenities: String,
   pricing_value: String,
   landmark: String,
+  github: String,
+  linkedin: String,
+  instagram: String,
+  portfolio: String,
+  food_type: String,
+  room_type: String,
   cluster: Number,
   match_cluster: Number,
 }, { collection: 'students' });

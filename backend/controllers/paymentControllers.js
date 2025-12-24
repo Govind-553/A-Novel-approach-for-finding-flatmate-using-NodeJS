@@ -79,10 +79,7 @@ export const completePayment = async (req, res) => {
 
         await newService.save();
 
-        res.render('success', {
-            message: 'Your payment was successful, and your business has been registered.',
-            redirectUrl: '/servicelogin' 
-        }); 
+        res.redirect('/servicelogin?registration=success');
     } catch (error) {
         console.error('Payment Completion Error:', error);
         res.status(500).send('Error completing payment');

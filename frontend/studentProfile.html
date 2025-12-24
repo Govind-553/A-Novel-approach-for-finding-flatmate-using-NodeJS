@@ -238,6 +238,85 @@ h1 {
                 <label for="AboutYourself">About Yourself:</label>
                 <input type="text" placeholder="Describe about yourself" id="AboutYourself" name="AboutYourself" required disabled>
             </div>
+            <div class="form-group">
+                <label for="github">GitHub Profile:</label>
+                <input type="url" placeholder="https://github.com/username" id="github" name="github" disabled>
+            </div>
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile:</label>
+                <input type="url" placeholder="https://linkedin.com/in/username" id="linkedin" name="linkedin" disabled>
+            </div>
+            <div class="form-group">
+                <label for="instagram">Instagram Profile:</label>
+                <input type="url" placeholder="https://instagram.com/username" id="instagram" name="instagram" disabled>
+            </div>
+            <div class="form-group">
+                <label for="portfolio">Portfolio/Website:</label>
+                <input type="url" placeholder="https://yourportfolio.com" id="portfolio" name="portfolio" disabled>
+            </div>
+            
+            <h2 style="text-align: center; margin-top: 30px; margin-bottom: 20px;">Preferences</h2>
+            
+            <div class="form-group">
+                <label for="foodType">Preferred Food Type:</label>
+                <select id="foodType" name="foodType" disabled>
+                    <option value="" disabled selected>Select Food Type</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non-Veg">Non-Veg</option>
+                    <option value="All → Veg, Non-Veg, Jain meal, Chinese">All → Veg, Non-Veg, Jain meal, Chinese</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Prefered Laundry nd Room Ameneties required:</label>
+                <div class="checkbox-container" id="amenitiesContainer">
+                    <!-- Laundry Options -->
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Wash & Iron" disabled><label>Wash & Iron</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Dry Cleaning" disabled><label>Dry Cleaning</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Pickup & Delivery Service" disabled><label>Pickup & Delivery Service</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Subscription Plans" disabled><label>Subscription Plans</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Express Service" disabled><label>Express Service</label></div>
+                    
+                    <!-- Room Options -->
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Furnished" disabled><label>Furnished</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Parking" disabled><label>Parking</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="AC" disabled><label>AC</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="Non-AC" disabled><label>Non-AC</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="WiFi" disabled><label>WiFi</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="amenities" value="TV" disabled><label>TV</label></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="roomType">Preferred Room Type:</label>
+                <select id="roomType" name="roomType" disabled>
+                    <option value="" disabled selected>Select Room Type</option>
+                     <option value="Single">Single</option>
+                    <option value="Shared">Shared</option>
+                    <option value="Apartment">Apartment</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="pricingValue">Pricing Preference:</label>
+                <select id="pricingValue" name="pricingValue" disabled>
+                    <option value="" disabled selected>Select Pricing</option>
+                    <option value="Low: ₹5000 - 8000">Low: ₹5000 - 8000</option>
+                    <option value="Medium: ₹8000 - 100000">Medium: ₹8000 - 100000</option>
+                    <option value="High: ₹10000 - 15000">High: ₹10000 - 15000</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                 <label>Preferred Landmark:</label>
+                 <div class="checkbox-container" id="landmarkContainer">
+                    <div class="checkbox-wrapper"><input type="checkbox" name="landmark" value="Near Railway Station" disabled><label>Near Railway Station</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="landmark" value="Near Market" disabled><label>Near Market</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="landmark" value="Near Metro" disabled><label>Near Metro</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="landmark" value="Near College" disabled><label>Near College</label></div>
+                    <div class="checkbox-wrapper"><input type="checkbox" name="landmark" value="Near Bus Station" disabled><label>Near Bus Station</label></div>
+                 </div>
+            </div>
             <div class="profile-button">
                 <button type="button" id="saveBtn">Save Changes</button>
             </div>
@@ -256,7 +335,27 @@ h1 {
             document.getElementById('Year').value = userData.year || '';
             document.getElementById('Branch').value = userData.branch || '';
             document.getElementById('AboutYourself').value = userData.about_yourself || '';
+            document.getElementById('github').value = userData.github || '';
+            document.getElementById('linkedin').value = userData.linkedin || '';
+            document.getElementById('instagram').value = userData.instagram || '';
+            document.getElementById('portfolio').value = userData.portfolio || '';
             document.getElementById('profilePic').value = userData.profile_pic || ''; 
+
+            // Populate preferences
+            document.getElementById('foodType').value = userData.food_type || '';
+            document.getElementById('roomType').value = userData.room_type || '';
+            document.getElementById('pricingValue').value = userData.pricing_value || '';
+            
+            // Populate checkboxes
+            const amenities = userData.amenities ? userData.amenities.split(',') : [];
+            document.querySelectorAll('input[name="amenities"]').forEach(cb => {
+                cb.checked = amenities.includes(cb.value);
+            });
+
+            const landmarks = userData.landmark ? userData.landmark.split(',') : [];
+            document.querySelectorAll('input[name="landmark"]').forEach(cb => {
+                cb.checked = landmarks.includes(cb.value);
+            });
         });
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -264,10 +363,15 @@ h1 {
     const saveBtn = document.getElementById('saveBtn');
     const profilePicInput = document.getElementById('input-file');
     const profileImageDisplay = document.getElementById('profilePic');
+    const profileForm1 = document.getElementById('profileForm1');
+    const profileForm2 = document.getElementById('profileForm2');
+
 
     // Enable editing
     editBtn.addEventListener('click', function () {
-        document.querySelectorAll('input, select').forEach((el) => el.disabled = false);
+        // Enable all inputs and selects in both forms
+        Array.from(profileForm1.elements).forEach((el) => el.disabled = false);
+        Array.from(profileForm2.elements).forEach((el) => el.disabled = false);
         profilePicInput.disabled = false;
     });
 
@@ -299,17 +403,24 @@ h1 {
     saveBtn.addEventListener('click', function () {
         const formData = new FormData();
 
-        // Append data from profileForm1
-        const profileForm1 = document.getElementById('profileForm1');
-        Array.from(profileForm1.elements).forEach((el) => {
-            if (el.name) formData.append(el.name, el.value);
-        });
+        // Helper to append form data respecting checkboxes
+        const appendFormData = (form) => {
+            Array.from(form.elements).forEach((el) => {
+                if (el.name) {
+                    if (el.type === 'checkbox' || el.type === 'radio') {
+                        if (el.checked) formData.append(el.name, el.value);
+                    } else {
+                        formData.append(el.name, el.value);
+                    }
+                }
+            });
+        };
 
-        // Append data from profileForm2
+        const profileForm1 = document.getElementById('profileForm1');
+        if (profileForm1) appendFormData(profileForm1);
+
         const profileForm2 = document.getElementById('profileForm2');
-        Array.from(profileForm2.elements).forEach((el) => {
-            if (el.name) formData.append(el.name, el.value);
-        });
+        if (profileForm2) appendFormData(profileForm2);
 
         // Send the merged data
         fetch('/saveProfile', {
@@ -322,9 +433,10 @@ h1 {
                 alert('Profile updated successfully!');
                 // Disable fields after saving
                 document.querySelectorAll('input, select').forEach((el) => el.disabled = true);
-                profilePicInput.disabled = true;
+                const profilePicInput = document.getElementById('input-file');
+                if (profilePicInput) profilePicInput.disabled = true;
             } else {
-                alert('Failed to update profile.');
+                alert('Failed to update profile: ' + data);
             }
         })
         .catch((error) => console.error(error));

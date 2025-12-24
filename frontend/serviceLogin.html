@@ -318,12 +318,42 @@ body {
     </div>
 </div>
 
+<div id="successModal" class="modal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeSuccessModal()">×</button>
+        <div style="border-radius:200px; height:100px; width:100px; background: #F8FAF5; margin:0 auto 20px auto; display: flex; align-items: center; justify-content: center;">
+            <i class="fas fa-check" style="font-size: 50px; color: #88B04B;"></i>
+        </div>
+        <h3 style="color: #88B04B;">Registration Successful!</h3>
+        <p>Your payment was successful and your business has been registered.</p>
+        <p style="margin-top: 10px;">Please login to continue.</p>
+        <p class="modal-actions">
+            <button class="btn-outline" onclick="closeSuccessModal()">Login Now</button>
+        </p>
+    </div>
+</div>
+
 <script>
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const errorModal = document.getElementById('errorModal');
+    const successModal = document.getElementById('successModal');
     const togglePassword = document.getElementById('togglePassword');
+
+    // Check for registration success param
+    window.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('registration') === 'success') {
+            successModal.style.display = 'flex';
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
+
+    function closeSuccessModal() {
+        successModal.style.display = 'none';
+    }
 
     /* ---------- Utility: Clear Form ---------- */
     function clearLoginForm() {

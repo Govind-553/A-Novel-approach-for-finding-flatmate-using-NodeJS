@@ -1515,6 +1515,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <li style="font-size: 18px;">Contact No: ${user.contact_number}</li>
                                 <li style="font-size: 18px;">Email: ${user.email}</li>
                             </ul>
+                            <div class="social-links" style="margin: 15px 0; display: flex; justify-content: center; gap: 15px;">
+                                ${user.github ? `<a href="${user.github}" target="_blank" title="GitHub" style="color: #333;"><i class="fab fa-github fa-lg"></i></a>` : ''}
+                                ${user.linkedin ? `<a href="${user.linkedin}" target="_blank" title="LinkedIn" style="color: #0077b5;"><i class="fab fa-linkedin fa-lg"></i></a>` : ''}
+                                ${user.instagram ? `<a href="${user.instagram}" target="_blank" title="Instagram" style="color: #E1306C;"><i class="fab fa-instagram fa-lg"></i></a>` : ''}
+                                ${user.portfolio ? `<a href="${user.portfolio}" target="_blank" title="Portfolio" style="color: #333;"><i class="fas fa-globe fa-lg"></i></a>` : ''}
+                            </div>
                             <button type="button" onclick="closePopup(this)">OK</button>
                         </div>
                     </div>
