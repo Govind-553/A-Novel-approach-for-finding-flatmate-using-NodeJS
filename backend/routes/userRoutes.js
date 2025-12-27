@@ -1,7 +1,8 @@
 import express from 'express';
 import { 
     loginStudent, registerStudent, updateProfileImage, saveProfileFields, 
-    getProfilePage, getServiceRecommendations, getRoommateRecommendations 
+    getProfilePage, getServiceRecommendations, getRoommateRecommendations,
+    verifyStudentEmail, resetStudentPassword
 } from '../controllers/userController.js';
 import upload from '../middleware/uploadMiddleware.js';
 
@@ -13,6 +14,9 @@ router.post('/register-user', upload.single('profileImage'), registerStudent);
 // Update image handles profilePic upload
 router.post('/updateProfileImage', upload.single('profilePic'), updateProfileImage); 
 
+// Forgot Password
+router.post('/verify-email', verifyStudentEmail);
+router.post('/reset-password', resetStudentPassword);
 
 // Use 'profileImage' for multer middleware for register-user.
 router.post('/saveProfile', upload.single('profileImage'), saveProfileFields); 

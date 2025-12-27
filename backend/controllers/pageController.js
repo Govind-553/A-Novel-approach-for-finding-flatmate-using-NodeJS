@@ -46,3 +46,4 @@ export const getRegistrationPage = (req, res) => res.sendFile(path.join(frontend
 export const getServiceHomePage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceHome.html'));
 export const getServiceLoginPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceLogin.html'));
 export const getServiceRegisterPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceRegister.html'));
+export const getForgotPasswordPage = (req, res) => res.sendFile(path.join(frontendDir, 'forgotPassword.html'));

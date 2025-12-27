@@ -2,6 +2,8 @@ import Service from '../models/Service.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { generateToken } from '../utils/tokenUtils.js';
+import { hashPassword, comparePassword } from '../utils/passwordUtils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,29 +15,52 @@ const uploadDir = path.join(frontendDir, 'public/uploads');
 export const loginService = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const service = await Service.findOne({ email: email.trim(), password: password.trim() });
+        const service = await Service.findOne({ email: email.trim() });
+        
         if (service) {
-            res.cookie('email', email, { httpOnly: true });
-            res.cookie('userType', 'provider', { httpOnly: true });
-            res.json({ success: true });
+            let isMatch = false;
+            if (service.password.startsWith('$2b$') || service.password.startsWith('$2a$')) {
+                isMatch = await comparePassword(password.trim(), service.password);
+            } else {
+                isMatch = service.password === password.trim();
+                if (isMatch) {
+                    service.password = await hashPassword(password.trim());
+                    await service.save();
+                }
+            }
+
+            if (isMatch) {
+                // Generate JWT
+                const token = generateToken(service._id, service.email, 'provider');
+                
+                res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+                res.cookie('email', email, { httpOnly: true });
+                res.cookie('userType', 'provider', { httpOnly: true });
+
+                res.json({ success: true, token });
+            } else {
+                res.json({ success: false, message: 'Invalid credentials' });
+            }
         } else {
              res.json({ success: false, message: 'Invalid credentials' });
         }
     } catch (err) {
+        console.error(err);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
 
-// Register Service (Initial step before payment)
-export const registerServiceSession = (req, res) => {
-    
+// Register Service (Session)
+export const registerServiceSession = async (req, res) => {
     try {
         const serviceType = req.body.service;
         
+        const hashedPassword = await hashPassword(req.body.password);
+
         const sessionData = {
             businessName: req.body.businessName,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
             address: req.body.address,
             contactNumber: req.body.contactNumber,
             service: serviceType,
@@ -55,7 +80,6 @@ export const registerServiceSession = (req, res) => {
         fs.writeFileSync(path.join(uploadDir, sessionFileName), JSON.stringify(sessionData, null, 2));
 
         const subscriptionPath = path.join(frontendDir, 'subscriptionPage.html');
-        // Check if file exists to handle errors gracefully? 
         if (fs.existsSync(subscriptionPath)) {
             let html = fs.readFileSync(subscriptionPath, 'utf8');
             html = html.replace('{{sessionFileName}}', sessionFileName); 
@@ -70,9 +94,33 @@ export const registerServiceSession = (req, res) => {
     }
 };
 
-// Update Service Profile
+export const verifyServiceEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const service = await Service.findOne({ email: email.trim() });
+        if (service) {
+            res.json({ success: true });
+        } else {
+            res.json({ success: false, message: 'Email not found' });
+        }
+    } catch (error) {
+         res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+export const resetServicePassword = async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const hashed = await hashPassword(newPassword.trim());
+        await Service.findOneAndUpdate({ email: email.trim() }, { password: hashed });
+        res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
 export const updateServiceProfile = async (req, res) => {
-    const email = (req.body.email || req.cookies.email || '').trim(); // Body parser or cookie
+    const email = (req.body.email || req.cookies.email || '').trim(); 
     if (!email) return res.status(400).send('Email missing');
 
     const serviceType = req.body.service;
@@ -86,19 +134,21 @@ export const updateServiceProfile = async (req, res) => {
     }
     const updateData = {
         business_Name: req.body.businessName,
-        password: req.body.password,
         contact_number: req.body.contactNumber,
         address: req.body.address,
         service: serviceType,
         price_chart_link: req.body.priceChartLink
     };
 
+    if (req.body.password && req.body.password.trim() !== '') {
+        updateData.password = await hashPassword(req.body.password.trim());
+    }
+
     if (serviceType === 'Food') {
         updateData.food_type = extraFields.food_type;
     } else if (serviceType === 'Laundry') {
         updateData.laundry_service = extraFields.laundry_service;
     } else if (serviceType === 'Broker') {
-        // Handle array fields being joined
         const join = (val) => Array.isArray(val) ? val.join(',') : val;
         
         updateData.room_type = join(extraFields.room_type);
@@ -117,7 +167,6 @@ export const updateServiceProfile = async (req, res) => {
     }
 };
 
-// Get Service Profile Data (HTML render)
 export const getServiceProfile = async (req, res) => {
     const email = req.query.email || req.cookies.email;
     if (!email) return res.status(400).send('Missing email');
@@ -145,7 +194,7 @@ export const getServiceProfile = async (req, res) => {
             address: service.address || '',
             contactNumber: service.contact_number || '',
             service: service.service || '',
-            password: service.password || '',
+            password: '', 
             priceChartLink: service.price_chart_link || '',
             extraFields: JSON.stringify(extraFields)
         };
@@ -159,7 +208,6 @@ export const getServiceProfile = async (req, res) => {
              
              let filledHtml = html;
              for (const key in data) {
-                 // Replace {{key}} string
                  const regex = new RegExp(`{{${key}}}`, 'g');
                  filledHtml = filledHtml.replace(regex, data[key]);
              }

@@ -3,6 +3,8 @@ import Service from '../models/Service.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { generateToken } from '../utils/tokenUtils.js';
+import { hashPassword, comparePassword } from '../utils/passwordUtils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,14 +15,35 @@ const frontendDir = path.join(__dirname, '../../frontend');
 export const loginStudent = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const student = await Student.findOne({ email: email.trim(), password: password.trim() });
+        const student = await Student.findOne({ email: email.trim() });
         
         if (student) {
-            res.cookie('email', email, { httpOnly: true });
-            res.cookie('userType', 'student', { httpOnly: true });
-            res.json({ success: true });
+            let isMatch = false;
+            // Handle legacy and hashed
+            if (student.password.startsWith('$2b$') || student.password.startsWith('$2a$')) {
+                isMatch = await comparePassword(password.trim(), student.password);
+            } else {
+                isMatch = student.password === password.trim();
+                if (isMatch) {
+                    student.password = await hashPassword(password.trim());
+                    await student.save();
+                }
+            }
+
+            if (isMatch) {
+                // Generate JWT
+                const token = generateToken(student._id, student.email, 'student');
+                
+                res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+                res.cookie('email', email, { httpOnly: true });
+                res.cookie('userType', 'student', { httpOnly: true });
+
+                res.json({ success: true, token });
+            } else {
+                res.json({ success: false, message: 'Invalid credentials' });
+            }
         } else {
-            res.json({ success: false, message: 'Invalid credentials' });
+             res.json({ success: false, message: 'Invalid credentials' });
         }
     } catch (err) {
         console.error('Login Error:', err);
@@ -39,13 +62,14 @@ export const registerStudent = async (req, res) => {
         let profilePicData = null;
         if (req.file) {
              profilePicData = fs.readFileSync(req.file.path);
-            
         }
+
+        const hashedPassword = await hashPassword(password);
 
         const newStudent = new Student({
             fULL_name: fullName,
             email,
-            password,
+            password: hashedPassword,
             address,
             contact_number: contactNumber,
             year: Year,
@@ -59,9 +83,14 @@ export const registerStudent = async (req, res) => {
             landmark
         });
 
-        await newStudent.save();
+        const savedStudent = await newStudent.save();
         
-        // Clean up uploaded file if we just wanted the buffer
+        // Auto-Login
+        const token = generateToken(savedStudent._id, savedStudent.email, 'student');
+        res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+        res.cookie('email', email, { httpOnly: true });
+        res.cookie('userType', 'student', { httpOnly: true });
+
         if (req.file) fs.unlink(req.file.path, () => {});
 
         res.status(200).send('Student registered successfully');
@@ -72,24 +101,46 @@ export const registerStudent = async (req, res) => {
     }
 };
 
-// Update Profile Image
+// Verify Email
+export const verifyStudentEmail = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const student = await Student.findOne({ email: email.trim() });
+        if (student) {
+            res.json({ success: true });
+        } else {
+            res.json({ success: false, message: 'Email not found' });
+        }
+    } catch (error) {
+         res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+// Reset Password
+export const resetStudentPassword = async (req, res) => {
+    try {
+        const { email, newPassword } = req.body;
+        const hashed = await hashPassword(newPassword.trim());
+        await Student.findOneAndUpdate({ email: email.trim() }, { password: hashed });
+        res.json({ success: true, message: 'Password updated successfully' });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+
 export const updateProfileImage = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ success: false, message: 'No image file provided' });
     }
 
     try {
-        
-        const email = req.body.email || req.cookies.email; // Fallback to cookie if not in body
+        const email = req.body.email || req.cookies.email;
         if(!email) return res.status(400).json({success: false, message: "Email not found"});
 
         const imageData = fs.readFileSync(req.file.path);
-
         await Student.findOneAndUpdate({ email }, { profile_pic: imageData });
-        
-        // Cleanup temp file
         fs.unlink(req.file.path, () => {});
-        
         res.send('Profile updated successfully.');
     } catch (error) {
         console.error('Update Image Error:', error);
@@ -97,11 +148,9 @@ export const updateProfileImage = async (req, res) => {
     }
 };
 
-// Save Profile (Handles both image and text updates from /saveProfile)
 export const saveProfileFields = async (req, res) => {
     const email = req.body.email || req.cookies.email;
     if (!email) return res.status(400).send('Email missing');
-    // Handle Image Upload
     if (req.file) {
         try {
             const imageData = fs.readFileSync(req.file.path);
@@ -113,15 +162,12 @@ export const saveProfileFields = async (req, res) => {
             return res.status(500).send('Error updating profile picture');
         }
     }
-    // Handle Text Fields Update
     try {
-        await Student.findOneAndUpdate({ email }, {
+        const updateData = {
             fULL_name: req.body.fullName,
-            password: req.body.password,
             address: req.body.address,
             contact_number: req.body.contactNumber,
             year: req.body.Year,
-            branch: req.body.Branch,
             branch: req.body.Branch,
             about_yourself: req.body.AboutYourself,
             github: req.body.github,
@@ -133,27 +179,28 @@ export const saveProfileFields = async (req, res) => {
             amenities: req.body.amenities ? (Array.isArray(req.body.amenities) ? req.body.amenities.join(',') : req.body.amenities) : undefined,
             pricing_value: req.body.pricingValue,
             landmark: req.body.landmark ? (Array.isArray(req.body.landmark) ? req.body.landmark.join(',') : req.body.landmark) : undefined
-        });
+        };
+        if (req.body.password && req.body.password.trim() !== '') {
+             updateData.password = await hashPassword(req.body.password.trim());
+        }
+
+        await Student.findOneAndUpdate({ email }, updateData);
         res.send('Profile updated successfully.');
     } catch (error) {
          res.status(500).send('Error updating profile: ' + error.message);
     }
 };
 
-// Serve Profile Page
 export const getProfilePage = async (req, res) => {
     const email = req.query.email || req.cookies.email;
     if (!email) return res.status(400).send('Missing email parameter');
-
     try {
         const user = await Student.findOne({ email });
         if (user) {
             const profilePagePath = path.join(frontendDir, 'studentProfile.html');
             fs.readFile(profilePagePath, 'utf8', (err, content) => {
                 if (err) return res.status(500).send('Error loading profile page');
-
                 let modifiedContent = content.replace('{{userData}}', JSON.stringify(user));
-                
                 if (user.profile_pic) {
                      const base64Image = user.profile_pic.toString('base64');
                      const src = `data:image/jpeg;base64,${base64Image}`; 
@@ -161,7 +208,6 @@ export const getProfilePage = async (req, res) => {
                 } else {
                      modifiedContent = modifiedContent.replace('{{profileImage}}', '/img/User.png');
                 }
-                
                 res.status(200).send(modifiedContent);
             });
         } else {
@@ -173,23 +219,18 @@ export const getProfilePage = async (req, res) => {
     }
 };
 
-// Recommendations
 export const getServiceRecommendations = async (req, res) => {
     const studentEmail = req.cookies.email;
     if (!studentEmail) return res.status(401).json({ success: false, message: 'Unauthorized' });
-
     try {
         const student = await Student.findOne({ email: studentEmail });
         if (!student) return res.status(500).json({ success: false, message: 'Error fetching cluster' });
-
         const cluster = student.cluster; 
-        
         const [foodServices, laundryServices, brokerServices] = await Promise.all([
              Service.find({ service: 'food', cluster }).select('business_Name email contact_number food_type price_chart_link'),
              Service.find({ service: 'laundry', cluster }).select('business_Name email contact_number laundry_service price_chart_link'),
              Service.find({ service: 'broker', cluster }).select('business_Name email contact_number room_type amenities pricing_value landmark price_chart_link')
         ]);
-
         res.json({ success: true, foodServices, laundryServices, brokerServices });
     } catch (err) {
         console.error(err);
@@ -200,15 +241,12 @@ export const getServiceRecommendations = async (req, res) => {
 export const getRoommateRecommendations = async (req, res) => {
     const email = req.cookies.email;
     if (!email) return res.status(401).json({ success: false });
-
     try {
         const student = await Student.findOne({ email });
         if (!student) return res.status(500).json({ success: false });
-
         const matchCluster = student.match_cluster;
         const roommates = await Student.find({ match_cluster: matchCluster, email: { $ne: email } })
             .select('fULL_name email contact_number food_type room_type amenities profile_pic');
-
         const formattedRoommates = roommates.map(user => {
              let profilePicData = 'default.jpg'; 
              if (user.profile_pic) {
@@ -224,7 +262,6 @@ export const getRoommateRecommendations = async (req, res) => {
                  profile_pic: profilePicData
              };
         });
-
         res.json({ success: true, roommates: formattedRoommates });
     } catch (err) {
         res.status(500).json({ success: false });
