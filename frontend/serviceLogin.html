@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Service Login</title>
     <link rel="icon" href="/img/Login.png" type="image/jpg">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Changed to Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 /* Reset */
@@ -18,28 +19,34 @@
 body { 
     min-height: 100vh;
     background: url(/img/loginpage.jpg) center / cover no-repeat fixed;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* Updated Font Family */
+    font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 16px;
+    background-color: #f0f0f0;
 }
 
 .login-container {
     background-color: snow;
     width: 100%;
-    max-width: 360px;
-    padding: 24px;
+    /* Increased Max Width */
+    max-width: 480px; 
+    /* Increased Padding */
+    padding: 40px;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     text-align: center;
 }
 
 /* Heading */
 .login-container h1 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+    /* Increased Font Size */
+    font-size: 2rem; 
+    margin-bottom: 25px;
     font-weight: 700;
+    color: #333;
     letter-spacing: -0.02em;
 }
 
@@ -47,97 +54,116 @@ body {
 .login-container label {
     display: block;
     text-align: left;
-    font-size: 0.9rem;
-    margin-bottom: 4px;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    /* Increased Font Size */
+    font-size: 1rem; 
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
 }
 
 /* Inputs */
 .login-container input {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 14px;
-    border-radius: 6px;
+    /* Increased Padding */
+    padding: 14px 16px; 
+    margin-bottom: 18px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    font-size: 0.95rem;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    font-weight: 400;
+    /* Increased Font Size */
+    font-size: 1rem; 
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
 }
 
 .login-container input:focus {
     outline: none;
-    border-color: #f39c12;
-    box-shadow: 0 0 6px rgba(243,156,18,0.5);
+    border-color: #f39c12; /* Matching register page accent */
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.15);
 }
 
 .password-container {
     position: relative;
     width: 100%;
+    margin-bottom: 5px; /* Reduced margin to group with forgot password */
 }
 
 .password-container input {
     padding-right: 44px; 
+    margin-bottom: 0;
 }
 
 #togglePassword {
     position: absolute;
-    top: 50%;
+    top: 50%; 
     right: 14px;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #888;
-    font-size: 1.05rem;
+    color: #999;
+    font-size: 1.1rem;
     line-height: 1;
-    margin-top: -8px;
+    transition: color 0.3s;
+}
+
+#togglePassword:hover {
+    color: #555;
+}
+
+.forgot-password-row {
+    text-align: right;
+    margin-bottom: 20px;
+    margin-top: 5px;
+}
+
+.forgot-link {
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.forgot-link:hover {
+    text-decoration: underline;
 }
 
 /* Button */
 .login-container button {
     width: 100%;
-    padding: 12px;
+    padding: 14px; /* Larger Button */
     border: none;
     background-color: #007bff;
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .login-container button:hover {
     background-color: #0056b3;
-    transform: scale(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
 }
 
 .auth-links {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.9rem;
-}
-
-.auth-links span {
-    font-weight: 500;
-    color: #333;
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #555;
 }
 
 .auth-links a {
-    font-weight: 500;
+    font-weight: 600;
     color: #007bff;
     text-decoration: none;
+    transition: color 0.3s;
+    margin-left: 5px;
 }
 
 .auth-links a:hover {
     text-decoration: underline;
-}
-
-.forgot-link {
-    font-size: 0.85rem;
-    opacity: 0.9;
+    color: #0056b3;
 }
 
 /* Modal Overlay */
@@ -145,7 +171,7 @@ body {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(4px);
     z-index: 9999;
     display: none; 
     align-items: center;
@@ -154,21 +180,22 @@ body {
 
 .modal-box {
     background: #ffffff;
-    width: 100%;
-    max-width: 380px;
-    padding: 32px 28px;
-    border-radius: 18px;
+    width: 90%;
+    max-width: 400px;
+    padding: 32px;
+    border-radius: 16px;
     text-align: center;
     position: relative;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
     animation: modalPop 0.35s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Animation */
 @keyframes modalPop {
     from {
         opacity: 0;
-        transform: translateY(30px) scale(0.9);
+        transform: translateY(20px) scale(0.95);
     }
     to {
         opacity: 1;
@@ -180,10 +207,12 @@ body {
     font-size: 1.6rem;
     margin-bottom: 14px;
     color: #111;
+    font-weight: 600;
 }
 
 .modal-box p {
-    font-size: 0.95rem;
+    font-size: 1rem;
+    color: #555;
 }
 
 /* Links */
@@ -200,48 +229,49 @@ body {
 /* Close Button */
 .modal-close {
     position: absolute;
-    top: 14px;
-    right: 16px;
+    top: 15px;
+    right: 20px;
     border: none;
     background: none;
-    font-size: 26px;
+    font-size: 28px;
     cursor: pointer;
-    color: #777;
+    color: #999;
+    transition: color 0.3s;
 }
 
 .modal-close:hover {
-    color: #000;
+    color: #333;
 }
 
 .modal-actions {
     display: flex;
     justify-content: center;
-    gap: 14px;
-    margin-top: 24px;
+    gap: 15px;
+    margin-top: 25px;
 }
 
 .btn-outline {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 18px;
+    padding: 12px 20px;
     border: 2px solid #007bff;
     border-radius: 8px;
     background: transparent;
     color: #007bff;
     font-weight: 600;
     letter-spacing: 0.01em;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.25s ease;
 }
 
 .btn-outline:hover {
     background-color: #007bff;
     color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 123, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 123, 255, 0.25);
 }
 
 .btn-outline:active {
@@ -250,31 +280,21 @@ body {
 }
 
 .btn-outline i {
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
-/* Small phones (≤360px) */
-@media (max-width: 360px) {
+/* Responsive adjustments */
+@media (max-width: 480px) {
     .login-container {
-        padding: 18px;
+        padding: 24px;
+        max-width: 100%;
     }
     .login-container h1 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
     }
-}
-
-/* Tablets */
-@media (min-width: 600px) {
-    .login-container {
-        max-width: 400px;
-        padding: 30px;
-    }
-}
-
-/* Laptops & Desktops */
-@media (min-width: 1024px) {
-    .login-container {
-        max-width: 420px;
+    .login-container input,
+    .login-container button {
+        padding: 12px;
     }
 }
 </style>
@@ -291,12 +311,17 @@ body {
                 <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
                 <i class="fas fa-eye" id="togglePassword"></i>
             </div>
+            
+            <!-- Forgot Password Link -->
+            <div class="forgot-password-row">
+                <a href="/forgotPassword.html?type=service" class="forgot-link">Forgot password?</a>
+            </div>
+
             <button type="submit">Login</button>
-            <br><br>
+            
+            <!-- Sign Up Link -->
             <div class="auth-links">
-                <span>Don't have an account?</span>
-                <a href="/serviceregister">Sign Up</a>
-                <a href="/forgot-password" class="forgot-link">Forgot password?</a>
+                Don't have an account? <a href="/serviceregister">Sign Up</a>
             </div>
         </form>
     </div>
@@ -353,6 +378,7 @@ body {
 
     function closeSuccessModal() {
         successModal.style.display = 'none';
+        window.location.href = '/servicelogin'; // Ensure they stay/reload here
     }
 
     /* ---------- Utility: Clear Form ---------- */

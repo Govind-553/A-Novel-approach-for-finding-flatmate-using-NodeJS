@@ -3,8 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Service from '../models/Service.js';
-import dotenv from 'dotenv';
-dotenv.config();
+import { generateToken } from '../utils/tokenUtils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,7 +62,7 @@ export const completePayment = async (req, res) => {
         const newService = new Service({
             business_Name: sessionData.businessName,
             email: sessionData.email,
-            password: sessionData.password,
+            password: sessionData.password, // Already hashed in serviceController
             address: sessionData.address,
             contact_number: sessionData.contactNumber,
             service: sessionData.service,
@@ -77,8 +76,15 @@ export const completePayment = async (req, res) => {
             landmark: sessionData.landmark || null
         });
 
-        await newService.save();
+        const savedService = await newService.save();
 
+        // Auto-Login: Generate Token and Set Cookie
+        const token = generateToken(savedService._id, savedService.email, 'provider');
+        res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+        res.cookie('email', savedService.email, { httpOnly: true });
+        res.cookie('userType', 'provider', { httpOnly: true });
+
+        // Redirect to success but now user is logged in
         res.redirect('/servicelogin?registration=success');
     } catch (error) {
         console.error('Payment Completion Error:', error);

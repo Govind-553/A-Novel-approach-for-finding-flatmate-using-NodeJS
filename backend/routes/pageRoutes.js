@@ -1,7 +1,8 @@
 import express from 'express';
 import { 
     getMainPage, getData, getTeamPage, getHomePage, getLoginPage, 
-    getRegistrationPage, getServiceHomePage, getServiceLoginPage, getServiceRegisterPage 
+    getRegistrationPage, getServiceHomePage, getServiceLoginPage, getServiceRegisterPage,
+    getForgotPasswordPage 
 } from '../controllers/pageController.js';
 
 const router = express.Router();
@@ -18,5 +19,8 @@ router.get('/registrationpage', getRegistrationPage);
 router.get('/servicehomepage', getServiceHomePage);
 router.get('/servicelogin', getServiceLoginPage);
 router.get('/serviceregister', getServiceRegisterPage);
+
+// Forgot Password
+router.get('/forgotPassword.html', getForgotPasswordPage);
 
 export default router;

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up</title>
   <link rel="icon" href="/img/signup.png" type="image/x-icon">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     * {
@@ -20,7 +20,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,60 +31,68 @@ body {
 
 .registration-container {
     background-color: snow;
-    padding: 30px;
+    padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 900px;
+    max-width: 1200px; /* Increased Max Width */
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
+    flex-direction: column;
+    gap: 25px;
 }
 
 .registration-container h1 {
     width: 100%;
     text-align: center;
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: 32px; /* Larger Heading */
+    font-weight: 700;
+    color: #333;
+}
+
+.form-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Increased gap */
+}
+
+.column-left,
+.column-right {
+    flex: 1;
+    min-width: 350px;
+}
+
+.form-group {
+    margin-bottom: 20px;
 }
 
 .registration-container label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     text-align: left;
+    font-weight: 600;
+    font-size: 16px; /* Larger Label */
+    color: #444;
 }
 
-.registration-container .container-1 input,
-.registration-container .container-2 input {
+.registration-container input,
+.registration-container select {
     width: 100%;
-    padding: 10px;
-    margin: 7px 2px;
+    padding: 14px 16px; /* Larger Padding */
+    margin: 5px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-    background-color: white;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    font-size: 16px; /* Larger Input Text */
+    font-family: 'Poppins', sans-serif;
 }
 
 .registration-container input:focus,
-.registration-container .container-2 select:focus {
-    border: 1px solid #f39c12;
-    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-}
-
-.registration-container .container-2 select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.container-1,
-.container-2 {
-    flex: 1;
-    min-width: 0;
-    padding: 10px;
+.registration-container select:focus {
+    border-color: #f39c12;
+    box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.15);
+    outline: none;
 }
 
 #extra-fields {
@@ -97,28 +105,30 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 button {
     width: 100%;
-    max-width: 300px;
+    max-width: 350px; /* Wider Button */
     display: block;
-    margin: 0 auto 10px;
-    padding: 10px;
+    margin: 0 auto 15px;
+    padding: 14px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 600;
     text-align: center;
 }
 
 button:hover {
     background-color: #0056b3;
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,123,255,0.2);
 }
 
 .registered-user {
@@ -126,14 +136,14 @@ button:hover {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    gap: 5px;
+    gap: 8px;
     margin-top: 5px;
     font-size: 16px;
 }
 
 .registered-user p {
-    font-weight: 600;
-    color: #333;
+    font-weight: 500;
+    color: #555;
 }
 
 .registered-user a {
@@ -158,12 +168,21 @@ button:hover {
 #trashLink {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 15px;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #D0B8A8;
+    color: #999;
+    transition: color 0.3s;
+    z-index: 10;
+    font-size: 18px;
 }
 
+#togglePassword:hover,
+#trashLink:hover {
+    color: #555;
+}
+
+/* Modal Styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -175,101 +194,94 @@ button:hover {
     justify-content: center;
     align-items: center;
     z-index: 999;
+    backdrop-filter: blur(2px);
 }
 
 .modal-overlay.modal-open {
     display: flex;
     opacity: 1;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.3s ease;
 }
 
 .modal {
-    position: fixed;
-    top: 50%;
-    left: 62%;
-    transform: translate(-50%, -50%);
-    width: 350px;
+    position: relative; 
+    width: 90%;
+    max-width: 450px;
     line-height: 1.6;
     background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    padding: 30px;
     z-index: 1000;
+    font-family: 'Poppins', sans-serif;
 }
 
 .modal li {
     text-align: left;
+    margin-bottom: 8px;
 }
 
 .modal h3 {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
+    font-size: 20px;
+    color: #333;
 }
 
 #closeModal {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 25px;
+    padding: 12px 25px;
     background-color: #007bff;
     color: white;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: 500;
+    width: auto;
+    min-width: 120px;
 }
 
 #closeModal:hover {
     background-color: #0056b3;
 }
 
-.checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 5px;
-}
-
-.checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-}
-
-.checkbox-wrapper label {
-    font-size: 14px;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .registration-container {
+        padding: 30px;
+    }
+    
+    .form-columns {
         flex-direction: column;
-        width: 90%;
-        height: auto;
+        gap: 0;
     }
-
-    .container-1,
-    .container-2 {
-        padding: 10px 0;
+    
+    .column-left,
+    .column-right {
         width: 100%;
-    }
-
-    .registration-container button {
-        margin-top: 10px;
+        min-width: 0; 
     }
 }
 
 @media (max-width: 480px) {
     .registration-container {
         width: 100%;
-        padding: 15px;
+        padding: 20px;
     }
 
-    .modal {
-        width: 90%;
+    .registration-container h1 {
+        font-size: 24px;
+    }
+
+    .registration-container input,
+    .registration-container select {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 16px;
     }
 }
 </style>
@@ -277,29 +289,33 @@ button:hover {
 <body>
 <div class="registration-container">
     <h1>Enter Details</h1>
-    <div class="container-1">
-        <form action="/register" method="post" id="registrationForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="businessName">Business name:</label>
-                <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="email" placeholder="Enter your Email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <div class="password-container">
-                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
-                    <i class="fas fa-eye" id="togglePassword"></i>
+    <form action="/register" method="post" id="registrationForm" enctype="multipart/form-data">
+        <div class="form-columns">
+            <!-- Left Column -->
+            <div class="column-left">
+                <div class="form-group">
+                    <label for="businessName">Business name:</label>
+                    <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" placeholder="Enter your Email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password" placeholder="Enter Your Password" required>
+                        <i class="fas fa-eye" id="togglePassword"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="address">Business Address:</label>
+                    <input type="text" placeholder="Enter your business address" id="address" name="address" required>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="address">Business Address:</label>
-                <input type="text" placeholder="Enter your business address" id="address" name="address" required>
-            </div>
-    
-            <div class="container-2">
+
+            <!-- Right Column -->
+            <div class="column-right">
                 <div class="form-group">
                     <label for="contactNumber">Contact number:</label>
                     <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required>
@@ -315,22 +331,25 @@ button:hover {
                 </div>
                 <div class="form-group">
                     <label for="priceChartLink">Price Chart Link:</label>
-                    <div class="urlContainer">
-                        <input type="url" id="priceChartLink" name="priceChartLink" disabled>
-                        <i class="fas fa-trash" id="trashLink"></i>
+                    <div class="urlContainer" id="priceChartContainer">
+                        <!-- Added pointer-events: none to input so click passes to container -->
+                        <input type="url" id="priceChartLink" name="priceChartLink" disabled style="pointer-events: none; background-color: #e9ecef; cursor: pointer;"> 
+                        <i class="fas fa-trash" id="trashLink" style="pointer-events: auto;"></i>
                     </div>
                 </div>
             </div>
-            <div class="bottom-section">
-                <button type="submit">Register</button>
-                <div class="registered-user">
-                    <p>Already registered?</p>
-                    <a href="/servicelogin">Login</a>
-                </div>
+        </div>
+
+        <div class="bottom-section">
+            <button type="submit">Register</button>
+            <div class="registered-user">
+                <p>Already registered?</p>
+                <a href="/servicelogin">Login</a>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>    
+
 <!-- Modal Structure -->
 <div id="priceChartModal" class="modal-overlay">
   <div class="modal">
@@ -368,8 +387,10 @@ button:hover {
 
 const trashButton = document.querySelector('#trashLink'); 
 const urlInput = document.querySelector('#priceChartLink'); 
+const priceChartContainer = document.getElementById('priceChartContainer');
 
-trashButton.addEventListener('click', () => {
+trashButton.addEventListener('click', (e) => {
+    e.stopPropagation(); // Prevent opening modal when clicking trash
     urlInput.value = '';
     console.log('Price chart link cleared');
 });
@@ -379,18 +400,28 @@ var priceChartLink = document.getElementById('priceChartLink');
 var modalOverlay = document.getElementById('priceChartModal');
 var closeModalBtn = document.getElementById('closeModal');
 
-priceChartLink.parentElement.addEventListener('click', function () {
+// Click on the container to trigger modal if input is disabled
+priceChartContainer.addEventListener('click', function () {
   if (priceChartLink.disabled) {
     modalOverlay.classList.add('modal-open'); 
-  } else {
-    priceChartLink.focus();
   }
 });
 
-closeModalBtn.addEventListener('click', function () {
+// Close modal on button click
+closeModalBtn.addEventListener('click', function (e) {
+  e.stopPropagation(); // Prevent bubbling
   modalOverlay.classList.remove('modal-open'); 
   priceChartLink.removeAttribute('disabled');
+  priceChartLink.style.pointerEvents = 'auto'; // Re-enable pointer events
+  priceChartLink.style.backgroundColor = 'white';
   priceChartLink.focus();
+});
+
+// Close modal on overlay click
+modalOverlay.addEventListener('click', function (e) {
+    if (e.target === modalOverlay) {
+        modalOverlay.classList.remove('modal-open');
+    }
 });
 </script>
 </body>
