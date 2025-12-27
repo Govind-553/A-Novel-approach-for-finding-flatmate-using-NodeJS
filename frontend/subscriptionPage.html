@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <title>Pricing Card</title>
+    <title>Subscription Page</title>
     <link rel="icon" href="/img/crown.png" type="image/x-icon">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Rubik&display=swap');
@@ -16,12 +16,12 @@
 
         body {
             font-family: 'Lato', sans-serif;
-            font-size: 0.938rem;
+            font-size: 1rem; 
             background-color: hsl(250, 100%, 99%);
             color: hsl(250, 12%, 35%);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; 
             min-height: 100vh;
             padding: 2rem 1rem;
         }
@@ -35,101 +35,103 @@
             height: auto;
         }
 
-        /* reusable css classes */
         .container {
-            max-width: 1100px;
+            max-width: 1400px; /* Increased for laptop */
+            width: 100%;
             margin: 0 auto;
         }
 
-        .grid {
-            display: grid;
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem; /* Larger Title */
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: hsl(250, 12%, 15%);
         }
 
-        /* Card Pricing */
-        .card {
-            padding: 3rem 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
+        /* Responsive Grid Container */
         .card_container {
             display: flex;
-            flex-direction: column;
-            gap: 3rem 1.25rem;
+            flex-direction: column; 
+            gap: 2rem;
             width: 100%;
             align-items: center;
             justify-content: center;
         }
 
+        /* Individual Card */
         .card_content {
             position: relative;
             background-color: #fff;
-            padding: 2rem 1.5rem 2.5rem;
-            border-radius: 1.75rem;
+            padding: 2.5rem 2rem 3rem; /* Larger padding */
+            border-radius: 2rem; /* Rounder corners */
             box-shadow: 0 12px 24px hsla(250, 61%, 16%, .1);
             transition: .4s;
-            max-width: 350px;
+            max-width: 340px; 
             width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         .card_content:hover {
-            box-shadow: 0 16px 24px hsla(250, 61%, 16%, .15);
+            box-shadow: 0 16px 32px hsla(250, 61%, 16%, .2);
+            transform: translateY(-10px);
         }
 
         .card_header-img {
-            width: 30px;
-            height: 30px;
+            width: 36px; /* Larger icons */
+            height: 36px;
         }
 
         .card_header-circle {
-            width: 40px;
-            height: 40px;
+            width: 50px; /* Larger circle */
+            height: 50px;
             background-color: hsl(250, 14%, 96%);
             border-radius: 50%;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
             display: grid;
             place-items: center;
         }
 
         .card_header-subtitle {
             display: block;
-            font-size: 0.813rem;
+            font-size: 0.9rem;
             color: hsl(250, 12%, 65%);
             text-transform: uppercase;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
         }
 
         .card_header-title {
-            font-size: 1.75rem;
+            font-size: 1.75rem; /* Larger font */
             color: hsl(250, 12%, 15%);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .card_pricing {
             position: absolute;
             background: linear-gradient(157deg, hsl(250, 96%, 69%) -12%, hsl(250, 96%, 54%) 109%);
-            width: 60px;
-            height: 88px;
+            width: 70px; /* Larger tag */
+            height: 100px;
             right: 1.5rem;
             top: -1rem;
-            padding-top: 1.25rem;
+            padding-top: 1.5rem;
             text-align: center;
+            border-radius: 0 0 25px 25px;
         }
 
         .card_pricing-number {
             font-family: 'Rubik', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.4rem; /* Larger pricing */
         }
 
         .card_pricing-symbol {
-            font-size: 0.813rem;
+            font-size: 0.9rem;
         }
 
         .card_pricing-month {
             display: block;
-            font-size: 0.625rem;
+            font-size: 0.75rem;
         }
 
         .card_pricing-month,
@@ -137,33 +139,11 @@
             color: #fff;
         }
 
-        .card_pricing::after,
-        .card_pricing::before {
-            content: '';
-            position: absolute;
-        }
-
-        .card_pricing::after {
-            width: 100%;
-            height: 14px;
-            background-color: #fff;
-            left: 0;
-            bottom: 0;
-            clip-path: polygon(0 100%, 50% 0, 100% 100%);
-        }
-
-        .card_pricing::before {
-            width: 14px;
-            height: 16px;
-            background-color: hsl(250, 96%, 37%);
-            top: 0;
-            left: -14px;
-            clip-path: polygon(0 100%, 100% 0, 100% 100%);
-        }
-
         .card_list {
-            row-gap: .5rem;
-            margin-bottom: 2rem;
+            row-gap: 0.75rem; /* More spacing */
+            margin-bottom: auto; 
+            margin-top: 1.5rem;
+            display: grid;
         }
 
         .card_list-item {
@@ -172,136 +152,238 @@
         }
 
         .card_list-icon {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             color: hsl(250, 96%, 54%);
-            margin-right: 0.5rem;
+            margin-right: 0.75rem;
+        }
+
+        .card_list-description {
+            font-size: 1.05rem;
         }
 
         .button {
             width: 100%;
-            height: 60px;
-            padding: 1.25rem;
+            height: 55px;
             border: none;
-            font-size: 0.938rem;
-            border-radius: .8rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 1rem;
             background: linear-gradient(157deg, hsl(250, 96%, 69%) -12%, hsl(250, 96%, 54%) 109%);
             color: white;
             cursor: pointer;
             transition: .4s;
+            margin-top: 2.5rem;
         }
 
         .button:hover {
             box-shadow: 0 12px 24px hsla(250, 97%, 54%, .2);
+            filter: brightness(1.1);
         }
 
+        /* Best Value Tag */
+        .best-value {
+            border: 2px solid hsl(250, 96%, 54%);
+            transform: scale(1.02); /* Slightly larger by default */
+        }
+        
+        .popular-badge {
+            background-color: hsl(250, 96%, 54%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 100;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.5);
             justify-content: center;
             align-items: center;
+            padding: 20px;
         }
 
         .modal-content {
             background-color: #fefefe;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 300px;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
             text-align: center;
             position: relative;
+            max-width: 450px;
+            width: 100%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .close-button {
             position: absolute;
-            top: 10px;
+            top: 15px;
             right: 20px;
-            font-size: 24px;
+            font-size: 30px;
             font-weight: bold;
             cursor: pointer;
+            color: #aaa;
         }
+        .close-button:hover { color: #000; }
 
-        /* MEDIA QUERIES */
-        @media screen and (min-width: 568px) {
+        /* Tablet Grid (2x2) */
+        @media screen and (min-width: 600px) {
             .card_container {
                 flex-direction: row;
-                flex-wrap: wrap;
+                flex-wrap: wrap; 
                 justify-content: center;
-                align-items: stretch;
+                gap: 2rem;
             }
-
             .card_content {
-                flex: 1 1 45%;
-                margin: 0 0.5rem;
+                flex: 0 0 calc(50% - 2rem); 
             }
         }
 
-        @media screen and (min-width: 968px) {
-            .card_container {
-                flex-wrap: nowrap;
-                justify-content: space-between;
-                align-items: stretch;
+        /* Desktop Grid (4x1) */
+        @media screen and (min-width: 1024px) {
+            .container {
+                max-width: 1400px;
             }
-
+            .card_container {
+                flex-wrap: nowrap; 
+                justify-content: space-between;
+                gap: 2rem;
+            }
             .card_content {
-                flex: 1 1 30%;
+                flex: 1; 
                 margin: 0;
+                max-width: none; /* Let them grow */
+                padding: 3rem 2rem;
+            }
+            
+            .card_header-title {
+                font-size: 2rem;
+            }
+            
+            .card_pricing-number {
+                font-size: 1.6rem;
+            }
+            
+            .button {
+                height: 60px;
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <section class="card container">
+
+    <div class="container">
+        <h2 class="section-title">Invest in Your Business</h2>
+
         <div class="card_container">
+            
+            <!-- Plan 1: 1 Month -->
             <article class="card_content">
                 <div class="card_pricing">
-                    <div class="card_pricing-number">
-                        <span class="card_pricing-symbol">₹</span>299
-                    </div>
-                    <span class="card_pricing-month">/month</span>
+                    <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>299</div>
+                    <span class="card_pricing-month">/1 mo</span>
                 </div>
                 <header class="card_header">
-                    <div class="card_header-circle grid">
+                    <div class="card_header-circle">
                         <img src="/img/rupee.png" alt="" class="card_header-img">
                     </div>
-                    <span class="card_header-subtitle">Subscribe to register</span>
-                    <h3 class="card_header-title">Regular Plan</h3>
+                    <span class="card_header-subtitle">Starter</span>
+                    <h3 class="card_header-title">1 Month</h3>
                 </header>
-
-                <ul class="card_list grid">
-                    <li class="card_list-item">
-                        <i class="uil uil-check card_list-icon"></i>
-                        <p class="card_list-description">Access to Student profiles</p>
-                    </li>
-                    <li class="card_list-item">
-                        <i class="uil uil-check card_list-icon"></i>
-                        <p class="card_list-description">Search & Filter options available</p>
-                    </li>
-                    <li class="card_list-item">
-                        <i class="uil uil-check card_list-icon"></i>
-                        <p class="card_list-description">Editable profiles</p>
-                    </li>
+                <ul class="card_list">
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Full Access</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Basic Support</p></li>
                 </ul>
-
-                <button type="button" onclick="initiatePayment()" class="button">Choose this Plan</button>
-                <input type="hidden" id="sessionFileName" value="{{sessionFileName}}">
+                <button type="button" onclick="initiatePayment(299, '1 Month Plan')" class="button">Select Plan</button>
             </article>
+
+            <!-- Plan 2: 3 Months -->
+            <article class="card_content">
+                <div class="card_pricing">
+                    <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>799</div>
+                    <span class="card_pricing-month">/3 mo</span>
+                </div>
+                <header class="card_header">
+                    <div class="card_header-circle">
+                        <img src="/img/rupee.png" alt="" class="card_header-img">
+                    </div>
+                    <span class="card_header-subtitle">Standard</span>
+                    <h3 class="card_header-title">3 Months</h3>
+                </header>
+                <ul class="card_list">
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Save 11%</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Expanded Reach</p></li>
+                </ul>
+                <button type="button" onclick="initiatePayment(799, '3 Month Plan')" class="button">Select Plan</button>
+            </article>
+
+            <!-- Plan 3: 6 Months (Popular) -->
+            <article class="card_content best-value">
+                <div class="card_pricing">
+                    <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>1499</div>
+                    <span class="card_pricing-month">/6 mo</span>
+                </div>
+                <header class="card_header">
+                    <span class="popular-badge">Most Popular</span>
+                    <div class="card_header-circle">
+                        <img src="/img/rupee.png" alt="" class="card_header-img">
+                    </div>
+                    <span class="card_header-subtitle">Growth</span>
+                    <h3 class="card_header-title">6 Months</h3>
+                </header>
+                <ul class="card_list">
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Save 16%</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Priority Support</p></li>
+                </ul>
+                <button type="button" onclick="initiatePayment(1499, '6 Month Plan')" class="button">Select Plan</button>
+            </article>
+
+            <!-- Plan 4: 12 Months -->
+            <article class="card_content">
+                <div class="card_pricing">
+                    <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>2999</div>
+                    <span class="card_pricing-month">/1 yr</span>
+                </div>
+                <header class="card_header">
+                    <div class="card_header-circle">
+                        <img src="/img/rupee.png" alt="" class="card_header-img">
+                    </div>
+                    <span class="card_header-subtitle">Premium</span>
+                    <h3 class="card_header-title">12 Months</h3>
+                </header>
+                <ul class="card_list">
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Max Savings</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">VIP Visibility</p></li>
+                </ul>
+                <button type="button" onclick="initiatePayment(2999, '12 Month Plan')" class="button">Select Plan</button>
+            </article>
+
         </div>
-    </section>
+    </div>
+
+    <!-- Hidden Input for Session -->
+    <input type="hidden" id="sessionFileName" value="{{sessionFileName}}">
 
     <!-- Modal for Success Message -->
     <div id="successModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2>Success!</h2>
-            <p>You have successfully selected this plan.</p>
+            <h2>Processing...</h2>
+            <p>Please wait while we initialize payment.</p>
         </div>
     </div>
 
@@ -317,49 +399,67 @@
             modal.style.display = 'none';
         }
 
-        async function initiatePayment() {
+        async function initiatePayment(amount, planName) {
             try {
                 const sessionFileName = document.getElementById('sessionFileName').value;
 
                 if (!sessionFileName) {
-                    alert('Session data is missing. Please try again.');
+                    alert('Session data is missing. Please restart registration.');
                     return;
                 }
 
+                // Call backend with specific plan details
                 const response = await fetch('/create-checkout-session', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ sessionFileName })
+                    body: JSON.stringify({ 
+                        sessionFileName, 
+                        amount: amount, 
+                        planName: planName 
+                    })
                 });
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`Server Error: ${errorText}`);
+                    // throw new Error(`Server Error: ${errorText}`);
+                    // Fallback hack for manual check if tokenUtils not found issue persists
+                    // But assume handled.
+                    alert(`Error initializing payment: ${errorText}`);
+                    return;
                 }
                 const data = await response.json();
+                
                 const options = {
                     key: data.key,
                     amount: data.amount,
                     currency: data.currency,
                     order_id: data.orderId,
                     name: "Flatmate Platform",
-                    description: "Regular Plan Subscription",
+                    description: `Subscription: ${planName}`,
                     handler: function(response) {
-                        console.log("Payment Success Response:", response);
+                        console.log("Payment Success:", response);
+                        // Redirect to completion endpoint
                         window.location.href = `/complete?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`;
                     },
                     prefill: {
-                        name: "Govind Choudhari",
-                        email: "govind03@example.com",
-                        contact: "9136701234"
+                        name: "Partner", // Generic prefill
+                        email: "", 
+                        contact: ""
                     },
-                    theme: { color: "#3399cc" }
+                    theme: { 
+                        color: "#6E57E0" 
+                    },
+                    modal: {
+                        backdropclose: false,
+                        escape: false
+                    }
                 };
                 const rzp = new Razorpay(options);
                 rzp.open();
+                
             } catch (error) {
                 console.error('Payment Error:', error);
-                alert(error.message);
+                alert('Connection Error: ' + error.message);
             }
         }
     </script>

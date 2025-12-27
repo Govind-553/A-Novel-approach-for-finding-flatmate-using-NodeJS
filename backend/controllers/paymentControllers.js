@@ -16,10 +16,20 @@ const instance = new Razorpay({
 const getUploadDir = () => path.join(__dirname, '../../frontend/public/uploads/');
 
 export const createCheckoutSession = async (req, res) => {
-    const { sessionFileName } = req.body;
+    const { sessionFileName, amount, planName } = req.body;
+    
     if (!sessionFileName) {
         return res.status(400).send('Session file name is missing');
     }
+
+    // Validate Amount (Security Check)
+    const validAmounts = [299, 799, 1499, 2999];
+    const amountInRupees = parseInt(amount);
+
+    if (!validAmounts.includes(amountInRupees)) {
+        return res.status(400).send('Invalid plan amount selected');
+    }
+
     const sessionFilePath = path.join(getUploadDir(), sessionFileName);
     
     fs.readFile(sessionFilePath, 'utf-8', async (err, data) => {
@@ -27,15 +37,21 @@ export const createCheckoutSession = async (req, res) => {
             return res.status(500).send(`Error reading session data: ${err.message}`);
         }
         const sessionData = JSON.parse(data);
+        
+        // Store selected plan in session data for future reference
+        sessionData.selectedPlan = { name: planName, amount: amountInRupees };
+
         try {
             const order = await instance.orders.create({
-                amount: 299 * 100, // ₹299
+                amount: amountInRupees * 100, // Convert to paise
                 currency: 'INR',
                 receipt: `receipt_${Date.now()}`
             });
 
+            // Update session file with order/plan info
             const orderFilePath = path.join(getUploadDir(), `${order.id}.json`);
             fs.writeFileSync(orderFilePath, JSON.stringify(sessionData));
+            
             res.json({
                 key: process.env.RAZORPAY_KEY_ID,
                 amount: order.amount,
@@ -62,7 +78,7 @@ export const completePayment = async (req, res) => {
         const newService = new Service({
             business_Name: sessionData.businessName,
             email: sessionData.email,
-            password: sessionData.password, // Already hashed in serviceController
+            password: sessionData.password, 
             address: sessionData.address,
             contact_number: sessionData.contactNumber,
             service: sessionData.service,
@@ -73,18 +89,17 @@ export const completePayment = async (req, res) => {
             amenities: sessionData.amenities || null,
             availability: sessionData.roomAvailability || null,
             pricing_value: sessionData.pricingValue || null,
-            landmark: sessionData.landmark || null
+            landmark: sessionData.landmark || null,
         });
 
         const savedService = await newService.save();
 
-        // Auto-Login: Generate Token and Set Cookie
+        // Auto-Login
         const token = generateToken(savedService._id, savedService.email, 'provider');
         res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
         res.cookie('email', savedService.email, { httpOnly: true });
         res.cookie('userType', 'provider', { httpOnly: true });
 
-        // Redirect to success but now user is logged in
         res.redirect('/servicelogin?registration=success');
     } catch (error) {
         console.error('Payment Completion Error:', error);
@@ -93,5 +108,5 @@ export const completePayment = async (req, res) => {
 };
 
 export const cancelPayment = (req, res) => {
-    res.redirect('/'); // Redirect to home page
+    res.redirect('/'); 
 };
