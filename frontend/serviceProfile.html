@@ -3,471 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Service Profile</title>
     <link rel="icon" href="/img/profile.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<style>
-    body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    width: 100%;
-    background-image: url(/img/loginpage.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --subtext-color: #666;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-.profile-class {
-    background-color: snow;
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 800px;
-    display: flex;
-    flex-wrap: wrap;
-    height: auto;
-    justify-content: space-between;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-h1 {
-    color: black;
-    text-align: center;
-    margin-top: 50px;
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            background-image: url(/img/loginpage.jpg);
+            background-size: cover;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.profile-class label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
 
-.profile-class input,
-.profile-class select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: border 0.3s ease, box-shadow 0.3s ease;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            font-weight: 700;
+        }
 
-.profile-class input:focus,
-.profile-class select:focus {
-    border: 1px solid #f39c12;
-    box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
-}
+        /* 3-Column Layout */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 Columns on Desktop */
+            gap: 25px;
+        }
 
-.password-container {
-    position: relative;
-    width: 100%;
-}
+        /* Common Column Styles */
+        .col {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-#togglePassword {
-    position: absolute;
-    top: 40%;
-    right: 10px;
-    transform: translateY(-50%);
-    color: #D0B8A8;
-    cursor: pointer;
-}
+        /* Column 1: Basic Info */
+        .col-1 {
+            align-items: center;
+            text-align: center;
+        }
 
-.profile-class button {
-    width: 48%;
-    padding: 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 10px;
-}
+        #serviceIconDisplay {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
 
-.profile-class button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
+        /* Info Item Styles (Icon + Text) */
+        .info-item {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
 
-.container-1, .container-2 {
-    flex: 1;
-    padding: 25px;
-    min-width: 300px;
-}
+        .info-item i {
+            width: 30px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-right: 10px;
+        }
 
-.container-2 label,
-.container-2 input,
-.container-2 select {
-    position: relative;
-    top: 0;
-    right: 0;
-}
+        .info-text {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            word-break: break-word;
+            text-align: left;
+            flex: 1;
+        }
+        
+        /* Edit Mode Inputs */
+        .edit-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: inherit;
+            display: none; /* Hidden in View Mode */
+            margin-bottom: 5px;
+        }
 
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    margin-top: 80px;
-    margin-left: -200px;
-}
+        /* Section Headers */
+        h3 {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
 
-#saveBtn, #editBtn {
-    width: auto;
-    min-width: 200px;
-}
+        /* Buttons */
+        .btn-container {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-/* Responsive Design */
-@media (max-width: 900px) {
-    .profile-class {
-        width: 90%;
-        flex-direction: column;
-        align-items: center;
-        padding: 15px;
-    }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-    .container-2 {
-        padding-left: 10px;
-        padding-right: 10px;
-        top: 0;
-        right: 0;
-    }
+        .btn-edit {
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-    .container-2 label,
-    .container-2 input,
-    .container-2 select {
-        top: 0;
-        right: 0;
-    }
+        .btn-save {
+            background-color: #28a745;
+            color: white;
+            display: none; /* Hidden initially */
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
 
-    .button-container {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+        /* Checkbox Grid */
+        .checkbox-container {
+             display: flex;
+             flex-direction: column;
+             gap: 8px;
+        }
+        
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .profile-grid {
+                grid-template-columns: 1fr 1fr; /* 2 Columns on Tablets */
+            }
+            .col-1 {
+                grid-column: 1 / -1; 
+                flex-direction: row;
+                justify-content: space-around;
+                text-align: left;
+            }
+            #serviceIconDisplay {
+                margin-right: 20px;
+                margin-bottom: 0;
+                 width: 100px;
+                height: 100px;
+            }
+        }
 
-    #saveBtn, #editBtn {
-        width: 100%;
-    }
-}
-.checkbox-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 5px;
-}
+        @media (max-width: 768px) {
+            .profile-grid {
+                display: flex;
+                flex-direction: column; /* Stack on Mobile */
+            }
+            .col-1 {
+                flex-direction: column;
+                text-align: center;
+            }
+            #serviceIconDisplay {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+        
+        /* Edit Mode */
+        .edit-mode .info-text,
+        .edit-mode .view-section {
+            display: none;
+        }
+        
+        .edit-mode .edit-input,
+        .edit-mode .btn-save,
+        .edit-mode .dynamic-edit-container {
+            display: block;
+            width: 100%;
+        }
+        
+        .edit-mode .btn-edit {
+            display: none;
+        }
+        
+        /* View Mode */
+         .view-mode .edit-input, 
+         .view-mode .dynamic-edit-container {
+             display: none;
+         }
 
-.checkbox-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-    width: 14px;
-    height: 14px;
-    cursor: pointer;
-}
-
-.checkbox-wrapper label {
-    font-size: 14px;
-    cursor: pointer;
-}
-</style>
+    </style>
 </head>
-<body>
-<h1>Edit Business</h1>
-<div class="profile-class">
-    <div class="container-1">
-        <form id="profileForm1">
-            <div class="form-group">
-                <label for="businessName">Business name:</label>
-                <input type="text" id="businessName" name="businessName" placeholder="Enter business name" required disabled>
-            </div>
-            <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="email" placeholder="Enter your Email" id="email" name="email" required disabled>
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <div class="password-container">
-                    <input type="password" id="password" name="password" placeholder="Enter Your Password" required disabled>
-                    <i class="fas fa-eye" id="togglePassword"></i>
+<body class="view-mode"> 
+
+    <div class="container">
+        <h1>Service Profile</h1>
+        
+        <form id="profileForm" class="profile-grid">
+            
+            <!-- COLUMN 1: Basic Biz Info -->
+            <div class="col col-1">
+                <img src="/img/service.png" id="serviceIconDisplay" alt="Service Icon">
+                
+                <div class="info-group" style="width: 100%;">
+                    <!-- Business Name -->
+                    <div class="info-item">
+                        <i class="fas fa-building"></i>
+                        <span class="info-text" id="viewBusinessName">Loading...</span>
+                        <input type="text" class="edit-input" id="editBusinessName" name="businessName" placeholder="Business Name">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <span class="info-text" id="viewEmail">Loading...</span>
+                        <input type="email" class="edit-input" id="editEmail" name="email" placeholder="Email" disabled title="Email cannot be changed">
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <span class="info-text" id="viewContact">Loading...</span>
+                        <input type="tel" class="edit-input" id="editContact" name="contactNumber" placeholder="Contact Number">
+                    </div>
+                    
+                    <!-- Address -->
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="info-text" id="viewAddress">Loading...</span>
+                        <input type="text" class="edit-input" id="editAddress" name="address" placeholder="Address">
+                    </div>
+
+                     <!-- Password (Edit Only) -->
+                     <input type="password" class="edit-input" id="editPassword" name="password" placeholder="Update Password (Optional)">
                 </div>
             </div>
-            <div class="form-group">
-                <label for="address">Business Address:</label>
-                <input type="text" placeholder="Enter your business address" id="address" name="address" required disabled>
+
+            <!-- COLUMN 2: Details -->
+            <div class="col col-2">
+                <h3>Service Details</h3>
+                
+                <!-- Service Type -->
+                <div class="info-item">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="info-text" id="viewServiceType">Service Type</span>
+                    <select class="edit-input" id="editService" name="service" onchange="updateIcon(this.value); updateDynamicFields(this.value)">
+                        <option value="Food">Food Service</option>
+                        <option value="Laundry">Laundry Service</option>
+                        <option value="Broker">Broker / PG</option>
+                    </select>
+                </div>
+                
+                 <!-- Price Chart -->
+                <div class="info-item">
+                    <i class="fas fa-tag"></i>
+                    <a href="#" target="_blank" class="info-text" id="viewPriceLink" style="color: var(--primary-color); text-decoration: underline;">View Price Chart</a>
+                    <input type="url" class="edit-input" id="editPriceLink" name="priceChartLink" placeholder="Price Chart URL">
+                </div>
+
+            </div>
+
+             <!-- COLUMN 3: Dynamic Config -->
+            <div class="col col-3">
+                <h3>Service Configuration</h3>
+                
+                <!-- View Mode: Dynamic Content -->
+                <div id="viewDynamicContent" class="view-section">
+                </div>
+
+                <!-- Edit Mode: Dynamic Fields -->
+                <div id="editDynamicContainer" class="dynamic-edit-container">
+                    <!-- JS Populates this -->
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-container">
+                <button type="button" class="btn btn-edit" onclick="toggleEditMode(true)">Edit Profile</button>
+                <button type="button" class="btn btn-save" onclick="saveProfile()">Save Changes</button>
             </div>
         </form>
     </div>
 
-    <div class="container-2">
-        <form id="profileForm2">
-            <div class="form-group">
-                <label for="contactNumber">Contact number:</label>
-                <input type="tel" placeholder="Enter your contact number" id="contactNumber" name="contactNumber" required disabled>
-            </div>
+    <script>
+        let serviceData = {};
+        let extraFields = {};
 
-            <div class="form-group">
-                <label for="service">Select Service type:</label>
-                <select id="service" name="service" required disabled>
-                    <option value="" disabled selected>Select Service</option>
-                    <option value="Food">Food</option>
-                    <option value="Laundry">Laundry</option>
-                    <option value="Broker">Broker</option>
-                </select>
-                <div id="extra-fields"></div>
-            </div>
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                // Parse backend data
+                serviceData = {
+                    business_Name: '{{businessName}}',
+                    email: '{{email}}',
+                    contact_number: '{{contactNumber}}',
+                    address: '{{address}}',
+                    service: '{{service}}',
+                    password: '{{password}}',
+                    price_chart_link: '{{priceChartLink}}',
+                    extraFields: '{{extraFields}}'
+                };
 
-            <div class="form-group">
-                <label for="priceChartLink">Price Chart Link:</label>
-                <input type="url" id="priceChartLink" name="priceChartLink" disabled>
-            </div>
-            <div class="button-container">
-                <button type="button" id="editBtn">Edit</button>
-                <button type="button" id="saveBtn">Save Changes</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const serviceData = {
-        business_Name: '{{businessName}}',
-        email: '{{email}}',
-        address: '{{address}}',
-        contact_number: '{{contactNumber}}',
-        service: '{{service}}',
-        password: '{{password}}',
-        price_chart_link: '{{priceChartLink}}',
-        extraFields: '{{extraFields}}' // Expecting a JSON string with relevant fields
-    };
-
-    // Log the raw extraFields value for debugging
-    console.log('Raw extraFields:', serviceData.extraFields);
-
-    // Populate the fields
-    document.getElementById('businessName').value = serviceData.business_Name || '';
-    document.getElementById('email').value = serviceData.email || '';
-    document.getElementById('address').value = serviceData.address || '';
-    document.getElementById('contactNumber').value = serviceData.contact_number || '';
-    document.getElementById('service').value = serviceData.service || '';
-    document.getElementById('password').value = serviceData.password || '';
-    document.getElementById('priceChartLink').value = serviceData.price_chart_link || '';
-
-    const editBtn = document.getElementById('editBtn');
-    const saveBtn = document.getElementById('saveBtn');
-    const profileForm1 = document.getElementById('profileForm1');
-    const profileForm2 = document.getElementById('profileForm2');
-    const serviceSelect = document.getElementById('service');
-    const extraFieldsContainer = document.getElementById('extra-fields');
-
-    // Safely parse extraFields with error handling
-    let extraFields = {};
-    if (serviceData.extraFields) {
-        try {
-            extraFields = JSON.parse(serviceData.extraFields);
-        } catch (e) {
-            console.error('Error parsing extraFields:', e);
-            console.log('Using empty object as fallback');
-            extraFields = {};
-        }
-    }
-
-    // Populate extra fields on page load based on the current service
-    populateExtraFields(serviceData.service, extraFields);
-
-    editBtn.addEventListener('click', function () {
-        console.log('Edit button clicked');
-        // Enable all fields in both forms
-        Array.from(profileForm1.elements).forEach(el => {
-            el.disabled = false;
-            console.log(`${el.name} enabled`);
-        });
-        Array.from(profileForm2.elements).forEach(el => {
-            el.disabled = false;
-            console.log(`${el.name} enabled`);
-        });
-        // Enable dynamically added fields in extra-fields
-        Array.from(extraFieldsContainer.querySelectorAll('input, select')).forEach(el => {
-            el.disabled = false;
-            console.log(`Extra field ${el.name || el.id} enabled`);
-        });
-    });
-
-    saveBtn.addEventListener('click', function () {
-        console.log('Save button clicked');
-        const formData = new FormData();
-
-        // Add fields from both forms
-        Array.from(profileForm1.elements).forEach(el => {
-            if (el.name) formData.append(el.name, el.value);
-        });
-        Array.from(profileForm2.elements).forEach(el => {
-            if (el.name && el.type !== 'checkbox') formData.append(el.name, el.value);
-        });
-
-        // Collect updated extra fields based on the current service
-        const updatedExtraFields = {};
-        if (serviceSelect.value === 'Food') {
-            updatedExtraFields.food_type = document.getElementById('food_type')?.value || '';
-        } else if (serviceSelect.value === 'Laundry') {
-            updatedExtraFields.laundry_service = Array.from(document.querySelectorAll('input[name="laundry_service[]"]:checked'))
-                .map(cb => cb.value).join(',');
-        } else if (serviceSelect.value === 'Broker') {
-            updatedExtraFields.room_type = document.getElementById('room_type')?.value || '';
-            updatedExtraFields.amenities = Array.from(document.querySelectorAll('input[name="amenities[]"]:checked'))
-                .map(cb => cb.value);
-            updatedExtraFields.pricing_value = document.getElementById('pricing_value')?.value || '';
-            updatedExtraFields.landmark = Array.from(document.querySelectorAll('input[name="landmark[]"]:checked'))
-                .map(cb => cb.value);
-            updatedExtraFields.availability = document.getElementById('availability')?.value || '';
-        }
-
-        formData.append('extra_fields', JSON.stringify(updatedExtraFields));
-
-        // Log form data for debugging
-        console.log('Form Data:', [...formData]);
-
-        // Send data to the server
-        fetch('/profile-update', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            return response.text();
-        })
-        .then(data => {
-            console.log('Server Response:', data);
-            if (data === 'Profile updated successfully') {
-                alert('Profile updated successfully!');
-                // Disable all fields after saving
-                Array.from(profileForm1.elements).forEach(el => el.disabled = true);
-                Array.from(profileForm2.elements).forEach(el => el.disabled = true);
-                Array.from(extraFieldsContainer.querySelectorAll('input, select')).forEach(el => el.disabled = true);
-            } else {
-                alert('Failed to update profile: ' + data);
+                // Parse extra fields JSON
+                if (serviceData.extraFields && serviceData.extraFields !== "undefined") {
+                     extraFields = JSON.parse(serviceData.extraFields.replace(/&quot;/g,'"'));
+                }
+            } catch (e) {
+                console.error("Error parsing serviceData", e);
+                // Mock data for UI testing if backend var fails
+                serviceData = {
+                    business_Name: "My Business",
+                    service: "Food"
+                };
             }
-        })
-        .catch(error => {
-            console.error('Fetch Error:', error);
-            alert('Error saving profile. Check the console for details.');
+
+            populateView();
+            populateForm();
+            updateIcon(serviceData.service);
+            updateDynamicFields(serviceData.service); // Setup form fields
         });
-    });
 
-    serviceSelect.addEventListener('change', function () {
-        extraFieldsContainer.innerHTML = ''; // Clear previous fields
-        populateExtraFields(serviceSelect.value, {});
-    });
-
-    function populateExtraFields(serviceType, existingData) {
-        if (serviceType === 'Food') {
-            createDropdown(extraFieldsContainer, 'food_type', 'Select Food Type you offer:', 
-                ['Veg', 'Non-Veg', 'All → Veg, Non-Veg, Jain meal, Chinese'], existingData.food_type);
-        } else if (serviceType === 'Laundry') {
-            createCheckboxGroup(extraFieldsContainer, 'laundry_service', 'Select Laundry Services you offer:', 
-                ['Wash & Iron', 'Dry Cleaning', 'Pickup & Delivery Service', 'Subscription Plans', 'Express Service'], 
-                existingData.laundry_service ? existingData.laundry_service.split(',') : []);
-        } else if (serviceType === 'Broker') {
-            createDropdown(extraFieldsContainer, 'room_type', 'Select available Room Types:', 
-                ['Single', 'Shared', 'Apartment'], existingData.room_type);
-            createCheckboxGroup(extraFieldsContainer, 'amenities', 'Select Amenities available in your PGs:', 
-                ['Furnished', 'Parking', 'AC', 'Non-AC', 'WiFi', 'TV'], existingData.amenities || []);
-            createDropdown(extraFieldsContainer, 'pricing_value', 'Select pricing value of PGs:', 
-                ['Low: ₹5000 - 8000', 'Medium: ₹8000 - 100000', 'High: ₹10000 - 15000'], existingData.pricing_value);
-            createCheckboxGroup(extraFieldsContainer, 'landmark', 'Select available PGs Landmark:', 
-                ['Near Railway Station', 'Near Market', 'Near Metro', 'Near College', 'Near Bus Station'], existingData.landmark || []);
-            createDropdown(extraFieldsContainer, 'availability', 'Select Availability of Rooms:', 
-                ['Available', 'Not Available'], existingData.availability);
+        function updateIcon(type) {
+            const img = document.getElementById('serviceIconDisplay');
+            if(type === 'Food') img.src = '/img/foodservice.jpg';
+            else if(type === 'Laundry') img.src = '/img/laundryservice.jpg';
+            else if(type === 'Broker') img.src = '/img/brokerservice.jpg';
+            else img.src = '/img/service.png';
         }
-    }
 
-    function createDropdown(container, id, label, options, selectedValue) {
-        const labelElement = document.createElement('label');
-        labelElement.htmlFor = id;
-        labelElement.textContent = label;
+        function populateView() {
+            document.getElementById('viewBusinessName').textContent = serviceData.business_Name || 'Not Set';
+            document.getElementById('viewEmail').textContent = serviceData.email || 'Not Set';
+            document.getElementById('viewContact').textContent = serviceData.contact_number || 'Not Set';
+            document.getElementById('viewAddress').textContent = serviceData.address || 'Not Set';
+            document.getElementById('viewServiceType').textContent = serviceData.service || 'Select Service';
+            
+            const pLink = document.getElementById('viewPriceLink');
+            if(serviceData.price_chart_link) {
+                pLink.href = serviceData.price_chart_link;
+                pLink.textContent = "View Price Chart";
+                pLink.style.display = 'block';
+            } else {
+                pLink.style.display = 'none';
+            }
 
-        const selectElement = document.createElement('select');
-        selectElement.id = id;
-        selectElement.name = id;
-        selectElement.required = true;
-        selectElement.disabled = true; // Initially disabled
+            // Populate Dynamic View
+            const container = document.getElementById('viewDynamicContent');
+            container.innerHTML = '';
+            
+            if(serviceData.service === 'Food') {
+                 container.innerHTML += `<div class="info-item"><i class="fas fa-utensils"></i> ${extraFields.food_type || 'Not specified'}</div>`;
+            } else if (serviceData.service === 'Laundry') {
+                 container.innerHTML += `<strong>Services:</strong><br>${(extraFields.laundry_service || '').split(',').join('<br>')}`;
+            } else if (serviceData.service === 'Broker') {
+                 container.innerHTML += `
+                    <div class="info-item"><i class="fas fa-home"></i> ${extraFields.room_type || '-'}</div>
+                    <div class="info-item"><i class="fas fa-rupee-sign"></i> ${extraFields.pricing_value || '-'}</div>
+                    <div class="info-item"><i class="fas fa-check-circle"></i> ${extraFields.availability || '-'}</div>
+                    <hr>
+                    <strong>Amenities:</strong> <small>${(extraFields.amenities || []).join(', ')}</small><br>
+                    <strong>Landmarks:</strong> <small>${(extraFields.landmark || []).join(', ')}</small>
+                 `;
+            }
+        }
 
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Please select';
-        defaultOption.disabled = true;
-        selectElement.appendChild(defaultOption);
+        function populateForm() {
+            document.getElementById('editBusinessName').value = serviceData.business_Name || '';
+            document.getElementById('editEmail').value = serviceData.email || '';
+            document.getElementById('editContact').value = serviceData.contact_number || '';
+            document.getElementById('editAddress').value = serviceData.address || '';
+            document.getElementById('editPassword').value = serviceData.password || '';
+            document.getElementById('editService').value = serviceData.service || 'Food';
+            document.getElementById('editPriceLink').value = serviceData.price_chart_link || '';
+        }
 
-        options.forEach(option => {
-            const optionElement = document.createElement('option');
-            optionElement.value = option;
-            optionElement.textContent = option;
-            if (option === selectedValue) optionElement.selected = true;
-            selectElement.appendChild(optionElement);
-        });
+        // Logic to build dynamic form fields based on Service Type
+        function updateDynamicFields(type) {
+            const container = document.getElementById('editDynamicContainer');
+            container.innerHTML = ''; // Clear
 
-        container.appendChild(labelElement);
-        container.appendChild(selectElement);
-    }
+            if (type === 'Food') {
+                createSelect(container, 'food_type', 'Food Type', ['Veg', 'Non-Veg', 'All'], extraFields.food_type);
+            } 
+            else if (type === 'Laundry') {
+                createCheckboxGroup(container, 'laundry_service', 'Services Offered', 
+                    ['Wash & Iron', 'Dry Cleaning', 'Pickup & Delivery', 'Subscription Plans'], 
+                    (extraFields.laundry_service || '').split(','));
+            } 
+            else if (type === 'Broker') {
+                createSelect(container, 'room_type', 'Room Type', ['Single', 'Shared', 'Apartment'], extraFields.room_type);
+                createSelect(container, 'pricing_value', 'Price Range', ['Low', 'Medium', 'High'], extraFields.pricing_value);
+                createSelect(container, 'availability', 'Availability', ['Available', 'Not Available'], extraFields.availability);
+                
+                createCheckboxGroup(container, 'amenities', 'Amenities', 
+                    ['WiFi', 'AC', 'TV', 'Furnished', 'Parking'], extraFields.amenities || []);
+                    
+                createCheckboxGroup(container, 'landmark', 'Landmarks', 
+                    ['Near Station', 'Near Market', 'Near College'], extraFields.landmark || []);
+            }
+        }
 
-    function createCheckboxGroup(container, id, label, options, checkedValues = []) {
-        const labelElement = document.createElement('label');
-        labelElement.textContent = label;
-        container.appendChild(labelElement);
+        // Helpers for Dynamic Form
+        function createSelect(parent, name, label, options, selected) {
+            let html = `<label>${label}</label><select class="edit-input" id="${name}" name="${name}">`;
+            options.forEach(opt => {
+                html += `<option value="${opt}" ${selected === opt ? 'selected' : ''}>${opt}</option>`;
+            });
+            html += `</select>`;
+            parent.innerHTML += html;
+        }
 
-        const checkboxContainer = document.createElement('div');
-        checkboxContainer.id = id;
-        checkboxContainer.classList.add('checkbox-container');
+        function createCheckboxGroup(parent, name, label, options, checkedList) {
+             let html = `<label><strong>${label}</strong></label><div class="checkbox-container">`;
+             options.forEach(opt => {
+                 const isChecked = checkedList.includes(opt) ? 'checked' : '';
+                 html += `<label><input type="checkbox" name="${name}" value="${opt}" ${isChecked}> ${opt}</label>`;
+             });
+             html += `</div><br>`;
+             parent.innerHTML += html;
+        }
 
-        options.forEach(option => {
-            const checkboxWrapper = document.createElement('div');
-            checkboxWrapper.classList.add('checkbox-wrapper');
 
-            const checkboxElement = document.createElement('input');
-            checkboxElement.type = 'checkbox';
-            checkboxElement.name = `${id}[]`;
-            checkboxElement.value = option;
-            checkboxElement.id = `checkbox-${option.replace(/\s+/g, '-')}`;
-            checkboxElement.disabled = true; // Initially disabled
-            if (Array.isArray(checkedValues) && checkedValues.includes(option)) checkboxElement.checked = true;
+        function toggleEditMode(enable) {
+            const body = document.body;
+            if (enable) {
+                body.classList.remove('view-mode');
+                body.classList.add('edit-mode');
+                // Re-inject dynamic form fields in case service type changed
+                 updateDynamicFields(document.getElementById('editService').value);
+            } else {
+                body.classList.remove('edit-mode');
+                body.classList.add('view-mode');
+            }
+        }
 
-            const checkboxLabel = document.createElement('label');
-            checkboxLabel.textContent = option;
-            checkboxLabel.htmlFor = `checkbox-${option.replace(/\s+/g, '-')}`;
+        async function saveProfile() {
+            const form = document.getElementById('profileForm');
+            const formData = new FormData();
 
-            checkboxWrapper.appendChild(checkboxElement);
-            checkboxWrapper.appendChild(checkboxLabel);
-            checkboxContainer.appendChild(checkboxWrapper);
-        });
-        container.appendChild(checkboxContainer);
-    }
-});
-</script> 
-        
-<script>        
-    // toggle password functionality
-        const togglePassword = document.querySelector('#togglePassword');
-        const passwordInput = document.querySelector('#password');
+            // Static Fields
+            formData.append('businessName', document.getElementById('editBusinessName').value);
+            formData.append('email', document.getElementById('editEmail').value);
+            formData.append('contactNumber', document.getElementById('editContact').value);
+            formData.append('address', document.getElementById('editAddress').value);
+            formData.append('password', document.getElementById('editPassword').value);
+            formData.append('service', document.getElementById('editService').value);
+            formData.append('priceChartLink', document.getElementById('editPriceLink').value);
 
-        togglePassword.addEventListener('click', () => {
+            // Dynamic Extra Fields Logic
+            const serviceType = document.getElementById('editService').value;
+            const updatedExtras = {};
 
-            const type = passwordInput.type === 'password' ? 'text' : 'password';
-            passwordInput.type = type;
+            if(serviceType === 'Food') {
+                updatedExtras.food_type = document.getElementById('food_type').value;
+            } else if (serviceType === 'Laundry') {
+                 updatedExtras.laundry_service = Array.from(document.querySelectorAll('input[name="laundry_service"]:checked'))
+                    .map(el => el.value).join(',');
+            } else if (serviceType === 'Broker') {
+                updatedExtras.room_type = document.getElementById('room_type').value;
+                 updatedExtras.pricing_value = document.getElementById('pricing_value').value;
+                 updatedExtras.availability = document.getElementById('availability').value;
+                 updatedExtras.amenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(el => el.value);
+                 updatedExtras.landmark = Array.from(document.querySelectorAll('input[name="landmark"]:checked')).map(el => el.value);
+            }
+            
+            formData.append('extra_fields', JSON.stringify(updatedExtras));
 
-            togglePassword.classList.toggle('fa-eye');
-            togglePassword.classList.toggle('fa-eye-slash');
-        });
-</script>
+            try {
+                const res = await fetch('/profile-update', { method: 'POST', body: formData });
+                if(res.ok) {
+                    alert('Profile updated!');
+                    location.reload();
+                } else {
+                    alert('Update failed');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error saving profile');
+            }
+        }
+    </script>
 </body>
-</html> 
+</html>

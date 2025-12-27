@@ -200,14 +200,22 @@ export const getProfilePage = async (req, res) => {
             const profilePagePath = path.join(frontendDir, 'studentProfile.html');
             fs.readFile(profilePagePath, 'utf8', (err, content) => {
                 if (err) return res.status(500).send('Error loading profile page');
-                let modifiedContent = content.replace('{{userData}}', JSON.stringify(user));
+                
+                // Convert to plain object to modify properties safely
+                const userObj = user.toObject();
+
+                // FIX: Check original Mongoose document `user.profile_pic` for buffer content
                 if (user.profile_pic) {
-                     const base64Image = user.profile_pic.toString('base64');
-                     const src = `data:image/jpeg;base64,${base64Image}`; 
-                     modifiedContent = modifiedContent.replace('{{profileImage}}', src);
+                    const base64Image = user.profile_pic.toString('base64');
+                    userObj.profile_pic = `data:image/jpeg;base64,${base64Image}`;
+                    console.log("[getProfilePage] Profile Pic processed successfully");
                 } else {
-                     modifiedContent = modifiedContent.replace('{{profileImage}}', '/img/User.png');
+                    userObj.profile_pic = null;
                 }
+
+                let modifiedContent = content.replace('{{userData}}', JSON.stringify(userObj));
+                modifiedContent = modifiedContent.replace('{{profileImage}}', userObj.profile_pic || '/img/User.png');
+                
                 res.status(200).send(modifiedContent);
             });
         } else {
