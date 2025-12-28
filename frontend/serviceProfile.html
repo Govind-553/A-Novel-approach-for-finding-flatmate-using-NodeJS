@@ -90,14 +90,17 @@
             background: #f9f9f9;
             border-radius: 8px;
             margin-bottom: 5px;
+            gap: 10px;
+            min-height: 40px;
         }
 
         .info-item i {
             width: 30px;
+            min-width: 30px;
             color: var(--primary-color);
             font-size: 1.1rem;
             text-align: center;
-            margin-right: 10px;
+            flex-shrink: 0;
         }
 
         .info-text {
@@ -106,16 +109,25 @@
             word-break: break-word;
             text-align: left;
             flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #viewPriceLink {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            max-width: 100%;
         }
         
-        /* Edit Mode Inputs */
         .edit-input {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 6px;
             font-family: inherit;
-            display: none; /* Hidden in View Mode */
+            display: none; 
             margin-bottom: 5px;
         }
 
@@ -431,10 +443,10 @@
                 createSelect(container, 'availability', 'Availability', ['Available', 'Not Available'], extraFields.availability);
                 
                 createCheckboxGroup(container, 'amenities', 'Amenities', 
-                    ['WiFi', 'AC', 'TV', 'Furnished', 'Parking'], extraFields.amenities || []);
+                    ['WiFi', 'Non-AC', 'AC', 'TV', 'Furnished', 'Parking'], extraFields.amenities || []);
                     
                 createCheckboxGroup(container, 'landmark', 'Landmarks', 
-                    ['Near Station', 'Near Market', 'Near College'], extraFields.landmark || []);
+                    ['Near Bus Station', 'Near Railway Station', 'Near Metro', 'Near Market', 'Near College'], extraFields.landmark || []);
             }
         }
 
@@ -457,7 +469,6 @@
              html += `</div><br>`;
              parent.innerHTML += html;
         }
-
 
         function toggleEditMode(enable) {
             const body = document.body;

@@ -17,33 +17,33 @@ export const loginStudent = async (req, res) => {
         const { email, password } = req.body;
         const student = await Student.findOne({ email: email.trim() });
         
-        if (student) {
-            let isMatch = false;
-            // Handle legacy and hashed
-            if (student.password.startsWith('$2b$') || student.password.startsWith('$2a$')) {
-                isMatch = await comparePassword(password.trim(), student.password);
-            } else {
-                isMatch = student.password === password.trim();
-                if (isMatch) {
-                    student.password = await hashPassword(password.trim());
-                    await student.save();
-                }
-            }
-
-            if (isMatch) {
-                // Generate JWT
-                const token = generateToken(student._id, student.email, 'student');
-                
-                res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-                res.cookie('email', email, { httpOnly: true });
-                res.cookie('userType', 'student', { httpOnly: true });
-
-                res.json({ success: true, token });
-            } else {
-                res.json({ success: false, message: 'Invalid credentials' });
-            }
+        if (!student) {
+            return res.json({ success: false, message: 'Invalid credentials' });
+        }
+        
+        let isMatch = false;
+        // Handle legacy and hashed passwords
+        if (student.password.startsWith('$2b$') || student.password.startsWith('$2a$')) {
+            isMatch = await comparePassword(password.trim(), student.password);
         } else {
-             res.json({ success: false, message: 'Invalid credentials' });
+            isMatch = student.password === password.trim();
+            if (isMatch) {
+                student.password = await hashPassword(password.trim());
+                await student.save();
+            }
+        }
+
+        if (isMatch) {
+            // Generate JWT
+            const token = generateToken(student._id, student.email, 'student');
+            
+            res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+            res.cookie('email', email, { httpOnly: true });
+            res.cookie('userType', 'student', { httpOnly: true });
+
+            res.json({ success: true, token });
+        } else {
+            res.json({ success: false, message: 'Invalid credentials' });
         }
     } catch (err) {
         console.error('Login Error:', err);
