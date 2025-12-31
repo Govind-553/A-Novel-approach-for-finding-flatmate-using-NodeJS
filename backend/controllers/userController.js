@@ -93,7 +93,7 @@ export const registerStudent = async (req, res) => {
 
         if (req.file) fs.unlink(req.file.path, () => {});
 
-        res.status(200).send('Student registered successfully');
+        res.status(200).json({ success: true, message: 'Student registered successfully' });
 
     } catch (error) {
         console.error('Registration Error:', error);
