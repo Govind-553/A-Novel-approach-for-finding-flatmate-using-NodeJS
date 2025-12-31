@@ -2,6 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Service from '../models/Service.js';
 import Student from '../models/Student.js';
+import jwt from 'jsonwebtoken';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,3 +48,17 @@ export const getServiceHomePage = (req, res) => res.sendFile(path.join(frontendD
 export const getServiceLoginPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceLogin.html'));
 export const getServiceRegisterPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceRegister.html'));
 export const getForgotPasswordPage = (req, res) => res.sendFile(path.join(frontendDir, 'forgotPassword.html'));
+
+export const checkAuthStatus = (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(200).json({ loggedIn: false });
+    }
+    
+    try {
+        jwt.verify(token, process.env.JWT_SECRET);
+        return res.status(200).json({ loggedIn: true });
+    } catch (err) {
+        return res.status(200).json({ loggedIn: false });
+    }
+};

@@ -2,7 +2,7 @@ import express from 'express';
 import { 
     getMainPage, getData, getTeamPage, getHomePage, getLoginPage, 
     getRegistrationPage, getServiceHomePage, getServiceLoginPage, getServiceRegisterPage,
-    getForgotPasswordPage 
+    getForgotPasswordPage, checkAuthStatus 
 } from '../controllers/pageController.js';
 
 const router = express.Router();
@@ -22,5 +22,8 @@ router.get('/serviceregister', getServiceRegisterPage);
 
 // Forgot Password
 router.get('/forgotPassword.html', getForgotPasswordPage);
+
+// Check Auth Status
+router.get('/check-auth', checkAuthStatus);
 
 export default router;
