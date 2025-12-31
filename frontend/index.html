@@ -22,11 +22,17 @@
         --white: #fff;
     }
 
-    body {
+    body, html {
         margin: 0;
+        padding: 0;
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 24px;
-        overflow-x: hidden;
+        font-size: 26px;
+        overflow-x: hidden; 
+        width: 100%;
+    }
+
+    html {
+        scroll-behavior: smooth;
     }
 
     /* Navbar */
@@ -67,7 +73,7 @@
         display: flex;
         align-items: center;
         width: 100%;
-        max-width: 500px; 
+        max-width: 700px; /* Increased from 500px */
     }
 
     .navbar-center input { 
@@ -149,6 +155,25 @@
     font-size: 32px;
 }
 
+.hamburger {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        z-index: 1002;
+    }
+
+    .hamburger-line {
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px 0;
+        background-color: #333;
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
     /* Header/Hero */
     header {
         width: 100%;
@@ -163,7 +188,7 @@
 
     #header h1 {
         position: absolute; 
-        left: 52%;
+        left: 50%; /* Modified from 52% */
         transform: translateX(-50%);
         top: 60px; 
         text-align: center;
@@ -180,6 +205,7 @@
         font-weight: 400;
         font-style: normal;
         padding: 0 10px;
+        box-sizing: border-box; 
     }
 
     #header p {
@@ -187,7 +213,7 @@
         font-weight: 750;
         font-family: 'DM Serif Display', serif; 
         position: absolute; 
-        left: 52%;
+        left: 50%; /* Modified from 52% */
         transform: translateX(-50%);
         bottom: 50px; 
         letter-spacing: 0.1rem;
@@ -221,22 +247,39 @@
     
     /* Popups */
     .user-popup {
-        width: 160px; 
+        width: 250px; 
         position: absolute;
-        top: 50px; 
-        right: 0;
+        top: calc(100% + 45px); /* Increased top to clear the navbar */
+        right: 0; 
+        left: auto;
+        transform: translateY(-10px);
         background-color: #fff;
         border-radius: 10px;
-        padding: 10px;
+        padding: 15px;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        display: none; 
         visibility: hidden;
+        opacity: 0;
         z-index: 1001;
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+    }
+    
+    /* Arrow for popup */
+    .user-popup::before {
+        content: "";
+        position: absolute;
+        top: -10px;
+        right: 15px; 
+        left: auto; 
+        transform: none; 
+        border-width: 0 10px 10px 10px;
+        border-style: solid;
+        border-color: transparent transparent #fff transparent;
     }
     
     .user-popup.open-popup {
-       display: block;
        visibility: visible;
+       opacity: 1;
+       transform: translateY(0);
     }
 
     .user-popup h6 {
@@ -261,21 +304,39 @@
         cursor: pointer;
     }
 
+    .profile-container {
+        position: relative;
+    }
+    
+    .profile-icon-btn {
+        background: none;
+        border: none;
+        padding: 0;
+        height: auto;
+        width: auto;
+    }
+    
+    .profile-icon i {
+        color: black;
+    }
+
     .popup {
-        width: 300px;
+        width: 85%; 
+        max-width: 320px; 
         background-color: #fff;
-        border-radius: 10px;
+        border-radius: 12px;
         position: absolute;
-        top: 0;
-        left: 50%;
+        top: 50%;
+        left: 50%; 
         transform: translate(-50%, -50%) scale(0.1);
         text-align: center;
-        padding: 20px 30px;
+        padding: 15px 20px; 
         color: #333;
         visibility: hidden;
         transition: transform 0.4s, top 0.4s;
         box-shadow: 0 5px 30px rgba(0,0,0,0.3);
         z-index: 10000;
+        word-wrap: break-word; 
     }
 
     .open-popup {
@@ -287,6 +348,34 @@
     .popup p, .popup ul {
         color: black;
         text-align: left;
+        font-size: 16px; 
+        margin: 0;
+        padding: 0;
+    }
+    
+    .popup h5 {
+        font-size: 20px; 
+        font-weight: 600;
+        margin: 10px 0;
+        color: #333;
+    }
+
+    .popup-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    .popup-list li {
+        margin-bottom: 8px;
+        font-size: 16px; /* Increased from 13px */
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #444;
+        word-break: break-all;
     }
     
     .popup h2 {
@@ -311,106 +400,145 @@
 
     /* Sections */
     .how-it-works {
-        background-color: #f6f5ee;
-        padding: 60px 20px;
+        background: linear-gradient(180deg, #fff 0%, #f6f5ee 100%); 
+        padding: 80px 20px;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         margin-top: 0;
     }
     .content-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 40px;
+        gap: 80px; 
         align-items: center;
-        max-width: 1200px;
+        max-width: 1400px; 
         width: 100%;
+        margin: 0 auto; 
     }
     .text-content {
         text-align: left;
     }
 
-    h2 {
-        font-size: 2.2rem;
-        color: #2f415e;
-        margin-bottom: 20px;
+    .how-it-works h2 {
+        font-family: 'DM Serif Display', serif;
+        font-size: 3.5rem;
+        color: #333;
+        margin-bottom: 30px;
+        position: relative;
+        display: inline-block;
     }
+
     .tabs {
-        display: flex;
-        margin-bottom: 20px;
-        flex-wrap: wrap; 
-        gap: 10px;
+        display: inline-flex;
+        background-color: #eaeaea;
+        padding: 5px;
+        border-radius: 50px;
+        gap: 0;
+        margin-bottom: 30px;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
     }
     .tab {
-        padding: 10px 20px;
+        padding: 12px 25px;
         font-size: 1rem;
-        background: none;
+        background: transparent;
         border: none;
-        border-bottom: 3px solid transparent;
         cursor: pointer;
-        color: #8a8d91;
-        outline: none;
+        color: #777;
         font-weight: 600;
+        border-radius: 40px;
+        transition: all 0.3s ease;
+        font-family: 'Poppins', sans-serif;
     }
     .tab.active {
-        color: #2f415e;
-        border-bottom: 3px solid #34d399;
+        background-color: #fff;
+        color: #333;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+    
     .checklist {
         list-style: none;
         padding: 0; 
-        margin-bottom: 30px;
+        margin-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
     .checklist li {
-        font-size: 16px;
-        color: #2f415e;
-        margin: 15px 0;
+        font-size: 1.1rem; 
+        color: #444;
+        background: #fff;
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         display: flex;
         align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.03);
+    }
+    
+    .checklist li:hover {
+        transform: translateX(10px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
     }
 
     .checkmark {
-        background-color: #34d399; 
+        background: linear-gradient(135deg, #34d399 0%, #059669 100%);
         color: white;            
         border-radius: 50%;      
-        width: 24px;             
-        height: 24px;            
+        width: 32px; 
+        height: 32px; 
         display: flex;           
         align-items: center;     
         justify-content: center; 
-        font-size: 14px; 
-        margin-right: 15px; 
+        font-size: 16px;
+        margin-right: 20px; 
         flex-shrink: 0; 
+        box-shadow: 0 4px 10px rgba(52, 211, 153, 0.3);
     }
     .get-started {
-        background-color: #ffffff;
-        border: 2px solid #2f415e;
-        color: #2f415e;
-        font-size: 1.1rem;
-        padding: 12px 30px;
+        background: linear-gradient(135deg, #D0B8A8 0%, #bca595 100%);
+        color: white;
+        border: none;
+        font-size: 1.2rem;
+        padding: 15px 40px;
         cursor: pointer;
-        border-radius: 8px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        border-radius: 50px;
+        transition: all 0.3s ease;
         font-weight: 600;
+        box-shadow: 0 10px 20px rgba(208, 184, 168, 0.4);
+        font-family: 'DM Serif Display', serif;
+        letter-spacing: 0.5px;
     }
     .get-started:hover {
-        background-color: #2f415e;
-        color: #ffffff;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(208, 184, 168, 0.5);
     }
+    
     .tab-content {
         display: none;
+        animation: fadeIn 0.5s ease-out forwards;
     }
     .tab-content.active {
         display: block;
     }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     .image-content {
         display: flex;
         justify-content: center;
+        position: relative;
     }
     .image-content img {
         width: 100%; 
-        max-width: 550px;
+        max-width: 600px;
         height: auto; 
-        object-fit: cover;
+        object-fit: contain;
+        filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
     }
     
     /* About Section */
@@ -419,26 +547,74 @@
         background-color: #fff;
         display: flex;
         justify-content: center;
-        align-items: center;
+        flex-direction: column;
+        align-items: center; 
     }
     .grid-container {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap: 40px;
-        max-width: 1200px;
+        grid-gap: 100px; 
+        max-width: 1500px; 
         width: 100%;
         align-items: center;
+        margin: 0 auto; 
     }
-    .image-section img {
+    .image-section {
         width: 100%;
         max-width: 500px;
+        perspective: 1000px; 
+    }
+
+    .flip-card {
+        width: 100%;
         height: auto;
+        cursor: pointer;
+        background-color: transparent;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: relative; 
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
         border-radius: 12px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
     }
-    .image-section img:hover{
-        transform: scale(1.02);
+
+    .flip-card-front img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        display: block;
+    }
+
+    .flip-card-back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #333; 
+        color: white;
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%; 
+        border-radius: 12px;
     }
     .description-section {
         padding: 20px;
@@ -490,13 +666,21 @@
         color: #666;
     }
 
+    .container {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 0 50px;
+        box-sizing: border-box;
+    }
+
     .filter-container {
-        max-width: 1200px;
+        max-width: 1500px;
         margin: 0 auto 20px;
-        padding: 0 40px;
+        padding: 0 50px; 
         display: flex;
         justify-content: flex-end;
         position: relative;
+        box-sizing: border-box;
     }
     
     .filter-btn {
@@ -553,19 +737,117 @@
         font-weight: bold;
     }
 
+    /* Contact Us */
+    .contact-section {
+        background-color: #f6f5ee;
+        padding: 60px 20px;
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center; 
+    }
+
+    .contact-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 100px;
+        max-width: 100%;
+        margin: 0 auto;
+        align-items: start;
+    }
+
+    .contact-form h2 {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .contact-form form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .contact-form input, .contact-form textarea {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
+    }
+
+    .contact-form textarea {
+        resize: vertical;
+        min-height: 120px;
+    }
+
+    .contact-form button {
+        background-color: #D0B8A8;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s;
+        align-self: flex-start;
+    }
+
+    .contact-form button:hover {
+        background-color: #333;
+    }
+
+    .contact-info {
+        padding-top: 20px;
+    }
+
+    .contact-info h3 {
+        font-family: 'DM Serif Display', serif;
+        font-size: 2rem;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    .contact-info p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    .contact-info a {
+        display: inline-block;
+        margin-top: 10px;
+        color: #333;
+        text-decoration: underline;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .contact-container {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+    }
+
     /* Cards & Swiper */
     .swiper {
         width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 50px 60px !important; /* Add side padding for navigation arrows */
+        max-width: 1500px;
+        margin: 0 auto !important; 
+        padding: 40px 20px 60px !important; 
+        box-sizing: border-box;
+        padding: 40px 50px 60px !important; 
         box-sizing: border-box;
     }
 
     .card {
-        max-width: 350px;
         width: 100%;
-        height: 420px !important;
+        height: 500px !important; 
         position: relative;
         background: #fff;
         border-radius: 20px;
@@ -575,12 +857,12 @@
         flex-direction: column;
         align-items: center;
         box-sizing: border-box;
-        margin: 0 auto; /* Center in slide */
+        margin: 0 auto; 
     }
 
     .card:hover {
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        transform: translateY(-10px) !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        transform: translateY(-15px) !important; 
     }
 
     .card::before {
@@ -588,7 +870,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        height: 140px;
+        height: 190px; 
         width: 100%;
         background: #D0B8A8;
         border-radius: 20px 20px 0 0;
@@ -612,7 +894,7 @@
         border-radius: 50%;
         padding: 4px;
         background-color: #fff;
-        margin-top: 60px; /* Push down to overlap with bg */
+        margin-top: 60px; 
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
@@ -627,20 +909,19 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 20px;
-        color: black;
+        margin-top: 35px; /* Increased top margin */
         text-align: center;
         flex-grow: 1;
     }
 
     .name-profession .name {
-        font-size: 24px;
-        font-weight: 700;
+        font-size: 26px; /* Increased font size */
+        font-weight: 600;
         color: #333;
     }
     .name-profession .profession {
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 18px; 
+        font-weight: 700; 
         margin-top: 5px;
         color: #666;
     }
@@ -694,25 +975,36 @@
     .swiper-button-prev, .swiper-button-next {
         color: #D0B8A8;
         transition: all 0.3s ease;
-        width: 40px;
-        height: 40px;
-        background: rgba(255,255,255,0.8);
+        width: 50px;
+        height: 50px;
+        background: transparent;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: none;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        margin-top: -10px; 
+        z-index: 10;
+        cursor: pointer;
     }
-    
+    .swiper-button-prev {
+        left: 0px; 
+    }
+    .swiper-button-next {
+        right: 0px; 
+    }
     .swiper-button-prev::after, .swiper-button-next::after {
-        font-size: 20px;
+        font-size: 30px;
         font-weight: bold;
     }
     
     .swiper-button-prev:hover, .swiper-button-next:hover {
-        background: #fff;
+        background: transparent;
         color: #FF676D;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        box-shadow: none; /* Removed circle shadow */
     }
 
     /* Footer */
@@ -724,28 +1016,28 @@
     footer {
         color: rgb(165, 160, 160);
         font-family: 'Calistoga', cursive;
-        padding: 60px 100px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: wrap; 
-        gap: 60px;
-        max-width: 1400px;
+        padding: 60px 20px;
+        display: grid; 
+        grid-template-columns: 1.2fr 1fr 1fr; 
+        gap: 80px;
+        max-width: 1600px; 
         margin: 0 auto;
+        justify-items: center; 
+        align-items: start;
     }
 
     footer .feet {
-        max-width: 400px;
-        flex: 2;
+        max-width: 100%;
+        justify-self: start; 
     }
     footer .feet h1 {
-        font-size: 40px;
+        font-size: 52px; 
         color: white;
         margin-bottom: 20px;
         margin-top: 0;
     }
     footer .feet p {
-        font-size: 16px;
+        font-size: 20px; 
         line-height: 1.8;
         font-family: 'Poppins', sans-serif;
         margin: 0;
@@ -757,11 +1049,10 @@
         margin-top: 20px;
     }
     footer .feet2, footer .contact {
-        flex: 1;
         min-width: 150px;
     }
     footer .feet2 p, footer .contact p {
-        font-size: 24px;
+        font-size: 32px; 
         color: white;
         margin-top: 0;
         margin-bottom: 25px;
@@ -774,7 +1065,7 @@
         display: block;
         text-align: left;
         margin-bottom: 12px;
-        font-size: 16px;
+        font-size: 22px; 
         transition: all 0.3s ease;
     }
     footer .feet2 a:hover {
@@ -788,18 +1079,38 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px; 
         background: rgba(255,255,255,0.1);
         border-radius: 50%;
         margin-right: 10px;
-        font-size: 18px;
+        font-size: 24px;
         transition: all 0.3s ease;
     }
     
     footer .contact a:hover {
         background: #FF676D;
         transform: translateY(-3px);
+    }
+    
+    /* Laptop/Desktop adjustments for footer spacing */
+    @media (max-width: 1440px) {
+        footer {
+            gap: 30px;
+            grid-template-columns: 1.3fr 0.8fr 0.8fr;
+        }
+        footer .feet h1 {
+            font-size: 40px; 
+        }
+        footer .feet p {
+            font-size: 16px; 
+        }
+        footer .feet2 p, footer .contact p {
+            font-size: 26px; 
+        }
+        footer .feet2 a {
+            font-size: 18px; 
+        }
     }
 
     .scroll-top-btn {
@@ -852,6 +1163,42 @@
         .navbar {
             padding: 10px 20px;
         }
+
+        .navbar-left {
+            order: 1;
+        }
+
+        .navbar-center {
+            order: 2;
+            flex: 1; 
+            display: flex;
+            margin: 0 20px;
+        }
+
+        .hamburger {
+            display: block; 
+            order: 3;
+            margin-left: 0;
+            z-index: 1002;
+        }
+
+        .navbar-right {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #c0c0c0;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px 0;
+            display: none; /* Hidden by default */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            order: 4;
+        }
+
+        .navbar-right.active {
+            display: flex;
+        }
         
         header {
             height: 500px; 
@@ -864,49 +1211,73 @@
         #header p {
             font-size: 20px;
         }
+
+        .how-it-works h2 {
+            font-size: 3.3rem; 
+        }
+
+        /* Stack grids like tablet view for proper organization at 1024px */
+        .content-container, .grid-container {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 50px;
+        }
+        
+        .text-content {
+            text-align: center;
+        }
+
+        .tabs {
+            justify-content: center;
+        }
+
+        .checklist {
+            display: inline-block; 
+            text-align: left;
+        }
+
+        .image-content, .image-section {
+            justify-content: center;
+        }
+
+        .image-section {
+            margin: 0 auto;
+        }
     }
 
+
     @media (max-width: 768px) {
-        .navbar {
-            flex-direction: column;
-            height: auto;
-            min-height: 120px; /* Accommodate stacked elements */
-            padding: 15px 20px;
+        .user-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80%;
+            max-width: 300px;
+            box-shadow: 0 0 0 1000px rgba(0,0,0,0.5); /* Backdrop overlay */
         }
-        
-        .navbar-left {
-            margin-bottom: 15px;
+
+        .user-popup.open-popup {
+            transform: translate(-50%, -50%) scale(1);
         }
-        
-        .navbar-center {
-            width: 100%;
-            margin: 0 0 15px 0;
-            order: 2; 
-        }
-        
-        .navbar-right {
-           width: 100%;
-           justify-content: center;
-           margin-bottom: 0;
-           order: 3;
-        }
-        
-        .search-container {
-            max-width: 100%;
+
+        /* Hide arrow on mobile */
+        .user-popup::before {
+            display: none;
         }
 
         header {
-            margin-top: 180px; 
+            margin-top: 90px;
             height: 400px;
         }
         
         #header h1 {
-            font-size: 36px;
+            font-size: 42px; /* Increased */
             top: 60px;
         }
         
         #header p {
-            font-size: 16px;
+            font-size: 18px; /* Increased */
             bottom: 30px;
         }
         
@@ -930,24 +1301,263 @@
         }
         
         footer {
+            display: flex; 
             flex-direction: column;
             align-items: center;
             text-align: center;
             padding: 40px 20px;
+        }
+
+        footer .feet {
+            justify-self: center; 
         }
         
         footer .feet2 a {
             text-align: center;
         }
         
-        /* Swiper Fixes for Mobile */
         .swiper {
-            padding: 20px 0 50px !important; 
+             padding-top: 20px !important;
+             padding-bottom: 50px !important;
         }
         
         .swiper-button-prev, .swiper-button-next {
-            display: none; 
+            display: flex; 
         }
+
+        footer .feet h1 {
+            font-size: 40px; /* Increased */
+        }
+        footer .feet p {
+            font-size: 18px; /* Increased */
+        }
+        footer .feet2 p, footer .contact p {
+            font-size: 26px; /* Increased */
+        }
+        footer .feet2 a {
+            font-size: 20px; /* Increased */
+        }
+
+        .how-it-works h2 {
+            font-size: 3.5rem; /* Increased */
+        }
+
+        .image-section {
+            margin: 0 auto;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .navbar {
+            flex-wrap: wrap; 
+            height: auto;
+            padding: 15px 20px;
+            position: fixed;
+            justify-content: space-between; 
+        }
+
+        .navbar-left {
+            order: 1;
+            flex: 0 1 auto; 
+        }
+
+        .hamburger {
+            order: 2;
+            margin-left: 0; 
+            display: block;
+        }
+        
+        .navbar-center {
+            order: 3;
+            width: 100%;
+            margin-top: 15px; 
+            display: flex;
+            justify-content: center;
+            margin-left: 0;
+            margin-right: 0;
+            flex: 1 1 100%; 
+        }
+
+        .search-container {
+            width: 100%; 
+            max-width: none;
+        }
+        
+        header {
+            margin-top: 200px; 
+        }
+
+        .how-it-works {
+            padding: 30px 10px; 
+        }
+
+        .how-it-works h2 {
+            font-size: 1.8rem;
+        }
+
+        .tabs {
+            flex-direction: column; 
+            width: 100%;
+            border-radius: 20px; 
+            height: auto;
+        }
+
+        .tab {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px; 
+            border-radius: 15px;
+            font-size: 0.95rem;
+        }
+
+        .checklist li {
+            font-size: 0.95rem; 
+            padding: 10px 10px;
+        }
+
+        .content-container {
+            gap: 30px;
+        }
+
+        .description-section h2 {
+            font-size: 1.8rem;
+        }
+
+        .description-section p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .card {
+            height: 470px !important; 
+        }
+    }
+
+    .contact-privacy {
+        margin-top: 20px;
+        color: #777;
+    }
+    .contact-privacy-list {
+        padding-left: 20px;
+        margin: 0;
+        list-style-type: disc;
+    }
+    .contact-privacy-item {
+        margin-bottom: 5px;
+    }
+
+    /* Success Modal Styles */
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 2000; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        overflow: auto; 
+        background-color: rgba(0,0,0,0.5); 
+        animation: fadeIn 0.4s;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; 
+        padding: 30px;
+        border: 1px solid #888;
+        width: 80%; 
+        max-width: 400px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        position: relative;
+        animation: slideIn 0.4s;
+    }
+    
+    @keyframes slideIn {
+        from {transform: translateY(-50px); opacity: 0;}
+        to {transform: translateY(0); opacity: 1;}
+    }
+
+    .close-modal {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        cursor: pointer;
+    }
+
+    .close-modal:hover,
+    .close-modal:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    .modal-body h2 {
+        font-family: 'DM Serif Display', serif;
+        color: #333;
+        margin-top: 10px;
+    }
+    
+    .modal-btn {
+        background-color: #34d399;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-weight: 600;
+        transition: background-color 0.3s;
+    }
+    
+    .modal-btn:hover {
+        background-color: #059669;
+    }
+
+    /* Checkmark Animation */
+    .checkmark-circle {
+        width: 80px;
+        height: 80px;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: 20px;
+    }
+    .checkmark-circle .background {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #34d399;
+        position: absolute;
+    }
+    .checkmark-circle .checkmark {
+        border-radius: 5px;
+    }
+    .checkmark-circle .checkmark.draw:after {
+        content: '';
+        width: 40px;
+        height: 20px;
+        position: absolute;
+        border-left: 6px solid #fff;
+        border-bottom: 6px solid #fff;
+        top: 45%; 
+        left: 50%; 
+        transform: translate(-50%, -50%) rotate(-45deg); 
+        animation: checkmark 0.8s ease-in-out forwards;
+        opacity: 0;
+    }
+    
+    @keyframes checkmark {
+        0% {   width: 0; height: 0; opacity: 0; }
+        50% {  width: 0; height: 20px; opacity: 1; }
+        100% { width: 40px; height: 20px; opacity: 1; }
     }
 </style>
 </head>
@@ -956,9 +1566,16 @@
     <div class="navbar-left">
         <h1>Flatmate</h1>
     </div>
+    
+    <button class="hamburger" id="hamburger-btn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
+
     <div class="navbar-center">
         <div class="search-container">
-            <input type="text" class="search-box" id="search-input" placeholder="Search for flatmates">
+            <input type="text" class="search-box" id="search-input" placeholder="Search profiles and services...">
             <div class="search-icons-group">
                 <button id="search-button" class="icon-link search icon">
                     <i class="fas fa-search"></i>
@@ -970,13 +1587,14 @@
         </div>
     </div>
 
-    <div class="navbar-right">
+    <div class="navbar-right" id="navbar-links">
         <button class="nav-link" onclick="location.href='/loginpage'">Sign in</button>
         <button class="nav-link" onclick="location.href='/servicelogin'">Services</button>
+        <button class="nav-link" onclick="location.href='#about-section'">About Us</button>
         
-        <div style="position: relative;">
-            <button onclick="openUserPopup(this)" class="icon-link profile-icon" style="background: none; border:none; padding:0; height:auto; width:auto;">
-                <i class="fas fa-user fa-lg" style="color: black;"></i>
+        <div class="profile-container">
+            <button onclick="openUserPopup(this)" class="icon-link profile-icon profile-icon-btn">
+                <i class="fas fa-user fa-lg"></i>
             </button>
             <div class="user-popup">
                 <h6>Please Login to view and edit your profile details!</h6>
@@ -1042,11 +1660,22 @@
     </div>
 </section>
     
-<section class="about-section">
+<section id="about-section" class="about-section">
     <div class="grid-container">
         <!-- Left side (Image) -->
         <div class="image-section">
-            <img src="/img/Aboutus.jpg" alt="About Us Image">
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <img src="/img/Aboutus.jpg" alt="About Us Image">
+                    </div>
+                    <div class="flip-card-back">
+                         <i class="fas fa-play-circle" style="font-size: 50px; margin-bottom: 20px; color: #D0B8A8;"></i>
+                        <p style="font-size: 20px; font-weight: 600;">Flatmate Features</p>
+                        <small>(Video Coming Soon)</small>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Right side (Description) -->
@@ -1104,53 +1733,98 @@
         </div>
     </div>
 
-    <div class="swiper profilesSwiper container">
+    <div class="swiper swiper-container profilesSwiper container">
         <div class="swiper-wrapper content">
             <!-- Content injected by JS -->
         </div>
+        <!-- Pagination and navigation inside container for positioning -->
+        <div class="swiper-button-next profiles-next"></div>
+        <div class="swiper-button-prev profiles-prev"></div>
+        <div class="swiper-pagination profiles-pagination"></div>
     </div>
-    <!-- Pagination and navigation -->
-    <div class="swiper-button-next profiles-next"></div>
-    <div class="swiper-button-prev profiles-prev"></div>
-    <div class="swiper-pagination profiles-pagination"></div>
 </section>
 
 <section id="services-food" class="section-header-container">
     <h1 class="section-header-title">Services</h1>
     <h3>Food</h3>
-    <div class="swiper foodSwiper container">
+    <div class="swiper swiper-container foodSwiper container">
         <div class="swiper-wrapper content">
             <!-- Content injected by JS -->
         </div>
+        <div class="swiper-button-next food-next"></div>
+        <div class="swiper-button-prev food-prev"></div>
+        <div class="swiper-pagination food-pagination"></div>
     </div>
-    <div class="swiper-button-next food-next"></div>
-    <div class="swiper-button-prev food-prev"></div>
-    <div class="swiper-pagination food-pagination"></div>
 </section>
 
 <section id="services-laundry" class="section-header-container">
     <h3>Laundry</h3>
-    <div class="swiper laundrySwiper container">
+    <div class="swiper swiper-container laundrySwiper container">
         <div class="swiper-wrapper content">
              <!-- Content injected by JS -->
         </div>
+        <div class="swiper-button-next laundry-next"></div>
+        <div class="swiper-button-prev laundry-prev"></div>
+        <div class="swiper-pagination laundry-pagination"></div>
     </div>
-    <div class="swiper-button-next laundry-next"></div>
-    <div class="swiper-button-prev laundry-prev"></div>
-    <div class="swiper-pagination laundry-pagination"></div>
 </section>
 
 <section id="services-brokers" class="section-header-container">
     <h3>Brokers</h3>
-    <div class="swiper brokerSwiper container">
+    <div class="swiper swiper-container brokerSwiper container">
         <div class="swiper-wrapper content">
              <!-- Content injected by JS -->
         </div>
+        <div class="swiper-button-next broker-next"></div>
+        <div class="swiper-button-prev broker-prev"></div>
+        <div class="swiper-pagination broker-pagination"></div>
     </div>
-    <div class="swiper-button-next broker-next"></div>
-    <div class="swiper-button-prev broker-prev"></div>
-    <div class="swiper-pagination broker-pagination"></div>
-</section> 
+</section>
+
+
+<section id="contact-us" class="contact-section">
+    <div class="contact-container">
+        <!-- Left: Form -->
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="contact-form" action="https://formspree.io/f/xandzlvw" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <!-- Right: Info -->
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <p>Have questions or feedback? We'd love to hear from you!</p>
+            <p><i class="fas fa-envelope" style="margin-right: 10px;"></i> support@flatmate.com</p>
+            <p><i class="fas fa-phone" style="margin-right: 10px;"></i> +91 9234567890</p>
+            <div class="contact-privacy">
+                <ul class="contact-privacy-list">
+                    <li class="contact-privacy-item"><small>We value your privacy. Your data is secure with us.</small></li>
+                    <li class="contact-privacy-item"><small>We do not share your personal information with third parties.</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
+        <div class="modal-body">
+            <div class="checkmark-circle">
+                <div class="background"></div>
+                <div class="checkmark draw"></div>
+            </div>
+            <h2>Success!</h2>
+            <p>Form submitted successfully.</p>
+            <button class="modal-btn" onclick="closeSuccessModal()">OK</button>
+        </div>
+      </div>
+    </div>
+</section>
 
 <section id="footer-section">
     <footer>
@@ -1190,11 +1864,25 @@
 </section>
 
 <!-- Include Swiper CSS & JS -->
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 <script>
+// Global auth state
+let isUserLoggedIn = false;
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        try {
+            const authResponse = await fetch('/check-auth');
+            if (authResponse.ok) {
+                const authData = await authResponse.json();
+                isUserLoggedIn = authData.loggedIn;
+            }
+        } catch (authError) {
+            console.error('Error checking auth:', authError);
+            isUserLoggedIn = false;
+        }
+
         const response = await fetch('/data');
         if (!response.ok) throw new Error('Failed to fetch data');
         const { services, profiles } = await response.json();
@@ -1234,85 +1922,73 @@ function openUserPopup(button) {
         popup.classList.remove("open-popup");
     }
 
-function initializeSwipers() {
-    new Swiper(".profilesSwiper", {
-        slidesPerView: 1, /* Default to 1 (mobile) */
+function getSwiperConfig() {
+    return {
+        slidesPerView: 1, 
         spaceBetween: 20,
-        breakpoints: {
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 40 },
-        },
-        slidesPerGroup: 1,
+        centeredSlides: false,
+        grabCursor: true,
         loop: true,
-        loopFillGroupWithBlank: true,
+        on: {
+            slideChange: function () {
+                // Auto-close any open popups when sliding
+                const openPopups = document.querySelectorAll('.popup.open-popup');
+                openPopups.forEach(popup => {
+                    popup.classList.remove('open-popup');
+                });
+            }
+        },
+        slidesPerGroup: 1, /* Default for mobile */
+        breakpoints: {
+            768: { 
+                slidesPerView: 2, 
+                spaceBetween: 30,
+                slidesPerGroup: 2, /* Tablet: Slide 2 at a time */
+            },
+            1024: { 
+                slidesPerView: 3, 
+                spaceBetween: 40,
+                slidesPerGroup: 3, /* Laptop: Slide 3 at a time */
+            },
+            1440: { 
+                slidesPerView: 3, 
+                spaceBetween: 50,
+                slidesPerGroup: 3,
+            }
+        },
         pagination: {
-            el: ".profiles-pagination",
             clickable: true,
+            dynamicBullets: true,
+            dynamicMainBullets: 3,
         },
-        navigation: {
-            nextEl: ".profiles-next",
-            prevEl: ".profiles-prev",
-        },
+    };
+}
+
+function initializeSwipers() {
+    const commonConfig = getSwiperConfig();
+
+    new Swiper(".profilesSwiper", {
+        ...commonConfig,
+        pagination: { ...commonConfig.pagination, el: ".profiles-pagination" },
+        navigation: { nextEl: ".profiles-next", prevEl: ".profiles-prev" },
     });
 
     new Swiper(".foodSwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        breakpoints: {
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 40 },
-        },
-        slidesPerGroup: 1,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-             el: ".food-pagination",
-             clickable: true,
-        },
-        navigation: {
-            nextEl: ".food-next",
-            prevEl: ".food-prev",
-        },
+        ...commonConfig,
+        pagination: { ...commonConfig.pagination, el: ".food-pagination" },
+        navigation: { nextEl: ".food-next", prevEl: ".food-prev" },
     });
 
     new Swiper(".laundrySwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        breakpoints: {
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 40 },
-        },
-        slidesPerGroup: 1,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-            el: ".laundry-pagination",
-            clickable: true,
-        },
-        navigation: {
-            nextEl: ".laundry-next",
-            prevEl: ".laundry-prev",
-        },
+        ...commonConfig,
+        pagination: { ...commonConfig.pagination, el: ".laundry-pagination" },
+        navigation: { nextEl: ".laundry-next", prevEl: ".laundry-prev" },
     });
 
     new Swiper(".brokerSwiper", {
-        slidesPerView: 1,
-        spaceBetween: 20,
-        breakpoints: {
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1024: { slidesPerView: 3, spaceBetween: 40 },
-        },
-        slidesPerGroup: 1,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-            el: ".broker-pagination",
-            clickable: true,
-        },
-        navigation: {
-            nextEl: ".broker-next",
-            prevEl: ".broker-prev",
-        },
+        ...commonConfig,
+        pagination: { ...commonConfig.pagination, el: ".broker-pagination" },
+        navigation: { nextEl: ".broker-next", prevEl: ".broker-prev" },
     });
 }
 
@@ -1451,13 +2127,24 @@ function setupSearchAndFilter() {
         document.getElementById('branchFilter').value = "All Branches";
     
         document.querySelectorAll('.profilesSwiper .swiper-wrapper .swiper-slide.card').forEach(card => {
-            card.style.display = "flex"; // Changed to flex
+            card.style.display = "flex"; 
         });
     
-        const profilesSwiper = document.querySelector('.profilesSwiper').swiper;
-        if (profilesSwiper) {
-            profilesSwiper.update();
-            profilesSwiper.slideTo(0);
+        const profilesSwiperEl = document.querySelector('.profilesSwiper');
+        if (profilesSwiperEl && profilesSwiperEl.swiper) {
+             let profilesSwiper = profilesSwiperEl.swiper;
+             if (profilesSwiper.destroy) {
+                 profilesSwiper.destroy(true, true); 
+             }
+             
+             const commonConfig = getSwiperConfig();
+             const swiperConfig = {
+                 ...commonConfig,
+                 pagination: { ...commonConfig.pagination, el: ".profiles-pagination" },
+                 navigation: { nextEl: ".profiles-next", prevEl: ".profiles-prev" },
+             };
+             profilesSwiper = new Swiper(".profilesSwiper", swiperConfig);
+             profilesSwiper.slideTo(0, 0); 
         }
     }
 }
@@ -1506,11 +2193,29 @@ function renderProfiles(profiles) {
     const container = document.querySelector('.profilesSwiper .swiper-wrapper');
     if (!container) return;
     
-    container.innerHTML = profiles.map(user => `
+    container.innerHTML = profiles.map(user => {
+        const popupContent = isUserLoggedIn ? `
+            <h5>Thank You for visiting My Profile!</h5>
+            <h5>Here are my contact details:</h5>
+            <ul class="popup-list">
+                <li><i class="fas fa-phone"></i> ${user.contact_number}</li>
+                <li><i class="fas fa-envelope"></i> ${user.email}</li>
+            </ul>
+            <div class="social-links" style="margin: 10px 0; display: flex; justify-content: center; gap: 10px;">
+                ${user.github ? `<a href="${user.github}" target="_blank" title="GitHub" style="color: #333;"><i class="fab fa-github fa-lg"></i></a>` : ''}
+                ${user.linkedin ? `<a href="${user.linkedin}" target="_blank" title="LinkedIn" style="color: #0077b5;"><i class="fab fa-linkedin fa-lg"></i></a>` : ''}
+                ${user.instagram ? `<a href="${user.instagram}" target="_blank" title="Instagram" style="color: #E1306C;"><i class="fab fa-instagram fa-lg"></i></a>` : ''}
+                ${user.portfolio ? `<a href="${user.portfolio}" target="_blank" title="Portfolio" style="color: #333;"><i class="fas fa-globe fa-lg"></i></a>` : ''}
+            </div>
+        ` : `
+            <h5>Please Login to view the details.</h5>
+        `;
+
+        return `
         <div class="swiper-slide card" data-type="profiles">
             <div class="card-content">
                 <div class="image">
-                    <img src="${user.profile_pic || '/img/default-profile.png'}" alt="User pic">
+                    <img src="${user.profile_pic}" alt="User pic">
                 </div>
                 <div class="name-profession">
                     <span class="name">${user.fULL_name}</span>
@@ -1518,23 +2223,13 @@ function renderProfiles(profiles) {
                 </div>
                 <button class="card-btn secondary" onclick="openPopup(this)">Contact Me</button>
                 <div class="popup">
-                    <h5>Thank You for visiting My Profile!</h5>
-                    <h5>Here are my contact details:</h5>
-                    <ul class="popup-list">
-                        <li>Contact No: ${user.contact_number}</li>
-                        <li>Email: ${user.email}</li>
-                    </ul>
-                    <div class="social-links" style="margin: 15px 0; display: flex; justify-content: center; gap: 15px;">
-                        ${user.github ? `<a href="${user.github}" target="_blank" title="GitHub" style="color: #333;"><i class="fab fa-github fa-lg"></i></a>` : ''}
-                        ${user.linkedin ? `<a href="${user.linkedin}" target="_blank" title="LinkedIn" style="color: #0077b5;"><i class="fab fa-linkedin fa-lg"></i></a>` : ''}
-                        ${user.instagram ? `<a href="${user.instagram}" target="_blank" title="Instagram" style="color: #E1306C;"><i class="fab fa-instagram fa-lg"></i></a>` : ''}
-                        ${user.portfolio ? `<a href="${user.portfolio}" target="_blank" title="Portfolio" style="color: #333;"><i class="fas fa-globe fa-lg"></i></a>` : ''}
-                    </div>
+                    ${popupContent}
                     <button type="button" onclick="closePopup(this)">OK</button>
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function renderServices(services, type, selector, imageName) {
@@ -1543,7 +2238,20 @@ function renderServices(services, type, selector, imageName) {
 
     const filteredServices = services.filter(s => s.service === type);
     
-    container.innerHTML = filteredServices.map(service => `
+    container.innerHTML = filteredServices.map(service => {
+        const popupContent = isUserLoggedIn ? `
+            <h5>Thank you for visiting our Service!</h5>
+            <h5 style="text-align: left;">Connect with us using the details:</h5>
+            <ul class="popup-list">
+                <li><i class="fas fa-phone"></i> ${service.contact_number}</li>
+                <li><i class="fas fa-envelope"></i> ${service.email}</li>
+                <li onclick="window.location.href='${service.price_chart_link}';" style="cursor: pointer;"><i class="fas fa-file-invoice"></i> View Price Chart</li>
+            </ul>
+        ` : `
+            <h5>Please Login to view the details.</h5>
+        `;
+
+        return `
         <div class="swiper-slide card" data-type="${type}">
             <div class="card-content">
                 <div class="image">
@@ -1554,19 +2262,38 @@ function renderServices(services, type, selector, imageName) {
                 </div>
                 <button class="card-btn secondary service-contact-btn" onclick="openPopup(this)">Contact Us</button>
                 <div class="popup" style="margin-top: 20px;">
-                    <h5>Thank you for visiting our Service!</h5>
-                    <h5 style="text-align: left;">Connect with us using the details:</h5>
-                    <ul class="popup-list">
-                        <li>Contact No: ${service.contact_number}</li>
-                        <li>Email: ${service.email}</li>
-                        <li onclick="window.location.href='${service.price_chart_link}';" style="cursor: pointer;">View Price Chart: <i class="fas fa-file file-icon"></i></li>
-                    </ul>
+                    ${popupContent}
                     <button type="button" style="background: #D0B8A8;" onclick="closePopup(this)">OK</button>
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
+
+// Hamburger Toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.getElementById('hamburger-btn');
+    const navbarRight = document.getElementById('navbar-links');
+    
+    if (hamburger && navbarRight) {
+        hamburger.addEventListener('click', () => {
+            navbarRight.classList.toggle('active');
+            
+            // Animate hamburger lines
+            const lines = hamburger.querySelectorAll('.hamburger-line');
+            if (navbarRight.classList.contains('active')) {
+                 lines[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
+                 lines[1].style.opacity = '0';
+                 lines[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+            } else {
+                 lines[0].style.transform = 'none';
+                 lines[1].style.opacity = '1';
+                 lines[2].style.transform = 'none';
+            }
+        });
+    }
+});
 
 // srcoll to top button script 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1603,8 +2330,77 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
-    });
+        // Contact Form & Modal Logic
+    const contactForm = document.getElementById('contact-form');
+    const successModal = document.getElementById('successModal');
+
+    if (contactForm) {
+        contactForm.addEventListener("submit", function(ev) {
+            ev.preventDefault();
+            const data = new FormData(contactForm);
+            
+            const submitBtn = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+            submitBtn.innerText = "Sending...";
+            submitBtn.disabled = true;
+
+            fetch(contactForm.action, {
+                method: contactForm.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    contactForm.reset();
+                    openSuccessModal();
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            alert(data["errors"].map(error => error["message"]).join(", "));
+                        } else {
+                            alert("Oops! There was a problem submitting your form");
+                        }
+                    });
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert("Oops! There was a problem submitting your form");
+            }).finally(() => {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+
+    window.openSuccessModal = function() {
+        if(successModal) {
+            successModal.style.display = "block";
+            // Trigger animation
+            const checkmark = successModal.querySelector('.checkmark');
+            if(checkmark) {
+                // Reset animation
+                checkmark.style.animation = 'none';
+                checkmark.offsetHeight; /* trigger reflow */
+                checkmark.style.animation = null; 
+            }
+        }
+    }
+
+    window.closeSuccessModal = function() {
+        if(successModal) {
+            successModal.style.display = "none";
+        }
+    }
+
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+        if (event.target == successModal) {
+            closeSuccessModal();
+        }
+    }
+});
 </script>
 
 </body>
-</html>
+</html> 

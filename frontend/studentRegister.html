@@ -35,7 +35,7 @@ body {
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1200px; /* Increased Max Width */
+  max-width: 1200px; 
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -386,39 +386,47 @@ button:hover {
 
   trashButton.addEventListener('click', () => {
     fileInput.value = '';
-    // Just clearing value is often enough, replacing the input element can break listeners if not careful
-    // The original code replaced it, but since I'm rewriting, I'll stick to the original logic if possible or simplify
-    // For now, I'll simplify to just clearing the value as that's safer and usually sufficient
-    // But to be safe and match user intent of resetting completely:
-    // Actually, just clearing value is fine for file input.
   });
 
-  function myFunction() {
-    // This function is called on submit button click, but the form will submit and reload page...
-    // The original code had this. I'll keep it but typically form submission should be handled or prevented if using AJAX.
-    // The original code had action="http://localhost:3000/register-user".
-    // I am preserving the original logic.
-    const modal = document.getElementById("successModal");
-    // modal.classList.add("show"); // This might flicker before page reload
-    
-    // The user has a form action, so real submission happens. 
-    // Showing a modal *before* submission usually requires event.preventDefault(), 
-    // doing the submission via fetch, then showing modal.
-    // However, I am not asked to fix the submission logic, just the layout.
-    // I will leave the logic as is, assuming the user might be handling it or it's a known behavior.
-  }
+  const form = document.getElementById('registrationForm');
+  const modal = document.getElementById("successModal");
 
-  // NOTE: The original code had a myFunction that showed a modal and then redirected after 3s.
-  // But standard form submission would navigate away immediately.
-  // I will check the original file content again to see if there was e.preventDefault().
-  // Checking original file...
-  // line 352: registrationForm.addEventListener("submit", function (event) { // Standard form submission });
-  // line 341: <button onclick="myFunction()" type="submit">Register</button>
-  // It seems conflicting. I will assume the user wants the layout fixed mainly.
+  form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerText;
+      
+      submitBtn.innerText = "Registering...";
+      submitBtn.disabled = true;
+
+      try {
+          const response = await fetch(this.action, {
+              method: 'POST',
+              body: formData
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+              form.reset();
+              modal.classList.add("show");
+          } else {
+              alert(result.message || 'Registration failed. Please try again.');
+          }
+      } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred during registration.');
+      } finally {
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
+      }
+  });
   
   function closeModal() {
-    const modal = document.getElementById("successModal");
     modal.classList.remove("show");
+    window.location.href = '/loginpage';
   }
 </script>
 </body>
