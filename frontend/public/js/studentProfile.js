@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('viewEmail').textContent = userData.email || 'Not Set';
             document.getElementById('viewContact').textContent = userData.contact_number || 'Not Set';
             document.getElementById('viewAddress').textContent = userData.address || 'Not Set';
+            document.getElementById('viewGender').textContent = userData.gender || 'Not Set';
             
             // Details
             document.getElementById('viewYear').textContent = userData.year || 'Year';
@@ -79,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('editEmail').value = userData.email || '';
             document.getElementById('editContact').value = userData.contact_number || '';
             document.getElementById('editAddress').value = userData.address || '';
+            document.getElementById('editGender').value = userData.gender || 'Male';
             document.getElementById('editPassword').value = userData.password || ''; 
             
             document.getElementById('editYear').value = userData.year || 'FE';

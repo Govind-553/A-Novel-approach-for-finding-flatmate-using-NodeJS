@@ -1,7 +1,38 @@
 // Global auth state
 let isUserLoggedIn = false;
 
+(function() {
+    const userRole = sessionStorage.getItem('userRole');
+    const path = window.location.pathname;
+    
+    if (!userRole && (path === '/' || path.endsWith('index.html'))) {
+        window.location.href = '/welcome.html';
+    }
+})();
+
 document.addEventListener('DOMContentLoaded', async () => {
+    const userRole = sessionStorage.getItem('userRole');
+    const signinBtn = document.getElementById('nav-signin');
+    const servicesBtn = document.getElementById('nav-services');
+
+    if (userRole === 'student') {
+        if (signinBtn) {
+            signinBtn.textContent = 'Sign in';
+            signinBtn.onclick = () => location.href = '/loginpage';
+            signinBtn.style.display = 'inline-block';
+        }
+        if (servicesBtn) servicesBtn.style.display = 'none';
+    } else if (userRole === 'serviceProvider') {
+        if (signinBtn) {
+            signinBtn.style.display = 'none';
+        }
+        if (servicesBtn) {
+            servicesBtn.textContent = 'Sign in'; 
+            servicesBtn.onclick = () => location.href = '/servicelogin';
+            servicesBtn.style.display = 'inline-block';
+        }
+    }
+
     try {
         try {
             const authResponse = await fetch('/check-auth');
