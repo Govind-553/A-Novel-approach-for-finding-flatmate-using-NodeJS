@@ -1,0 +1,274 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url(/img/loginpage.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  font-family: 'Poppins', Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.registration-container {
+  background-color: snow;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 1200px; 
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.registration-container h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 32px; /* Larger Heading */
+  font-weight: 700;
+  color: #333;
+}
+
+/* Two-column layout */
+.form-columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px; /* Increased gap */
+}
+
+.column-left,
+.column-right {
+    flex: 1;
+    min-width: 350px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.registration-container label {
+  display: block;
+  margin-bottom: 8px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 16px; /* Larger Label */
+  color: #444;
+}
+
+.registration-container input,
+.registration-container select {
+  width: 100%;
+  padding: 14px 16px; /* Larger Padding */
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  font-size: 16px; /* Larger Input Text */
+  font-family: 'Poppins', sans-serif;
+}
+
+.registration-container input:focus,
+.registration-container select:focus {
+  border-color: #f39c12;
+  box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.15);
+  outline: none;
+}
+
+.password-container, .image-container {
+  position: relative;
+  width: 100%;
+}
+
+#togglePassword, #trashImage {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+#togglePassword:hover, #trashImage:hover {
+    color: #555;
+}
+
+.bottom-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+button {
+  width: 100%;
+  max-width: 350px; /* Wider Button */
+  display: block;
+  margin: 0px auto 15px;
+  padding: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,123,255,0.2);
+}
+
+.registered-user {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.registered-user p {
+  font-weight: 500;
+  color: #555;
+}
+
+.registered-user a {
+  font-weight: 600;
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.registered-user a:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+.overlay.show {
+    display: flex;
+    opacity: 1;
+}
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 15px;      
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease;
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-content img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc;
+    transition: color 0.3s;
+}
+.close-btn:hover {
+    color: #555;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}         
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .registration-container {
+      padding: 30px;
+  }
+  
+  .form-columns {
+      flex-direction: column;
+      gap: 0;
+  }
+  
+  .column-left,
+  .column-right {
+      width: 100%;
+      min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-container {
+      padding: 20px;
+      width: 100%;
+  }
+
+  .registration-container h1 {
+      font-size: 24px;
+  }
+
+  .registration-container input,
+  .registration-container select {
+      padding: 12px;
+      font-size: 14px;
+  }
+  
+  .registration-container label {
+    font-size: 14px;
+  }
+
+  button {
+      padding: 12px;
+      font-size: 16px;
+  }
+}
