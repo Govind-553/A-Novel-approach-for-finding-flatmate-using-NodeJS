@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Role - Flatmate</title>
+    <link rel="icon" type="image/x-icon" href="/img/home.png">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/onboarding.css">
+</head>
+<body class="onboarding-body">
+
+    <div class="onboarding-container">
+        <h1 class="welcome-title selection-page-title">Let's Begin</h1>
+        <p class="selection-description">Who are you looking to join us as today?</p>
+
+        <div class="selection-container">
+            <!-- Student Card -->
+            <div class="selection-card" onclick="selectRole('student', this)">
+                <img src="/img/laptopuser.png" alt="Student Icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135810.png'">
+                <div class="card-info">
+                    <h3>Student</h3>
+                    <p>Looking for accommodation or roommates.</p>
+                </div>
+            </div>
+
+            <!-- Service Provider Card -->
+            <div class="selection-card" onclick="selectRole('serviceProvider', this)">
+                <img src="/img/service.png" alt="Service Provider Icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2830/2830316.png'">
+                <div class="card-info">
+                    <h3>Service Provider</h3>
+                    <p>PG Owner, Tiffin Service, or Broker.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn-secondary" onclick="goBack()">Back</button>
+            <button class="btn-primary" onclick="proceedToHome()">Next</button>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="error-modal-overlay">
+        <div class="error-modal-content">
+            <div class="error-icon">
+                <i class="fas fa-exclamation"></i>
+            </div>
+            <h3>Selection Required</h3>
+            <p>Please select a role to continue.</p>
+            <button class="modal-ok-btn" onclick="closeErrorModal()">OK</button>
+        </div>
+    </div>
+
+    <script src="/js/onboarding.js"></script>
+</body>
+</html>

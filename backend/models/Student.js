@@ -9,6 +9,7 @@ const StudentSchema = new mongoose.Schema({
   year: String,
   branch: String,
   about_yourself: String,
+  gender: String,
   profile_pic: Buffer,
   food_type: String,
   room_type: String,

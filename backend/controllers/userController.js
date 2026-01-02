@@ -54,7 +54,7 @@ export const loginStudent = async (req, res) => {
 // Register
 export const registerStudent = async (req, res) => {
     try {
-        const { fullName, email, password, address, contactNumber, Year, Branch, AboutYourself, foodType, roomType, pricingValue } = req.body;
+        const { fullName, email, password, address, contactNumber, gender, Year, Branch, AboutYourself, foodType, roomType, pricingValue } = req.body;
         
         const amenities = Array.isArray(req.body.amenities) ? req.body.amenities.join(', ') : req.body.amenities || '';
         const landmark = Array.isArray(req.body.landmark) ? req.body.landmark.join(', ') : req.body.landmark || '';
@@ -72,6 +72,7 @@ export const registerStudent = async (req, res) => {
             password: hashedPassword,
             address,
             contact_number: contactNumber,
+            gender,
             year: Year,
             branch: Branch,
             about_yourself: AboutYourself,
@@ -167,6 +168,7 @@ export const saveProfileFields = async (req, res) => {
             fULL_name: req.body.fullName,
             address: req.body.address,
             contact_number: req.body.contactNumber,
+            gender: req.body.gender,
             year: req.body.Year,
             branch: req.body.Branch,
             about_yourself: req.body.AboutYourself,

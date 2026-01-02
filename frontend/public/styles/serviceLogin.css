@@ -7,7 +7,6 @@
 body { 
     min-height: 100vh;
     background: url(/img/loginpage.jpg) center / cover no-repeat fixed;
-    /* Updated Font Family */
     font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: center;
@@ -19,9 +18,7 @@ body {
 .login-container {
     background-color: snow;
     width: 100%;
-    /* Increased Max Width */
-    max-width: 480px; 
-    /* Increased Padding */
+    max-width: 450px; 
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
@@ -30,7 +27,6 @@ body {
 
 /* Heading */
 .login-container h1 {
-    /* Increased Font Size */
     font-size: 2rem; 
     margin-bottom: 25px;
     font-weight: 700;
@@ -42,7 +38,6 @@ body {
 .login-container label {
     display: block;
     text-align: left;
-    /* Increased Font Size */
     font-size: 1rem; 
     margin-bottom: 8px;
     font-weight: 600;
@@ -52,12 +47,10 @@ body {
 /* Inputs */
 .login-container input {
     width: 100%;
-    /* Increased Padding */
     padding: 14px 16px; 
     margin-bottom: 18px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    /* Increased Font Size */
     font-size: 1rem; 
     font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
@@ -66,7 +59,7 @@ body {
 
 .login-container input:focus {
     outline: none;
-    border-color: #f39c12; /* Matching register page accent */
+    border-color: #f39c12; 
     background-color: #fff;
     box-shadow: 0 0 0 4px rgba(243, 156, 18, 0.15);
 }
@@ -74,7 +67,7 @@ body {
 .password-container {
     position: relative;
     width: 100%;
-    margin-bottom: 5px; /* Reduced margin to group with forgot password */
+    margin-bottom: 5px; 
 }
 
 .password-container input {
@@ -118,7 +111,7 @@ body {
 /* Button */
 .login-container button {
     width: 100%;
-    padding: 14px; /* Larger Button */
+    padding: 14px; 
     border: none;
     background-color: #007bff;
     color: #fff;
