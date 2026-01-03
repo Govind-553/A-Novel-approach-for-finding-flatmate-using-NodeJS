@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flatmate - Service Provider Home</title>
-    <link rel="icon" href="/img/home.png" type="image/x-icon">
+    <title>Flatmate</title>
+    <link rel="icon" href="/img/home.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap" rel="stylesheet">        
     <link rel="stylesheet" href="/styles/global.css">
 </head>
 <body>
-
 <div class="navbar">
     <div class="navbar-left">
         <h1>Flatmate</h1>
@@ -42,24 +41,19 @@
     </div>
 
     <div class="navbar-right" id="navbar-links">
-        <button class="nav-link" onclick="showLogoutPopup()">Log out</button>
-        <button class="nav-link" onclick="document.getElementById('services-food').scrollIntoView({ behavior: 'smooth' });">Services</button>
+        <button class="nav-link" id="nav-signin" onclick="location.href='/loginpage'">Sign in</button>
+        <button class="nav-link" id="nav-services" onclick="location.href='/servicelogin'">Services</button>
+        <button class="nav-link" onclick="location.href='#about-section'">About Us</button>
+        <button class="nav-link" id="nav-contact" onclick="location.href='#contact-us'">Contact Us</button>
         
-        <div class="navbar-icons">
-            <button onclick="location.href='/serviceprofile'" class="icon-link profile-icon">
-                <i class="fas fa-user fa-lg" style="color: #333;"></i>
+        <div class="profile-container">
+            <button onclick="openUserPopup(this)" class="icon-link profile-icon profile-icon-btn">
+                <i class="fas fa-user fa-lg"></i>
             </button>
-        </div>
-    </div>
-</div>
-
-<!-- Logout Popup (Reusing Modal Class) -->
-<div id="logoutPopup" class="modal">
-    <div class="modal-content logout-modal-content">
-        <p class="logout-title">Do you want to log out?</p>
-        <div class="logout-actions">
-            <button onclick="logout()" class="btn-logout btn-yes">Yes</button>
-            <button onclick="closeLogoutPopup()" class="btn-logout btn-no">No</button>
+            <div class="user-popup">
+                <h6>Please Login to view and edit your profile details!</h6>
+                <button type="button" onclick="closeUserPopup(this)">OK</button>
+            </div>
         </div>
     </div>
 </div>
@@ -120,7 +114,7 @@
     </div>
 </section>
     
-<section id="about-us" class="about-section">
+<section id="about-section" class="about-section">
     <div class="grid-container">
         <!-- Left side (Image) -->
         <div class="image-section">
@@ -156,32 +150,60 @@
                Join us today and start your hassle-free journey to 
                finding your next home!
             </p>
-            <button class="learn-more">Learn More</button>
+            <button class="learn-more" onclick="window.location.href='https://drive.google.com/file/d/11ublwVwbwZjxBtR6AOUO6mcdZAMQ4OKi/view?usp=drive_link'">Learn More</button>
         </div>
     </div>
 </section>
 
 <section id="profiles" class="section-header-container">
     <h1 class="section-header-title">Profiles</h1>
-    <div class="swiper profilesSwiper container">
+
+    <div class="filter-container">
+        <button id="filterButton" class="filter-btn">
+            <i class="fas fa-filter" style="margin-right: 5px;"></i> Filter
+        </button>
+        
+        <div id="filterDropdown">
+            <label for="yearFilter">Year:</label>
+            <select id="yearFilter">
+                <option value="All Years">All Years</option>
+                <option value="FE">FE</option>
+                <option value="SE">SE</option>
+                <option value="TE">TE</option>
+                <option value="BE">BE</option>
+            </select>
+            <br>
+            <label for="branchFilter">Branch:</label>
+            <select id="branchFilter">
+                <option value="All Branches">All Branches</option>
+                <option value="INFT">INFT</option>
+                <option value="CMPN">CMPN</option>
+                <option value="ELEC">ELEC</option>
+                <option value="EXTC">EXTC</option>
+                <option value="ECS">ECS</option>
+            </select>
+            <br>
+            <button id="applyFilters">Apply Filters</button>
+        </div>
+    </div>
+
+    <div class="swiper swiper-container profilesSwiper container">
         <div class="swiper-wrapper content">
-            <!-- Swiper Slides will be dynamically generated here -->
-        </div>    
-    <!-- Pagination and navigation inside container -->
-    <div class="swiper-button-next profiles-next"></div>
-    <div class="swiper-button-prev profiles-prev"></div>
-    <div class="swiper-pagination profiles-pagination"></div>
+            <!-- Content injected by JS -->
+        </div>
+        <!-- Pagination and navigation inside container for positioning -->
+        <div class="swiper-button-next profiles-next"></div>
+        <div class="swiper-button-prev profiles-prev"></div>
+        <div class="swiper-pagination profiles-pagination"></div>
     </div>
 </section>
-
-<!-- Removed Roommate Match and Service Providers Table sections as they are not present in original serviceHome.html -->
 
 <section id="services-food" class="section-header-container">
     <h1 class="section-header-title">Services</h1>
     <h3>Food</h3>
-    <div class="swiper foodSwiper container">
+    <div class="swiper swiper-container foodSwiper container">
         <div class="swiper-wrapper content">
-            <!-- Swiper Slides will be dynamically generated here -->
+            <!-- Content injected by JS -->
         </div>
         <div class="swiper-button-next food-next"></div>
         <div class="swiper-button-prev food-prev"></div>
@@ -191,9 +213,9 @@
 
 <section id="services-laundry" class="section-header-container">
     <h3>Laundry</h3>
-    <div class="swiper laundrySwiper container">
+    <div class="swiper swiper-container laundrySwiper container">
         <div class="swiper-wrapper content">
-            <!-- Swiper Slides will be dynamically generated here -->
+             <!-- Content injected by JS -->
         </div>
         <div class="swiper-button-next laundry-next"></div>
         <div class="swiper-button-prev laundry-prev"></div>
@@ -203,13 +225,58 @@
 
 <section id="services-brokers" class="section-header-container">
     <h3>Brokers</h3>
-    <div class="swiper brokerSwiper container">
+    <div class="swiper swiper-container brokerSwiper container">
         <div class="swiper-wrapper content">
-            <!-- Swiper Slides will be dynamically generated here -->
+             <!-- Content injected by JS -->
         </div>
         <div class="swiper-button-next broker-next"></div>
         <div class="swiper-button-prev broker-prev"></div>
         <div class="swiper-pagination broker-pagination"></div>
+    </div>
+</section>
+
+
+<section id="contact-us" class="contact-section">
+    <div class="contact-container">
+        <!-- Left: Form -->
+        <div class="contact-form">
+            <h2>Contact Us</h2>
+            <form id="contact-form" action="https://formspree.io/f/xandzlvw" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        <!-- Right: Info -->
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <p>Have questions or feedback? We'd love to hear from you!</p>
+            <p><i class="fas fa-envelope" style="margin-right: 10px;"></i> support@flatmate.com</p>
+            <p><i class="fas fa-phone" style="margin-right: 10px;"></i> +91 9234567890</p>
+            <div class="contact-privacy">
+                <ul class="contact-privacy-list">
+                    <li class="contact-privacy-item"><small>We value your privacy. Your data is secure with us.</small></li>
+                    <li class="contact-privacy-item"><small>We do not share your personal information with third parties.</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
+        <div class="modal-body">
+            <div class="checkmark-circle">
+                <div class="background"></div>
+                <div class="checkmark draw"></div>
+            </div>
+            <h2>Success!</h2>
+            <p>Form submitted successfully.</p>
+            <button class="modal-btn" onclick="closeSuccessModal()">OK</button>
+        </div>
+      </div>
     </div>
 </section>
 
@@ -235,11 +302,10 @@
         <div class="feet2">
             <p>Quick links</p>
             <a href="#header">Home</a>
-            <a href="#about-us">About Us</a>
             <a href="#profiles">Profiles</a>
             <a href="#services-food">Services</a>
             <a href="#overview">Overview</a>
-            <a href="/teampage">Our Team</a>
+            <a href="/team">Our Team</a>
         </div>
         <div class="contact">
             <p>Connect with us</p>
@@ -255,7 +321,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
 <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
-<script src="/js/serviceHome.js"></script>
+<script src="/js/main.js"></script>
 
 </body>
 </html>

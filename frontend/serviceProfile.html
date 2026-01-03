@@ -11,6 +11,9 @@
 </head>
 <body class="view-mode"> 
 
+    <a href="javascript:history.back()" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
     <div class="container">
         <h1>Service Profile</h1>
         
@@ -112,6 +115,16 @@
             extraFields: '{{extraFields}}'
         };
     </script>
+
+<!-- Success/Error Modal -->
+<div id="statusModal" class="modal">
+    <div class="success-modal-content">
+        <div id="statusIcon" class="status-icon"></div>
+        <h2 id="statusMessage"></h2>
+        <button onclick="closeStatusModal()" class="modal-btn">OK</button>
+    </div>
+</div>
+
     <script src="js/serviceProfile.js"></script>
 </body>
 </html>

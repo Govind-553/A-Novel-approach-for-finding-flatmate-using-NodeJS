@@ -8,8 +8,9 @@ import {
 const router = express.Router();
 
 // General Pages
-router.get('/', getMainPage);
-router.get('/index.html', getMainPage);
+router.get('/', getWelcomePage);
+router.get('/index.html', getWelcomePage);
+router.get('/main.html', getMainPage);
 router.get('/data', getData);
 router.get('/team', getTeamPage);
 router.get('/homepage', getHomePage);
@@ -25,7 +26,7 @@ router.get('/serviceregister', getServiceRegisterPage);
 router.get('/forgotPassword.html', getForgotPasswordPage);
 
 // Onboarding Pages
-router.get('/welcome.html', getWelcomePage);
+// router.get('/welcome.html', getWelcomePage); // welcome.html is now index.html served at /
 router.get('/selection.html', getSelectionPage);
 
 // Check Auth Status

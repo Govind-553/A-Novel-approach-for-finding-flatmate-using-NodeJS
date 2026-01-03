@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendDir = path.join(__dirname, '../../frontend');
 
-export const getMainPage = (req, res) => res.sendFile(path.join(frontendDir, 'index.html'));
+export const getMainPage = (req, res) => res.sendFile(path.join(frontendDir, 'main.html'));
 
 export const getData = async (req, res) => {
      try {
@@ -48,7 +48,7 @@ export const getServiceHomePage = (req, res) => res.sendFile(path.join(frontendD
 export const getServiceLoginPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceLogin.html'));
 export const getServiceRegisterPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceRegister.html'));
 export const getForgotPasswordPage = (req, res) => res.sendFile(path.join(frontendDir, 'forgotPassword.html'));
-export const getWelcomePage = (req, res) => res.sendFile(path.join(frontendDir, 'welcome.html'));
+export const getWelcomePage = (req, res) => res.sendFile(path.join(frontendDir, 'index.html'));
 export const getSelectionPage = (req, res) => res.sendFile(path.join(frontendDir, 'selection.html'));
 
 export const checkAuthStatus = (req, res) => {
