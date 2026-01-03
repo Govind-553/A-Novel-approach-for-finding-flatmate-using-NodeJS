@@ -166,11 +166,15 @@
                 <div class="info-item">
                     <i class="fas fa-bed"></i>
                     <span class="info-text" id="viewRoom">Loading...</span>
-                    <select class="edit-input" id="editRoom" name="roomType">
-                        <option value="Single">Single</option>
-                        <option value="Shared">Shared</option>
-                        <option value="Apartment">Apartment</option>
-                    </select>
+                    <div class="checkbox-container" id="editRoomContainer" style="display:none;">
+                       <label><input type="checkbox" name="room_type" value="Single - 1 Member"> Single - 1 Member</label>
+                       <label><input type="checkbox" name="room_type" value="Shared: 2 Members"> Shared: 2 Members</label>
+                       <label><input type="checkbox" name="room_type" value="Apartment: 4 Members"> Apartment: 4 Members</label>
+                       <label><input type="checkbox" name="room_type" value="1 RK: 1-2 Members"> 1 RK: 1-2 Members</label>
+                       <label><input type="checkbox" name="room_type" value="2 RK: 2-4 Members"> 2 RK: 2-4 Members</label>
+                       <label><input type="checkbox" name="room_type" value="1 BHK: 2 Members"> 1 BHK: 2 Members</label>
+                       <label><input type="checkbox" name="room_type" value="2 BHK: 4 Members"> 2 BHK: 4 Members</label>
+                    </div>
                 </div>
 
                 <label class="edit-input-label" style="display:none;">Budget</label>
@@ -178,9 +182,9 @@
                     <i class="fas fa-wallet"></i>
                      <span class="info-text" id="viewPricing">Loading...</span>
                      <select class="edit-input" id="editPricing" name="pricingValue">
-                         <option value="Low: ₹5000 - 8000">Low (₹5k - 8k)</option>
-                         <option value="Medium: ₹8000 - 100000">Medium (₹8k - 10k)</option>
-                         <option value="High: ₹10000 - 15000">High (₹10k - 15k)</option>
+                         <option value="Low: ₹5000 - 8000">Low: ₹5000 - 8000</option>
+                         <option value="Medium: ₹8000 - 20000">Medium: ₹8000 - 20000</option>
+                         <option value="High: ₹20000 - 30000">High: ₹20000 - 30000</option>
                      </select>
                 </div>
 
@@ -191,16 +195,16 @@
                 
                 <div class="checkbox-container edit-input" id="editAmenitiesContainer" style="display:none; border:none;">
                      <!-- Checkboxes for Amenities -->
-                     <label><input type="checkbox" name="amenities" value="WiFi"> WiFi</label><br>
-                     <label><input type="checkbox" name="amenities" value="Non-AC"> Non-AC</label><br>
-                     <label><input type="checkbox" name="amenities" value="AC"> AC</label><br>
-                     <label><input type="checkbox" name="amenities" value="TV"> TV</label><br>
-                     <label><input type="checkbox" name="amenities" value="Furnished"> Furnished</label><br>
-                     <label><input type="checkbox" name="amenities" value="Parking"> Parking</label><br>
-                     <label><input type="checkbox" name="amenities" value="Wash & Iron"> Wash & Iron</label><br>
-                     <label><input type="checkbox" name="amenities" value="Dry Cleaning"> Dry Cleaning</label><br>
-                     <label><input type="checkbox" name="amenities" value="Pickup & Delivery"> Pickup & Delivery</label><br>
-                     <label><input type="checkbox" name="amenities" value="Subscription Plans"> Subscription Plans</label><br>
+                     <label><input type="checkbox" name="amenities" value="WiFi"> WiFi</label>
+                     <label><input type="checkbox" name="amenities" value="Non-AC"> Non-AC</label>
+                     <label><input type="checkbox" name="amenities" value="AC"> AC</label>
+                     <label><input type="checkbox" name="amenities" value="TV"> TV</label>
+                     <label><input type="checkbox" name="amenities" value="Furnished"> Furnished</label>
+                     <label><input type="checkbox" name="amenities" value="Parking"> Parking</label>
+                     <label><input type="checkbox" name="amenities" value="Wash & Iron"> Wash & Iron</label>
+                     <label><input type="checkbox" name="amenities" value="Dry Cleaning"> Dry Cleaning</label>
+                     <label><input type="checkbox" name="amenities" value="Pickup & Delivery"> Pickup & Delivery</label>
+                     <label><input type="checkbox" name="amenities" value="Subscription Plans"> Subscription Plans</label>
                 </div>
 
                 <h3>Preferred Landmarks</h3>
@@ -208,11 +212,11 @@
                     <!-- JS will populate -->
                 </div>
                 <div class="checkbox-container edit-input" id="editLandmarkContainer" style="display:none; border:none;">
-                     <label><input type="checkbox" name="landmark" value="Near Bus Station"> Near Bus Station</label><br>
-                     <label><input type="checkbox" name="landmark" value="Near Railway Station"> Near Railway Station</label><br>
-                     <label><input type="checkbox" name="landmark" value="Near Metro"> Near Metro</label><br>
-                     <label><input type="checkbox" name="landmark" value="Near Market"> Near Market</label><br>
-                     <label><input type="checkbox" name="landmark" value="Near College"> Near College</label><br>
+                     <label><input type="checkbox" name="landmark" value="Near Bus Station"> Near Bus Station</label>
+                     <label><input type="checkbox" name="landmark" value="Near Railway Station"> Near Railway Station</label>
+                     <label><input type="checkbox" name="landmark" value="Near Metro"> Near Metro</label>
+                     <label><input type="checkbox" name="landmark" value="Near Market"> Near Market</label>
+                     <label><input type="checkbox" name="landmark" value="Near College"> Near College</label>
                 </div>
 
             </div>

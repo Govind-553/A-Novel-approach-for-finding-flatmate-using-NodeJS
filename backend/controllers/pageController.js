@@ -64,3 +64,7 @@ export const checkAuthStatus = (req, res) => {
         return res.status(200).json({ loggedIn: false });
     }
 };
+
+export const getNotificationPage = (req, res) => res.sendFile(path.join(frontendDir, 'notification.html'));
+export const getChatPage = (req, res) => res.sendFile(path.join(frontendDir, 'chat.html'));
+export const getServiceChatsPage = (req, res) => res.sendFile(path.join(frontendDir, 'serviceChats.html'));

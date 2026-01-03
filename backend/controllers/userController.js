@@ -177,7 +177,7 @@ export const saveProfileFields = async (req, res) => {
             instagram: req.body.instagram,
             portfolio: req.body.portfolio,
             food_type: req.body.foodType,
-            room_type: req.body.roomType,
+            room_type: (req.body.room_type || req.body.roomType) ? (Array.isArray(req.body.room_type || req.body.roomType) ? (req.body.room_type || req.body.roomType).join(',') : (req.body.room_type || req.body.roomType)) : undefined,
             amenities: req.body.amenities ? (Array.isArray(req.body.amenities) ? req.body.amenities.join(',') : req.body.amenities) : undefined,
             pricing_value: req.body.pricingValue,
             landmark: req.body.landmark ? (Array.isArray(req.body.landmark) ? req.body.landmark.join(',') : req.body.landmark) : undefined

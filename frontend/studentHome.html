@@ -46,8 +46,9 @@
         <button class="nav-link" onclick="document.getElementById('service-providers-section').scrollIntoView({ behavior: 'smooth' });">Services</button>
         
         <div class="navbar-icons">
-            <button onclick="location.href='/'" class="icon-link bell-icon">
+            <button id="notification-bell" onclick="location.href='/notifications'" class="icon-link bell-icon" style="position: relative;">
                 <i class="fas fa-bell fa-sm" style="color: #333;"></i>
+                <span id="notification-count" class="badge" style="display: none;">0</span>
             </button>   
             <button onclick="location.href='/studentProfile'" class="icon-link profile-icon">
                 <i class="fas fa-user fa-sm" style="color: #333;"></i>
