@@ -175,13 +175,38 @@ let extraFields = {};
             try {
                 const res = await fetch('/profile-update', { method: 'POST', body: formData });
                 if(res.ok) {
-                    alert('Profile updated!');
-                    location.reload();
+                    showStatusModal('Profile updated!', false);
                 } else {
-                    alert('Update failed');
+                    showStatusModal('Update failed', true);
                 }
             } catch (e) {
                 console.error(e);
-                alert('Error saving profile');
+                showStatusModal('Error saving profile', true);
+            }
+        }
+
+        // Modal Logic
+        function showStatusModal(message, isError) {
+            const modal = document.getElementById('statusModal');
+            const icon = document.getElementById('statusIcon');
+            const msg = document.getElementById('statusMessage');
+            
+            modal.style.display = 'block';
+            msg.textContent = message;
+            
+            if (isError) {
+                icon.textContent = '❌'; 
+                icon.style.color = 'red';
+            } else {
+                icon.textContent = '✅'; 
+                icon.style.color = '#28a745';
+            }
+        }
+
+        function closeStatusModal() {
+            const modal = document.getElementById('statusModal');
+            modal.style.display = 'none';
+            if (document.getElementById('statusIcon').textContent === '✅') {
+                 location.reload(); 
             }
         }

@@ -160,14 +160,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if(res.ok) {
                     const txt = await res.text();
-                    alert("Profile Saved!");
-                    location.reload(); // Reload to refresh view data
+                    showStatusModal("Profile Saved!", false);
                 } else {
-                    alert("Error saving profile");
+                    showStatusModal("Error saving profile", true);
                 }
             } catch (err) {
                 console.error(err);
-                alert("Connection Failed");
+                showStatusModal("Connection Failed", true);
+            }
+        }
+
+        // 4. Modal Logic
+        function showStatusModal(message, isError) {
+            const modal = document.getElementById('statusModal');
+            const icon = document.getElementById('statusIcon');
+            const msg = document.getElementById('statusMessage');
+            
+            modal.style.display = 'block';
+            msg.textContent = message;
+            
+            if (isError) {
+                icon.textContent = '❌'; 
+                icon.style.color = 'red';
+            } else {
+                icon.textContent = '✅'; 
+                icon.style.color = '#28a745';
+            }
+        }
+
+        function closeStatusModal() {
+            const modal = document.getElementById('statusModal');
+            modal.style.display = 'none';
+            // Reload only on success close if needed, or simply reload directly after OK
+            if (document.getElementById('statusIcon').textContent === '✅') {
+                 location.reload(); 
             }
         }
         

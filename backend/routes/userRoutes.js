@@ -2,13 +2,14 @@ import express from 'express';
 import { 
     loginStudent, registerStudent, updateProfileImage, saveProfileFields, 
     getProfilePage, getServiceRecommendations, getRoommateRecommendations,
-    verifyStudentEmail, resetStudentPassword
+    verifyStudentEmail, resetStudentPassword, logoutStudent
 } from '../controllers/userController.js';
 import upload from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
 router.post('/login', loginStudent);
+router.post('/logout', logoutStudent);
 // Register handles profile image upload
 router.post('/register-user', upload.single('profileImage'), registerStudent);
 // Update image handles profilePic upload

@@ -277,3 +277,10 @@ export const getRoommateRecommendations = async (req, res) => {
         res.status(500).json({ success: false });
     }
 };
+
+export const logoutStudent = (req, res) => {
+    res.clearCookie('token');
+    res.clearCookie('email');
+    res.clearCookie('userType');
+    res.json({ success: true, message: 'Logged out successfully' });
+};

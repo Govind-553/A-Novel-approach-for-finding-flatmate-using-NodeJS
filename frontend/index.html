@@ -3,325 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flatmate</title>
-    <link rel="icon" href="/img/home.png" type="image/png">
+    <title>Welcome to Flatmate</title>
+    <link rel="icon" type="image/x-icon" href="/img/home.png">
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Oleo+Script&family=Spicy+Rice&display=swap" rel="stylesheet">        
+    
     <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/onboarding.css">
 </head>
-<body>
-<div class="navbar">
-    <div class="navbar-left">
-        <h1>Flatmate</h1>
-    </div>
-    
-    <button class="hamburger" id="hamburger-btn">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-    </button>
+<body class="onboarding-body">
 
-    <div class="navbar-center">
-        <div class="search-container">
-            <input type="text" class="search-box" id="search-input" placeholder="Search profiles and services...">
-            <div class="search-icons-group">
-                <button id="search-button" class="icon-link search icon">
-                    <i class="fas fa-search"></i>
-                </button>
-                <button id="clear-button" class="icon-link clear icon">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="navbar-right" id="navbar-links">
-        <button class="nav-link" id="nav-signin" onclick="location.href='/loginpage'">Sign in</button>
-        <button class="nav-link" id="nav-services" onclick="location.href='/servicelogin'">Services</button>
-        <button class="nav-link" onclick="location.href='#about-section'">About Us</button>
-        <button class="nav-link" id="nav-contact" onclick="location.href='#contact-us'">Contact Us</button>
+    <div class="onboarding-container">
+        <h1 class="welcome-title">Welcome to Flatmate<span class="loading-dots"></span></h1>
         
-        <div class="profile-container">
-            <button onclick="openUserPopup(this)" class="icon-link profile-icon profile-icon-btn">
-                <i class="fas fa-user fa-lg"></i>
-            </button>
-            <div class="user-popup">
-                <h6>Please Login to view and edit your profile details!</h6>
-                <button type="button" onclick="closeUserPopup(this)">OK</button>
-            </div>
-        </div>
-    </div>
-</div>
+        <p class="welcome-description">Discover your perfect living space and companions.</p>
 
-<header id="header">
-    <h1>Welcome to Flatmate</h1>
-    <p>The perfect solution for the PG students and service providers.</p>
-</header>
-
-<section id="overview" class="how-it-works">
-    <div class="content-container">
-        <div class="text-content">
-            <h2>How Flatmate Works</h2>
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('rent')">Quick Profile Publish</button>
-                <button class="tab" onclick="showTab('find')">Showcase Your Services</button>
+        <div class="offer-checklist">
+            <!-- Item 1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Find Verified Roommates</span>
+                    <i class="fas fa-plus accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Connect with students from your college securely. All profiles are verified to ensure safety and compatibility.</p>
+                </div>
             </div>
 
-            <div class="tab-content rent active">
-                <ul class="checklist">
-                    <li>
-                        <span class="checkmark"> <i class="fas fa-check"></i></span>
-                        Go to the Sign-Up page to create an account.
-                    </li>
-                    <li>
-                        <span class="checkmark"> <i class="fas fa-check"></i></span>
-                        Complete the form to make your profile visible on the site.
-                    </li>
-                    <li>
-                        <span class="checkmark"> <i class="fas fa-check"></i></span>
-                        Log in to update your profile on the homepage as needed.
-                    </li>
-                </ul>
+            <!-- Item 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Affordable PG & Hostels</span>
+                    <i class="fas fa-plus accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Browse through a wide range of budget-friendly accommodation options tailored for students.</p>
+                </div>
             </div>
 
-            <div class="tab-content find">
-                <ul class="checklist">
-                    <li>
-                        <span class="checkmark"> <i class="fas fa-check"></i></span>
-                        Complete the signup form.
-                    </li>
-                    <li>
-                        <span class="checkmark"> <i class="fas fa-check"></i></span>
-                        Choose a plan to publish your business.
-                    </li>
-                    <li>
-                        <span class="checkmark"> <i class="fas fa-check"></i></span>
-                        Your services will be available to customers upon registration.
-                    </li>
-                </ul>
+            <!-- Item 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Food & Laundry Services</span>
+                    <i class="fas fa-plus accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Get access to healthy meal plans and convenient laundry services nearby.</p>
+                </div>
             </div>
-            <button class="get-started">Get Started</button>
-        </div>
 
-        <div class="image-content">
-            <img src="/img/laptopuser.png" alt="Illustration of person working on a laptop">
-        </div>
-    </div>
-</section>
-    
-<section id="about-section" class="about-section">
-    <div class="grid-container">
-        <!-- Left side (Image) -->
-        <div class="image-section">
-            <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front">
-                        <img src="/img/Aboutus.jpg" alt="About Us Image">
-                    </div>
-                    <div class="flip-card-back">
-                         <i class="fas fa-play-circle" style="font-size: 50px; margin-bottom: 20px; color: #D0B8A8;"></i>
-                        <p style="font-size: 20px; font-weight: 600;">Flatmate Features</p>
-                        <small>(Video Coming Soon)</small>
-                    </div>
+            <!-- Item 4 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Smart Compatibility Match</span>
+                    <i class="fas fa-plus accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Our algorithm suggests roommates based on your preferences, habits, and lifestyle.</p>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>Direct Communication</span>
+                    <i class="fas fa-plus accordion-icon"></i>
+                </div>
+                <div class="accordion-content">
+                    <p>Chat directly with potential flatmates and service providers without any middleman.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Right side (Description) -->
-        <div class="description-section">
-            <h2>Why Flatmate?</h2>
-            <p>
-                Welcome to our platform! We help students find 
-                roommates and rooms easily. Our goal is to make 
-                it simple for you to connect with your perfect flatmate 
-                or find the right accommodation with just a few clicks. 
-            </p>
-            <p>
-               We ensure that all listings are secure and 
-               verified for your safety. Students can register 
-               for free to search for roommates and rooms, while 
-               service providers like PG owners and meal makers 
-               can list their services at an affordable subscription fee. 
-               Join us today and start your hassle-free journey to 
-               finding your next home!
-            </p>
-            <button class="learn-more" onclick="window.location.href='https://drive.google.com/file/d/11ublwVwbwZjxBtR6AOUO6mcdZAMQ4OKi/view?usp=drive_link'">Learn More</button>
-        </div>
-    </div>
-</section>
-
-<section id="profiles" class="section-header-container">
-    <h1 class="section-header-title">Profiles</h1>
-
-    <div class="filter-container">
-        <button id="filterButton" class="filter-btn">
-            <i class="fas fa-filter" style="margin-right: 5px;"></i> Filter
-        </button>
-        
-        <div id="filterDropdown">
-            <label for="yearFilter">Year:</label>
-            <select id="yearFilter">
-                <option value="All Years">All Years</option>
-                <option value="FE">FE</option>
-                <option value="SE">SE</option>
-                <option value="TE">TE</option>
-                <option value="BE">BE</option>
-            </select>
-            <br>
-            <label for="branchFilter">Branch:</label>
-            <select id="branchFilter">
-                <option value="All Branches">All Branches</option>
-                <option value="INFT">INFT</option>
-                <option value="CMPN">CMPN</option>
-                <option value="ELEC">ELEC</option>
-                <option value="EXTC">EXTC</option>
-                <option value="ECS">ECS</option>
-            </select>
-            <br>
-            <button id="applyFilters">Apply Filters</button>
-        </div>
+        <button class="btn-primary" onclick="window.location.href='/selection.html'">Go Ahead</button>
     </div>
 
-    <div class="swiper swiper-container profilesSwiper container">
-        <div class="swiper-wrapper content">
-            <!-- Content injected by JS -->
-        </div>
-        <!-- Pagination and navigation inside container for positioning -->
-        <div class="swiper-button-next profiles-next"></div>
-        <div class="swiper-button-prev profiles-prev"></div>
-        <div class="swiper-pagination profiles-pagination"></div>
-    </div>
-</section>
-
-<section id="services-food" class="section-header-container">
-    <h1 class="section-header-title">Services</h1>
-    <h3>Food</h3>
-    <div class="swiper swiper-container foodSwiper container">
-        <div class="swiper-wrapper content">
-            <!-- Content injected by JS -->
-        </div>
-        <div class="swiper-button-next food-next"></div>
-        <div class="swiper-button-prev food-prev"></div>
-        <div class="swiper-pagination food-pagination"></div>
-    </div>
-</section>
-
-<section id="services-laundry" class="section-header-container">
-    <h3>Laundry</h3>
-    <div class="swiper swiper-container laundrySwiper container">
-        <div class="swiper-wrapper content">
-             <!-- Content injected by JS -->
-        </div>
-        <div class="swiper-button-next laundry-next"></div>
-        <div class="swiper-button-prev laundry-prev"></div>
-        <div class="swiper-pagination laundry-pagination"></div>
-    </div>
-</section>
-
-<section id="services-brokers" class="section-header-container">
-    <h3>Brokers</h3>
-    <div class="swiper swiper-container brokerSwiper container">
-        <div class="swiper-wrapper content">
-             <!-- Content injected by JS -->
-        </div>
-        <div class="swiper-button-next broker-next"></div>
-        <div class="swiper-button-prev broker-prev"></div>
-        <div class="swiper-pagination broker-pagination"></div>
-    </div>
-</section>
-
-
-<section id="contact-us" class="contact-section">
-    <div class="contact-container">
-        <!-- Left: Form -->
-        <div class="contact-form">
-            <h2>Contact Us</h2>
-            <form id="contact-form" action="https://formspree.io/f/xandzlvw" method="POST">
-                <input type="text" name="name" placeholder="Your Name" required>
-                <input type="email" name="email" placeholder="Your Email" required>
-                <textarea name="message" placeholder="Your Message" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </div>
-        <!-- Right: Info -->
-        <div class="contact-info">
-            <h3>Get in Touch</h3>
-            <p>Have questions or feedback? We'd love to hear from you!</p>
-            <p><i class="fas fa-envelope" style="margin-right: 10px;"></i> support@flatmate.com</p>
-            <p><i class="fas fa-phone" style="margin-right: 10px;"></i> +91 9234567890</p>
-            <div class="contact-privacy">
-                <ul class="contact-privacy-list">
-                    <li class="contact-privacy-item"><small>We value your privacy. Your data is secure with us.</small></li>
-                    <li class="contact-privacy-item"><small>We do not share your personal information with third parties.</small></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Success Modal -->
-    <div id="successModal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
-        <div class="modal-body">
-            <div class="checkmark-circle">
-                <div class="background"></div>
-                <div class="checkmark draw"></div>
-            </div>
-            <h2>Success!</h2>
-            <p>Form submitted successfully.</p>
-            <button class="modal-btn" onclick="closeSuccessModal()">OK</button>
-        </div>
-      </div>
-    </div>
-</section>
-
-<section id="footer-section">
-    <footer>
-        <div class="feet">
-            <h1>Flatmate</h1>
-            <p>
-                Introducing our innovative platform designed to help
-                students find the perfect roommates and accommodations. 
-                Free registration for students ensures easy access,
-                while PG owners, meal providers, and other service
-                vendors can expand their reach with our subscription
-                service. Built with plain HTML, CSS, JavaScript, Node.js,
-                and MySQL, our website features advanced preference 
-                matching algorithms along with search & filter options 
-                for a seamless experience.
-            </p>
-            <div class="copyright">
-                <p>&copy; 2025 Flatmate. All rights reserved.</p>
-            </div>
-        </div>
-        <div class="feet2">
-            <p>Quick links</p>
-            <a href="#header">Home</a>
-            <a href="#profiles">Profiles</a>
-            <a href="#services-food">Services</a>
-            <a href="#overview">Overview</a>
-            <a href="/team">Our Team</a>
-        </div>
-        <div class="contact">
-            <p>Connect with us</p>
-            <a href="" class="icon-link facebook"><i class="fab fa-facebook fa-lg"></i></a>
-            <a href="" class="icon-link instagram"><i class="fab fa-instagram fa-lg"></i></a>
-            <a href="" class="icon-link youtube"><i class="fab fa-youtube fa-lg"></i></a>
-        </div>
-    </footer>
-    <button id="scrollTopBtn" class="scroll-top-btn">⬆</button>
-</section>
-
-<!-- Include Swiper CSS & JS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-
-<script src="/js/index.js"></script>
-
+    <script src="/js/onboarding.js"></script>
 </body>
 </html>

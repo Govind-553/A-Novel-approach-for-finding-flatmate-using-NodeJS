@@ -16,7 +16,8 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #f0f0f0;
-    padding: 20px;
+    padding: 16px;
+    flex-direction: column;
 }
 
 .registration-container {
@@ -272,5 +273,47 @@ button:hover {
     button {
         padding: 12px;
         font-size: 16px;
+    }
+}
+
+/* Back Button */
+.back-btn {
+    display: inline-flex;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: #333;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    z-index: 1000;
+}
+
+.back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    background-color: #fff;
+    color: #007bff;
+}
+
+@media (max-width: 1150px) {
+    .back-btn {
+        position: static;
+        margin-bottom: 20px;
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-btn {
+        padding: 8px 15px;
+        font-size: 0.85rem;
     }
 }

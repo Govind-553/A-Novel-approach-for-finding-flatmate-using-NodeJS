@@ -41,7 +41,7 @@ function proceedToHome() {
         return;
     }
     
-    window.location.href = '/';
+    window.location.href = '/main.html';
 }
 
 function goBack() {

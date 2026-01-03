@@ -1,15 +1,6 @@
 // Global auth state
 let isUserLoggedIn = false;
 
-(function() {
-    const userRole = sessionStorage.getItem('userRole');
-    const path = window.location.pathname;
-    
-    if (!userRole && (path === '/' || path.endsWith('index.html'))) {
-        window.location.href = '/welcome.html';
-    }
-})();
-
 document.addEventListener('DOMContentLoaded', async () => {
     const userRole = sessionStorage.getItem('userRole');
     const signinBtn = document.getElementById('nav-signin');
@@ -31,6 +22,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             servicesBtn.onclick = () => location.href = '/servicelogin';
             servicesBtn.style.display = 'inline-block';
         }
+    } else {
+        // Guest user - hide services button
+        if (servicesBtn) servicesBtn.style.display = 'none';
     }
 
     try {
@@ -39,6 +33,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (authResponse.ok) {
                 const authData = await authResponse.json();
                 isUserLoggedIn = authData.loggedIn;
+                console.log('Auth check result:', authData);
+                console.log('isUserLoggedIn:', isUserLoggedIn);
             }
         } catch (authError) {
             console.error('Error checking auth:', authError);
@@ -60,6 +56,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('Error loading data:', error);
     }
 });
+
+async function logout() {
+    try {
+        await fetch('/logout', { method: 'POST' });
+        sessionStorage.removeItem('userRole'); 
+        window.location.href = '/'; 
+    } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+    }
+}
 
 // Make popup functions global
 window.openPopup = function(button) {
@@ -370,7 +377,10 @@ function renderProfiles(profiles) {
                 ${user.portfolio ? `<a href="${user.portfolio}" target="_blank" title="Portfolio" style="color: #333;"><i class="fas fa-globe fa-lg"></i></a>` : ''}
             </div>
         ` : `
-            <h5>Please Login to view the details.</h5>
+            <div style="text-align: center; color: #d9534f; padding: 10px;">
+                <i class="fas fa-exclamation-circle fa-3x" style="margin-bottom: 10px;"></i>
+                <h5>Please login or register to view details.</h5>
+            </div>
         `;
 
         return `
@@ -410,7 +420,10 @@ function renderServices(services, type, selector, imageName) {
                 <li onclick="window.location.href='${service.price_chart_link}';" style="cursor: pointer;"><i class="fas fa-file-invoice"></i> View Price Chart</li>
             </ul>
         ` : `
-            <h5>Please Login to view the details.</h5>
+            <div style="text-align: center; color: #d9534f; padding: 10px;">
+                <i class="fas fa-exclamation-circle fa-3x" style="margin-bottom: 10px;"></i>
+                <h5>Please login or register to view details.</h5>
+            </div>
         `;
 
         return `
