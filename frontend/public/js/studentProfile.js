@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Preferences
             document.getElementById('viewFood').textContent = userData.food_type || 'Any';
-            document.getElementById('viewRoom').textContent = userData.room_type || 'Any';
+            document.getElementById('viewRoom').textContent = (userData.room_type || '').split(',').join(', ') || 'Any';
             document.getElementById('viewPricing').textContent = userData.pricing_value || 'Any';
             
             // Amenities View
@@ -93,7 +93,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('editPortfolio').value = userData.portfolio || '';
 
             document.getElementById('editFood').value = userData.food_type || 'Veg';
-            document.getElementById('editRoom').value = userData.room_type || 'Single';
+            const roomTypes = userData.room_type ? userData.room_type.split(',') : [];
+            document.querySelectorAll('input[name="room_type"]').forEach(cb => {
+                if(roomTypes.map(r => r.trim()).includes(cb.value)) cb.checked = true;
+            });
             document.getElementById('editPricing').value = userData.pricing_value || '';
             
             // Checkboxes
@@ -113,17 +116,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const body = document.body;
             const amCont = document.getElementById('editAmenitiesContainer');
             const lmCont = document.getElementById('editLandmarkContainer');
+            const roomCont = document.getElementById('editRoomContainer');
             
             if (enable) {
                 body.classList.remove('view-mode');
                 body.classList.add('edit-mode');
                 amCont.style.display = 'block';
                 lmCont.style.display = 'block';
+                roomCont.style.display = 'block';
             } else {
                 body.classList.remove('edit-mode');
                 body.classList.add('view-mode');
                  amCont.style.display = 'none';
                  lmCont.style.display = 'none';
+                 roomCont.style.display = 'none';
             }
         }
 
@@ -138,6 +144,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 formData.append(input.name, input.value);
             });
             
+            // Room Types
+            const roomTypes = Array.from(document.querySelectorAll('input[name="room_type"]:checked')).map(cb => cb.value).join(',');
+            formData.append('room_type', roomTypes);
+
             // Amenities
             const ams = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(cb => cb.value).join(',');
             formData.append('amenities', ams);

@@ -61,7 +61,7 @@ let extraFields = {};
                  container.innerHTML += `<strong>Services:</strong><br>${(extraFields.laundry_service || '').split(',').join('<br>')}`;
             } else if (serviceData.service === 'Broker') {
                  container.innerHTML += `
-                    <div class="info-item"><i class="fas fa-home"></i> ${extraFields.room_type || '-'}</div>
+                    <div class="info-item"><i class="fas fa-home"></i> ${(Array.isArray(extraFields.room_type) ? extraFields.room_type.join(', ') : extraFields.room_type || '-')}</div>
                     <div class="info-item"><i class="fas fa-rupee-sign"></i> ${extraFields.pricing_value || '-'}</div>
                     <div class="info-item"><i class="fas fa-check-circle"></i> ${extraFields.availability || '-'}</div>
                     <hr>
@@ -95,8 +95,10 @@ let extraFields = {};
                     (extraFields.laundry_service || '').split(','));
             } 
             else if (type === 'Broker') {
-                createSelect(container, 'room_type', 'Room Type', ['Single', 'Shared', 'Apartment'], extraFields.room_type);
-                createSelect(container, 'pricing_value', 'Price Range', ['Low', 'Medium', 'High'], extraFields.pricing_value);
+                createCheckboxGroup(container, 'room_type', 'Room Type', 
+                    ['Single - 1 Member', 'Shared: 2 Members', 'Apartment: 4 Members', '1 RK: 1-2 Members', '2 RK: 2-4 Members', '1 BHK: 2 Members', '2 BHK: 4 Members'], 
+                    extraFields.room_type || []);
+                createSelect(container, 'pricing_value', 'Price Range', ['Low: ₹5000 - 8000', 'Medium: ₹8000 - 20000', 'High: ₹20000 - 30000'], extraFields.pricing_value);
                 createSelect(container, 'availability', 'Availability', ['Available', 'Not Available'], extraFields.availability);
                 
                 createCheckboxGroup(container, 'amenities', 'Amenities', 
@@ -163,7 +165,7 @@ let extraFields = {};
                  updatedExtras.laundry_service = Array.from(document.querySelectorAll('input[name="laundry_service"]:checked'))
                     .map(el => el.value).join(',');
             } else if (serviceType === 'Broker') {
-                updatedExtras.room_type = document.getElementById('room_type').value;
+                updatedExtras.room_type = Array.from(document.querySelectorAll('input[name="room_type"]:checked')).map(el => el.value);
                  updatedExtras.pricing_value = document.getElementById('pricing_value').value;
                  updatedExtras.availability = document.getElementById('availability').value;
                  updatedExtras.amenities = Array.from(document.querySelectorAll('input[name="amenities"]:checked')).map(el => el.value);
