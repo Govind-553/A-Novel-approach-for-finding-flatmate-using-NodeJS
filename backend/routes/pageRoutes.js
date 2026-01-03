@@ -2,7 +2,8 @@ import express from 'express';
 import { 
     getMainPage, getData, getTeamPage, getHomePage, getLoginPage, 
     getRegistrationPage, getServiceHomePage, getServiceLoginPage, getServiceRegisterPage,
-    getForgotPasswordPage, checkAuthStatus, getWelcomePage, getSelectionPage 
+    getForgotPasswordPage, checkAuthStatus, getWelcomePage, getSelectionPage,
+    getNotificationPage, getChatPage, getServiceChatsPage
 } from '../controllers/pageController.js';
 
 const router = express.Router();
@@ -17,6 +18,12 @@ router.get('/homepage', getHomePage);
 router.get('/loginpage', getLoginPage);
 router.get('/registrationpage', getRegistrationPage);
 
+// Notification & Chat
+
+router.get('/notifications', getNotificationPage);
+router.get('/chat', getChatPage);
+router.get('/serviceChats', getServiceChatsPage);
+
 // Service Pages
 router.get('/servicehomepage', getServiceHomePage);
 router.get('/servicelogin', getServiceLoginPage);
@@ -26,7 +33,6 @@ router.get('/serviceregister', getServiceRegisterPage);
 router.get('/forgotPassword.html', getForgotPasswordPage);
 
 // Onboarding Pages
-// router.get('/welcome.html', getWelcomePage); // welcome.html is now index.html served at /
 router.get('/selection.html', getSelectionPage);
 
 // Check Auth Status

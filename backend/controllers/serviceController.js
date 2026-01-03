@@ -4,6 +4,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { generateToken } from '../utils/tokenUtils.js';
 import { hashPassword, comparePassword } from '../utils/passwordUtils.js';
+import Student from '../models/Student.js';
+import Notification from '../models/Notification.js';
+import Chat from '../models/Chat.js';
+import { sendVacancyEmail } from '../utils/emailService.js';
+import { broadcastToStudents } from '../utils/socketHandler.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -159,7 +164,88 @@ export const updateServiceProfile = async (req, res) => {
     }
 
     try {
-        await Service.findOneAndUpdate({ email }, updateData);
+        const updatedService = await Service.findOneAndUpdate({ email }, updateData, { new: true });
+        
+        // --- Vacancy Trigger Logic ---
+        if (serviceType === 'Broker' && extraFields.availability === 'Available') {
+            console.log('Vacancy detected, running matching logic...');
+            
+            // Criteria to match
+            const servicePrice = extraFields.pricing_value; 
+            const serviceAmenities = extraFields.amenities; 
+            const serviceLandmark = extraFields.landmark; 
+            const serviceRoomType = extraFields.room_type; 
+
+            // Fetch students - Ideally use more precise DB query if schema allows
+            const students = await Student.find({});
+            console.log(`Checking ${students.length} students for match against:`, { servicePrice, serviceRoomType, serviceLandmark });
+
+            for (const student of students) {
+                // 1. Price Match
+                const priceMatch = !student.pricing_value || student.pricing_value.includes(servicePrice);
+                
+                // 2. Room Type Match
+                 const studentRoomTypes = Array.isArray(student.room_type) ? student.room_type : (student.room_type || '').split(',');
+                 const serviceRoomTypes = Array.isArray(serviceRoomType) ? serviceRoomType : (serviceRoomType || '').split(',');
+                 const typeMatch = studentRoomTypes.some(t => serviceRoomTypes.includes(t.trim()));
+
+                 // 3. Landmark Match (Location)
+                 const studentLocations = Array.isArray(student.landmark) ? student.landmark : (student.landmark || '').split(',');
+                 const serviceLocations = Array.isArray(serviceLandmark) ? serviceLandmark : (serviceLandmark || '').split(',');
+                 const locationMatch = studentLocations.some(l => serviceLocations.includes(l.trim()));
+
+                 console.log(`Student ${student.email}: PriceMatch=${priceMatch} (${student.pricing_value}), TypeMatch=${typeMatch} (${studentRoomTypes}), LocMatch=${locationMatch} (${studentLocations})`);
+
+                 // 4. Amenities Match (Bonus) - skipping strict amenities match for broader results unless required.
+                
+                 if (priceMatch && typeMatch && locationMatch) {
+                     console.log(`Match found: ${student.email}`);
+
+                     // A. Create Notification
+                     const notif = new Notification({
+                         recipientId: student._id,
+                         payload: {
+                             providerName: updatedService.business_Name,
+                             contactNumber: updatedService.contact_number,
+                             email: updatedService.email,
+                             chatId: null // will fill after creating chat
+                         }
+                     });
+                     
+                     // B. Create/Find Chat
+                     let chat = await Chat.findOne({ studentId: student._id, serviceId: updatedService._id });
+                     if (!chat) {
+                         chat = new Chat({
+                             studentId: student._id,
+                             serviceId: updatedService._id
+                         });
+                         await chat.save();
+                     }
+                     
+                     notif.payload.chatId = chat._id;
+                     await notif.save();
+
+                     // C. Broadcast Real-time
+                     broadcastToStudents([student._id.toString()], {
+                         type: 'NOTIFICATION',
+                         notification: notif
+                     });
+
+                     // D. Send Email
+                     const emailName = student.fULL_name || 'Student';
+                     console.log(`Sending email to ${student.email}. Name: ${student.fULL_name} -> Used: ${emailName}`);
+                     
+                     await sendVacancyEmail(student.email, emailName, updatedService.business_Name, {
+                         contact: updatedService.contact_number,
+                         address: updatedService.address,
+                         price: servicePrice,
+                         amenities: serviceAmenities
+                     });
+                 }
+            }
+        }
+        // -----------------------------
+
         res.send('Profile updated successfully');
     } catch (err) {
         console.error('[updateServiceProfile] Database error:', err);
