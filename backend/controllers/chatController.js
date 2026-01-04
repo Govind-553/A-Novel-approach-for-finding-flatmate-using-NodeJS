@@ -21,8 +21,13 @@ export const getChats = async (req, res) => {
         if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
         
         let query = {};
-        if (userType === 'student') query.studentId = userId;
-        else query.serviceId = userId;
+        if (userType === 'student') {
+            query.studentId = userId;
+            query.studentDeleted = { $ne: true }; // Hide if deleted by student
+        } else {
+            query.serviceId = userId;
+            query.providerDeleted = { $ne: true }; // Hide if deleted by provider
+        }
 
         const chats = await Chat.find(query)
             .populate('studentId', 'fULL_name email contact_number profile_pic')
@@ -58,7 +63,21 @@ export const getMessages = async (req, res) => {
                 userId = decoded.id;
             } catch (e) {}
         }
-        
+
+        const chat = await Chat.findById(chatId)
+            .populate('studentId', 'fULL_name profile_pic')
+            .populate('serviceId', 'business_Name profile_pic');
+
+        if (!chat) return res.status(404).json({ success: false, message: 'Chat not found' });
+
+        // Determine clear time for the requester
+        let clearTime = null;
+        if (req.cookies.userType === 'student') {
+            clearTime = chat.studentClearedAt;
+        } else if (req.cookies.userType === 'provider') {
+            clearTime = chat.providerClearedAt;
+        }
+
         // Mark as read if user is identified
         if (userId) {
             await Message.updateMany(
@@ -67,18 +86,20 @@ export const getMessages = async (req, res) => {
             );
         }
 
-        const messages = await Message.find({ chatId }).sort({ timestamp: 1 });
-        const chat = await Chat.findById(chatId)
-            .populate('studentId', 'fULL_name profile_pic')
-            .populate('serviceId', 'business_Name profile_pic');
+        // Fetch messages newer than clearTime
+        const msgQuery = { chatId };
+        if (clearTime) {
+            msgQuery.timestamp = { $gt: clearTime };
+        }
 
+        const messages = await Message.find(msgQuery).sort({ timestamp: 1 });
+        
         let chatData = chat.toObject();
         
         // Process images for both
         if (chatData.studentId && chatData.studentId.profile_pic) {
             chatData.studentId.profile_pic = `data:image/jpeg;base64,${chatData.studentId.profile_pic.toString('base64')}`;
         }
-        // Service might not have profile_pic in this schema? Let's check model if needed, but assuming standard fallback if missing.
         
         res.json({ success: true, messages, chat: chatData });
     } catch (err) {
@@ -89,8 +110,14 @@ export const getMessages = async (req, res) => {
 export const clearChat = async (req, res) => {
     try {
         const { chatId } = req.params;
-        await Message.deleteMany({ chatId });
-        res.json({ success: true, message: 'Chat cleared' });
+        const userType = req.cookies.userType;
+        
+        const update = {};
+        if (userType === 'student') update.studentClearedAt = new Date();
+        else if (userType === 'provider') update.providerClearedAt = new Date();
+
+        await Chat.findByIdAndUpdate(chatId, update);
+        res.json({ success: true, message: 'Chat cleared (hidden for user)' });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
@@ -99,8 +126,14 @@ export const clearChat = async (req, res) => {
 export const endChat = async (req, res) => {
     try {
         const { chatId } = req.params;
-        await Chat.findByIdAndUpdate(chatId, { status: 'ended' });
-        res.json({ success: true, message: 'Chat ended' });
+        const userType = req.cookies.userType;
+
+        const update = {};
+        if (userType === 'student') update.studentDeleted = true;
+        else if (userType === 'provider') update.providerDeleted = true;
+
+        await Chat.findByIdAndUpdate(chatId, update);
+        res.json({ success: true, message: 'Chat removed from list' });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Server Error' });
     }

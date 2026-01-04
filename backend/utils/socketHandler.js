@@ -88,6 +88,12 @@ export const initSocket = (server) => {
                     });
                     
                     await newMessage.save();
+
+                    // Reactivate chat for both if it was deleted/hidden
+                    await Chat.findByIdAndUpdate(chatId, {
+                        studentDeleted: false,
+                        providerDeleted: false
+                    });
                     
                     const payload = {
                         content,
