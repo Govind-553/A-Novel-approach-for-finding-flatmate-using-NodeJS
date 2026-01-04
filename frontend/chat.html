@@ -8,144 +8,50 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
     <link rel="stylesheet" href="/styles/global.css">
-    <style>
-        body {
-            background-color: #e5ddd5; /* WhatsApp-like background */
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            margin: 0;
-        }
-        .navbar {
-            flex-shrink: 0;
-        }
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            max-width: 900px;
-            width: 100%;
-            margin: 80px auto 20px; /* Adjust for fixed navbar */
-            background: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .chat-header {
-            background-color: #075e54;
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .chat-header-user {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .chat-header-user i {
-            font-size: 24px;
-        }
-        .chat-header-actions button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-image: url("https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png"); /* Subtle pattern */
-            background-color: #e5ddd5;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .message {
-            max-width: 70%;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            position: relative;
-            word-wrap: break-word;
-        }
-        .message.sent {
-            background-color: #dcf8c6;
-            align-self: flex-end;
-            border-top-right-radius: 0;
-        }
-        .message.received {
-            background-color: #fff;
-            align-self: flex-start;
-            border-top-left-radius: 0;
-        }
-        .message-time {
-            font-size: 10px;
-            color: #999;
-            text-align: right;
-            margin-top: 5px;
-        }
-        .chat-input-area {
-            background-color: #f0f0f0;
-            padding: 10px 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            padding: 12px; /* Taller input */
-            border: none;
-            border-radius: 20px; /* Rounded pill shape */
-            outline: none;
-            font-family: inherit;
-        }
-        .chat-input-area button {
-            background-color: #075e54;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-    </style>
+    <link rel="stylesheet" href="/styles/chat.css">
 </head>
 <body>
     
-    <div class="navbar">
-        <div class="navbar-left">
-            <h1 onclick="location.href='/'" style="cursor: pointer;">Flatmate</h1>
-        </div>
-        <div class="navbar-right">
-             <!-- Correct back button logic handled in JS -->
-            <button class="nav-link" id="back-btn">Back</button>
-        </div>
-    </div>
+    <button class="back-btn" id="back-btn">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
     <div class="chat-container">
         <div class="chat-header">
             <div class="chat-header-user">
-                <i class="fas fa-user-circle"></i>
+                <!-- Image will be injected via JS -->
+                <img id="chat-partner-img" src="/img/profile.png" alt="Profile" style="display: none;">
+                <i id="chat-partner-icon" class="fas fa-user-circle default-avatar"></i>
                 <div>
-                    <h3 id="chat-partner-name" style="margin: 0;">Loading...</h3>
-                    <small id="chat-partner-status" style="color: #ddd;">Online</small>
+                    <h3 id="chat-partner-name">Loading...</h3>
+                    <small id="chat-partner-status">Online</small>
                 </div>
             </div>
             <div class="chat-header-actions">
-                <button title="Clear Chat" onclick="clearChat()"><i class="fas fa-trash"></i></button>
-                <button title="End Chat" onclick="endChat()"><i class="fas fa-door-open"></i></button>
+                <!-- Menu Toggle Button -->
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- Menu Overlay -->
+        <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
+        <div class="mobile-menu" id="mobileMenu">
+             <button onclick="clearChat(); closeMobileMenu()"><i class="fas fa-trash"></i> Clear Chat</button>
+             <button onclick="endChat(); closeMobileMenu()"><i class="fas fa-door-open"></i> End Chat</button>
         </div>
         
         <div class="chat-messages" id="chat-messages">
             <!-- Messages injected here -->
+        </div>
+
+        <!-- Quick Reply Suggestions -->
+        <div class="chat-suggestions">
+            <div class="suggestion-chip" onclick="useSuggestion('Is this available?')">Is this available?</div>
+            <div class="suggestion-chip" onclick="useSuggestion('I am interested.')">I am interested.</div>
+            <div class="suggestion-chip" onclick="useSuggestion('When can I visit?')">When can I visit?</div>
+            <div class="suggestion-chip" onclick="useSuggestion('Please share details.')">Please share details.</div>
         </div>
 
         <div class="chat-input-area">
@@ -167,6 +73,30 @@
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Mobile Menu Logic
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const overlay = document.getElementById('mobileMenuOverlay');
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                overlay.style.display = 'none';
+            } else {
+                menu.classList.add('show');
+                overlay.style.display = 'block';
+            }
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('show');
+            document.getElementById('mobileMenuOverlay').style.display = 'none';
+        }
+
+        function useSuggestion(text) {
+            const input = document.getElementById('message-input');
+            input.value = text;
+            input.focus();
         }
     </script>
 </body>

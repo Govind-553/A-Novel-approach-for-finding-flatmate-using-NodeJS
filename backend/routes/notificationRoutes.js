@@ -32,4 +32,18 @@ router.get('/api/notifications', async (req, res) => {
     }
 });
 
+// Delete Notification
+router.delete('/api/notifications/:id', async (req, res) => {
+    try {
+        const result = await Notification.findByIdAndDelete(req.params.id);
+        if (!result) {
+            return res.status(404).json({ success: false, message: 'Notification not found' });
+        }
+        res.json({ success: true, message: 'Notification deleted' });
+    } catch (err) {
+        console.error('Error deleting notification:', err);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
 export default router;

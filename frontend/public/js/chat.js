@@ -12,6 +12,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('chat-partner-name').innerText = partnerName;
     }
     currentUserType = getCookie('userType'); 
+    
+    // Set Profile Image
+    const imgEl = document.getElementById('chat-partner-img');
+    const iconEl = document.getElementById('chat-partner-icon');
+    
+    if (currentUserType === 'student') {
+        // Student viewing Provider -> Use broker img
+        imgEl.src = '/img/brokerservice.jpg';
+        imgEl.style.display = 'block';
+        iconEl.style.display = 'none';
+    } else if (currentUserType === 'provider') {
+        imgEl.src = '/img/User.jpg'; 
+        imgEl.style.display = 'block';
+        iconEl.style.display = 'none';
+    } else {
+        imgEl.style.display = 'none';
+        iconEl.style.display = 'block';
+    } 
 
     // Initialize WebSocket
     initWebSocket();
