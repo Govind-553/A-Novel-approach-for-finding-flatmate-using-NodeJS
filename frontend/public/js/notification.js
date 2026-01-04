@@ -71,6 +71,9 @@ function renderNotifications(notifications) {
                 <button class="chat-btn" onclick="openChat('${payload.chatId}', '${payload.providerName}')">
                     <i class="fas fa-comments"></i> Chat
                 </button>
+                <button class="delete-btn" onclick="showDeleteModal('${notif._id}', this)">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
             </div>
         `;
         notificationList.appendChild(card);
@@ -79,4 +82,75 @@ function renderNotifications(notifications) {
 
 function openChat(chatId, providerName) {
     window.location.href = `/chat?chatId=${chatId}&name=${encodeURIComponent(providerName)}`;
+}
+
+let notificationToDelete = null;
+let cardToDelete = null;
+
+function showDeleteModal(id, btnElement) {
+    notificationToDelete = id;
+    cardToDelete = btnElement.closest('.notification-card');
+    const modal = document.getElementById('deleteModal');
+    modal.classList.add('show');
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.remove('show');
+    notificationToDelete = null;
+    cardToDelete = null;
+}
+
+// Bind confirmation button click
+document.addEventListener('DOMContentLoaded', () => {
+    // ... (existing code for socket) ...
+    document.getElementById('confirmDeleteBtn').addEventListener('click', deleteNotification);
+});
+
+
+async function deleteNotification() {
+    if (!notificationToDelete) return; // Should not happen
+
+    const modal = document.getElementById('deleteModal');
+    // Disable button to prevent double clicks
+    const confirmBtn = document.getElementById('confirmDeleteBtn');
+    confirmBtn.disabled = true;
+    confirmBtn.innerText = 'Deleting...';
+
+    try {
+        const response = await fetch(`/api/notifications/${notificationToDelete}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            closeDeleteModal();
+            // Remove the card from DOM
+            if (cardToDelete) {
+                cardToDelete.style.opacity = '0';
+                cardToDelete.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    cardToDelete.remove();
+                    // Check if list is empty
+                    const list = document.getElementById('notification-list');
+                    if (list.children.length === 0) {
+                        list.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-bell-slash fa-3x"></i>
+                                <p>No new notifications at the moment.</p>
+                            </div>`;
+                    }
+                }, 300);
+            }
+        } else {
+            alert('Failed to delete notification');
+            closeDeleteModal();
+        }
+    } catch (error) {
+        console.error('Error deleting notification:', error);
+        closeDeleteModal();
+    } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.innerText = 'Yes';
+    }
 }

@@ -8,119 +8,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="/styles/global.css">
-    <style>
-        body {
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 800px;
-            margin: 100px auto 20px; 
-            padding: 20px;
-            flex: 1;
-        }
-        .notification-card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-        .notification-card:hover {
-            transform: translateY(-2px);
-        }
-        .notification-content h3 {
-            margin: 0 0 10px 0;
-            color: #333;
-        }
-        .notification-content p {
-            margin: 5px 0;
-            color: #666;
-            font-size: 0.9em;
-        }
-        .notification-actions .chat-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-        .notification-actions .chat-btn:hover {
-            background-color: #45a049;
-        }
-        h1.page-title {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .empty-state {
-            text-align: center;
-            margin-top: 50px;
-            color: #888;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles/notification.css">
 </head>
 <body>
 
-    <!-- Reuse existing navbar structure dynamically or statically -->
-    <div class="navbar">
-        <div class="navbar-left">
-            <h1 onclick="location.href='/'" style="cursor: pointer;">Flatmate</h1>
-        </div>
-        <div class="navbar-right">
-            <button class="nav-link" onclick="location.href='/'">Home</button>
-            <button class="nav-link" onclick="showLogoutPopup()">Log out</button>
-        </div>
-    </div>
-
-    <!-- Logout Popup -->
-    <div id="logoutPopup" class="modal">
-        <div class="modal-content logout-modal-content">
-            <p class="logout-title">Do you want to log out?</p>
-            <div class="logout-actions">
-                <button onclick="logout()" class="btn-logout btn-yes">Yes</button>
-                <button onclick="closeLogoutPopup()" class="btn-logout btn-no">No</button>
-            </div>
-        </div>
-    </div>
+    <button class="back-btn" id="notification-back-btn">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
     <div class="container">
         <h1 class="page-title">Your Notifications</h1>
         <div id="notification-list">
             <!-- Notifications will be injected here via JS -->
-            <div class="empty-state">
-                <i class="fas fa-bell-slash fa-3x"></i>
-                <p>No new notifications at the moment.</p>
+            <!-- Empty state is handled in JS -->
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay">
+        <div class="delete-modal">
+            <h3>Confirm Deletion</h3>
+            <p>Are you sure you want to delete this notification?</p>
+            <div class="modal-actions">
+                <button class="modal-btn btn-confirm" id="confirmDeleteBtn">Yes</button>
+                <button class="modal-btn btn-cancel" onclick="closeDeleteModal()">No</button>
             </div>
         </div>
     </div>
 
     <script src="/js/notification.js"></script>
     <script>
-        // Simple Logout Logic for reuse
-        function showLogoutPopup() {
-            document.getElementById('logoutPopup').style.display = 'flex';
-        }
-        function closeLogoutPopup() {
-            document.getElementById('logoutPopup').style.display = 'none';
-        }
-        function logout() {
-            // Clear cookies/storage logic here
-            document.cookie = 'token=; Max-Age=0; path=/;';
-            document.cookie = 'email=; Max-Age=0; path=/;';
-            document.cookie = 'userType=; Max-Age=0; path=/;';
-            window.location.href = '/studentlogin.html';
+        document.getElementById('notification-back-btn').onclick = () => {
+             const userType = getCookie('userType'); 
+             if (userType === 'provider') location.href = '/serviceHome';
+             else location.href = '/homepage';
+        };
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
         }
     </script>
 </body>

@@ -18,7 +18,12 @@ const chatSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    // Visibility Flags
+    studentDeleted: { type: Boolean, default: false },
+    providerDeleted: { type: Boolean, default: false },
+    studentClearedAt: { type: Date, default: null },
+    providerClearedAt: { type: Date, default: null }
 });
 
 const Chat = mongoose.model('Chat', chatSchema);
