@@ -14,80 +14,153 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
         }
+        
+        * { box-sizing: border-box; }
+
+        /* Back Button Styles */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: #333;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            background-color: #fff;
+            color: #007bff;
+        }
+
         .container {
-            max-width: 800px;
-            margin: 100px auto 20px;
+            max-width: 1200px; 
+            margin: 10px auto 20px;
             padding: 20px;
             flex: 1;
+            width: 95%;
         }
+
+        h1.page-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 2rem;
+            line-height: 1.2;
+        }
+
+        #chat-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px; /* Tighter gap */
+        }
+
         .chat-list-card {
             background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 15px; /* Reduced padding a bit */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
         }
+
         .chat-list-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            border-color: #eee;
         }
+
+        .chat-avatar {
+            width: 45px; /* Slightly smaller to match text height better */
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        /* Flex container for Image + Text */
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .chat-info h3 {
-            margin: 0 0 5px 0;
-            color: #333;
-        }
-        .chat-info p {
             margin: 0;
-            color: #666;
-            font-size: 0.9em;
-        }
-        .status-badge {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: 600;
-        }
-        .status-active { background-color: #e8f5e9; color: #2e7d32; }
-        .status-ended { background-color: #ffebee; color: #c62828; }
-        
-        h1.page-title {
-            text-align: center;
-            margin-bottom: 30px;
             color: #333;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.2;
         }
+
+        .status-text {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 2px;
+            display: block;
+        }
+        .status-text.active { color: #2e7d32; }
+        .status-text.ended { color: #c62828; }
+
         .empty-state {
+            grid-column: 1 / -1; 
             text-align: center;
             margin-top: 50px;
             color: #888;
         }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            #chat-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .back-btn {
+                top: 15px;
+                left: 15px;
+                padding: 6px 14px;
+                font-size: 0.75rem;
+            }
+            .container {
+                margin: 50px auto 20px; /* Mobile adjustment */
+            }
+            #chat-list {
+                grid-template-columns: 1fr;
+            }
+            h1.page-title {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div class="navbar">
-        <div class="navbar-left">
-            <h1 onclick="location.href='/serviceHome'" style="cursor: pointer;">Flatmate</h1>
-        </div>
-        <div class="navbar-right">
-            <button class="nav-link" onclick="location.href='/serviceHome'">Home</button>
-            <button class="nav-link" onclick="showLogoutPopup()">Log out</button>
-        </div>
-    </div>
-
-    <!-- Logout Popup -->
-    <div id="logoutPopup" class="modal">
-        <div class="modal-content logout-modal-content">
-            <p class="logout-title">Do you want to log out?</p>
-            <div class="logout-actions">
-                <button onclick="logout()" class="btn-logout btn-yes">Yes</button>
-                <button onclick="closeLogoutPopup()" class="btn-logout btn-no">No</button>
-            </div>
-        </div>
-    </div>
+    
+    <button class="back-btn" onclick="location.href='/serviceProfile'">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
 
     <div class="container">
         <h1 class="page-title">My Chats</h1>
@@ -95,7 +168,7 @@
             <!-- Chat list injected here -->
              <div class="empty-state">
                 <i class="fas fa-comments fa-3x"></i>
-                <p>No active chats.</p>
+                <p>Loading chats...</p>
             </div>
         </div>
     </div>
@@ -107,46 +180,8 @@
 
         async function fetchChats() {
             try {
-                // Get user ID from cookie or handled by backend if token is passed automatically
-                // Here we assume the server can identify us from the token cookie
-                
-                // We need to pass userType=provider explicitly if the API needs it and can't deduce from token 'role'
-                // Our chatController expects ?userType=student|provider & userId
-                
-                // Let's decode cookie in JS or assume backend handles "me" logic. 
-                // The current chatController code: const { userId, userType } = req.query; 
-                // This is suboptimal. Let's fix this in JS to pass the cookie values.
-                
-                const userId = getCookie('serviceId') || getCookie('id'); // Wait, service uses what cookie? 
-                // loginService in serviceController sets: token, email, userType. 
-                // It does NOT set 'id' or 'userId' in raw cookie. It's inside the token.
-                
-                // If I can't decode token here, I might need to hit an endpoint /api/me or similar.
-                // Or I can update getChats to read from req.user if middleware exists. 
-                // But looking at previous code, there is no auth middleware on the routes yet.
-                
-                // WORKAROUND: rely on updated chatController to decode token if query params missing.
-                // OR: decode token here (base64 decode of jwt payload part).
-                
-                const token = getCookie('token');
-                let myId = null;
-                if(token) {
-                    try {
-                        const base64Url = token.split('.')[1];
-                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                        const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-                            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                        }).join(''));
-                        myId = JSON.parse(jsonPayload).id;
-                    } catch(e) { console.error('Token decode error', e); }
-                }
-
-                if(!myId) {
-                    console.error("Not logged in");
-                    return;
-                }
-
-                const response = await fetch(`/api/chats?userId=${myId}&userType=provider`);
+                // Backend now handles auth via cookies automatically
+                const response = await fetch('/api/chats');
                 const data = await response.json();
 
                 if (data.success && data.chats.length > 0) {
@@ -160,6 +195,7 @@
                 }
             } catch (error) {
                 console.error('Error fetching chats:', error);
+                document.getElementById('chat-list').innerHTML = '<p style="text-align:center; color: red;">Error loading chats.</p>';
             }
         }
 
@@ -169,36 +205,33 @@
             chats.forEach(chat => {
                 const card = document.createElement('div');
                 card.className = 'chat-list-card';
-                const studentName = chat.studentId ? chat.studentId.name : 'Unknown Student';
+                
+                // Student Details
+                const studentName = chat.studentId ? chat.studentId.fULL_name : 'Unknown Student';
+                const profilePic = (chat.studentId && chat.studentId.profile_pic) ? chat.studentId.profile_pic : '/img/User.png';
                 
                 card.innerHTML = `
-                    <div class="chat-info">
-                        <h3>${studentName}</h3>
-                        <p>Status: <span class="status-badge ${chat.status === 'active' ? 'status-active' : 'status-ended'}">${chat.status}</span></p>
+                    <div class="card-left">
+                        <img src="${profilePic}" alt="Profile" class="chat-avatar">
+                        <div class="chat-info">
+                            <h3>${studentName}</h3>
+                            <span class="status-text ${chat.status === 'active' ? 'active' : 'ended'}">
+                                ${chat.status === 'active' ? 'Active' : 'Ended'}
+                            </span>
+                        </div>
                     </div>
-                    <i class="fas fa-chevron-right"></i>
+                    <i class="fas fa-chevron-right" style="color: #aaa;"></i>
                 `;
+                
+                // Pass profile pic in query or rely on chat page to fetch it (Chat page currently static)
+                // For now, let's fix the name. 
                 card.onclick = () => {
+                    // We can encode the profile pic too if we want to show it immediately, but it's large.
+                    // Better to just pass ID and Name, and let chat page handle it.
                     location.href = `/chat?chatId=${chat._id}&name=${encodeURIComponent(studentName)}`;
                 };
                 list.appendChild(card);
             });
-        }
-        
-        function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        // Reuse logout
-        function showLogoutPopup() { document.getElementById('logoutPopup').style.display = 'flex'; }
-        function closeLogoutPopup() { document.getElementById('logoutPopup').style.display = 'none'; }
-        function logout() {
-            document.cookie = 'token=; Max-Age=0; path=/;';
-            document.cookie = 'email=; Max-Age=0; path=/;';
-            document.cookie = 'userType=; Max-Age=0; path=/;';
-            window.location.href = '/serviceLogin.html';
         }
     </script>
 </body>

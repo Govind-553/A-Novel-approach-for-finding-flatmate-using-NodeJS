@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/tokenUtils.js';
 
 // Protect Routes
 export const protect = async (req, res, next) => {
@@ -11,7 +11,7 @@ export const protect = async (req, res, next) => {
         return res.status(401).json({ success: false, message: 'Not authorized, no token' });
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = verifyToken(token);
         
         req.user = decoded; // { id, email, userType }
         next();

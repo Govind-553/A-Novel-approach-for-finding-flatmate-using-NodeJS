@@ -3,7 +3,7 @@ import Notification from '../models/Notification.js';
 
 const router = express.Router();
 
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/tokenUtils.js';
 
 router.get('/api/notifications', async (req, res) => {
     try {
@@ -12,7 +12,7 @@ router.get('/api/notifications', async (req, res) => {
         // Try to get from token if not in query
         if (!userId && req.cookies.token) {
             try {
-                const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+                const decoded = verifyToken(req.cookies.token);
                 userId = decoded.id;
             } catch (e) {
                 console.error('Token verification failed', e);

@@ -39,7 +39,7 @@ export const loginStudent = async (req, res) => {
             
             res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
             res.cookie('email', email, { httpOnly: true });
-            res.cookie('userType', 'student', { httpOnly: true });
+            res.cookie('userType', 'student', { httpOnly: false });
 
             res.json({ success: true, token });
         } else {
@@ -90,7 +90,7 @@ export const registerStudent = async (req, res) => {
         const token = generateToken(savedStudent._id, savedStudent.email, 'student');
         res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
         res.cookie('email', email, { httpOnly: true });
-        res.cookie('userType', 'student', { httpOnly: true });
+        res.cookie('userType', 'student', { httpOnly: false });
 
         if (req.file) fs.unlink(req.file.path, () => {});
 

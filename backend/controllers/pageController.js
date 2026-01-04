@@ -2,7 +2,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Service from '../models/Service.js';
 import Student from '../models/Student.js';
-import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/tokenUtils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -58,7 +58,7 @@ export const checkAuthStatus = (req, res) => {
     }
     
     try {
-        jwt.verify(token, process.env.JWT_SECRET);
+        verifyToken(token);
         return res.status(200).json({ loggedIn: true });
     } catch (err) {
         return res.status(200).json({ loggedIn: false });

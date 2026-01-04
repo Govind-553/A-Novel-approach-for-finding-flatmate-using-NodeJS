@@ -38,8 +38,14 @@
         <!-- Menu Overlay -->
         <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="closeMobileMenu()"></div>
         <div class="mobile-menu" id="mobileMenu">
-             <button onclick="clearChat(); closeMobileMenu()"><i class="fas fa-trash"></i> Clear Chat</button>
-             <button onclick="endChat(); closeMobileMenu()"><i class="fas fa-door-open"></i> End Chat</button>
+             <button class="danger-btn" onclick="clearChat(); closeMobileMenu()"><i class="fas fa-trash"></i> Clear Chat</button>
+             <button class="danger-btn" onclick="endChat(); closeMobileMenu()"><i class="fas fa-power-off"></i> End Chat</button>
+        </div>
+
+        <div id="contextMenu" class="context-menu">
+            <div class="context-option delete-option" onclick="deleteMessageAction()">
+                <i class="fas fa-trash-alt"></i> Delete
+            </div>
         </div>
         
         <div class="chat-messages" id="chat-messages">
@@ -47,11 +53,8 @@
         </div>
 
         <!-- Quick Reply Suggestions -->
-        <div class="chat-suggestions">
-            <div class="suggestion-chip" onclick="useSuggestion('Is this available?')">Is this available?</div>
-            <div class="suggestion-chip" onclick="useSuggestion('I am interested.')">I am interested.</div>
-            <div class="suggestion-chip" onclick="useSuggestion('When can I visit?')">When can I visit?</div>
-            <div class="suggestion-chip" onclick="useSuggestion('Please share details.')">Please share details.</div>
+        <div class="chat-suggestions" id="chat-suggestions">
+            <!-- Injected via JS -->
         </div>
 
         <div class="chat-input-area">

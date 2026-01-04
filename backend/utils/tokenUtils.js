@@ -5,3 +5,7 @@ export const generateToken = (id, email, userType) => {
         expiresIn: '30d'
     });
 };
+
+export const verifyToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET);
+};

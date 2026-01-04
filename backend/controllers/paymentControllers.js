@@ -98,7 +98,7 @@ export const completePayment = async (req, res) => {
         const token = generateToken(savedService._id, savedService.email, 'provider');
         res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
         res.cookie('email', savedService.email, { httpOnly: true });
-        res.cookie('userType', 'provider', { httpOnly: true });
+        res.cookie('userType', 'provider', { httpOnly: false });
 
         res.redirect('/servicelogin?registration=success');
     } catch (error) {
