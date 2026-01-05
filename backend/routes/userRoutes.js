@@ -26,4 +26,8 @@ router.post('/saveProfileFields', upload.none(), saveProfileFields);
 // Student Profile Page
 router.get('/studentprofile', getProfilePage);
 
+// Recommendations
+router.get('/roommate-recommendations', getRoommateRecommendations);
+router.get('/service-recommendations', getServiceRecommendations);
+
 export default router;

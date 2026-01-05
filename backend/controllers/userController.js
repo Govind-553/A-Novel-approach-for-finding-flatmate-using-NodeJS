@@ -229,22 +229,28 @@ export const getProfilePage = async (req, res) => {
     }
 };
 
+import axios from 'axios';
+
 export const getServiceRecommendations = async (req, res) => {
     const studentEmail = req.cookies.email;
     if (!studentEmail) return res.status(401).json({ success: false, message: 'Unauthorized' });
     try {
         const student = await Student.findOne({ email: studentEmail });
-        if (!student) return res.status(500).json({ success: false, message: 'Error fetching cluster' });
-        const cluster = student.cluster; 
-        const [foodServices, laundryServices, brokerServices] = await Promise.all([
-             Service.find({ service: 'food', cluster }).select('business_Name email contact_number food_type price_chart_link'),
-             Service.find({ service: 'laundry', cluster }).select('business_Name email contact_number laundry_service price_chart_link'),
-             Service.find({ service: 'broker', cluster }).select('business_Name email contact_number room_type amenities pricing_value landmark price_chart_link')
-        ]);
-        res.json({ success: true, foodServices, laundryServices, brokerServices });
+        if (!student) return res.status(500).json({ success: false, message: 'Student not found' });
+        
+        // Proxy to FastAPI
+        const response = await axios.get(`http://localhost:8000/recommend/services/${student._id}`);
+        const data = response.data;
+        
+        res.json({ 
+            success: true, 
+            foodServices: data.Food || [], 
+            laundryServices: data.Laundry || [], 
+            brokerServices: data.Broker || [] 
+        });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: 'Error fetching recommendations' });
+        console.error("FastAPI Service Error:", err.message);
+        res.status(500).json({ success: false, message: 'Error fetching recommendations from microservice' });
     }
 };
 
@@ -253,12 +259,47 @@ export const getRoommateRecommendations = async (req, res) => {
     if (!email) return res.status(401).json({ success: false });
     try {
         const student = await Student.findOne({ email });
-        if (!student) return res.status(500).json({ success: false });
-        const matchCluster = student.match_cluster;
-        const roommates = await Student.find({ match_cluster: matchCluster, email: { $ne: email } })
-            .select('fULL_name email contact_number food_type room_type amenities profile_pic');
-        const formattedRoommates = roommates.map(user => {
-             let profilePicData = 'default.jpg'; 
+        if (!student) return res.status(500).json({ success: false, message: "Student not found" });
+
+        // Proxy to FastAPI
+        const response = await axios.get(`http://localhost:8000/recommend/roommates/${student._id}`);
+        const data = response.data;
+
+        // map matches to frontend format (if needed, but FastAPI returns clean list)
+        // Frontend expects: { success: true, roommates: [...] }
+        // Each roommate needs: fULL_name, email, contact_number, food_type, room_type, amenities, profile_pic
+        
+        const formattedRoommates = data.matches.map(user => {
+            let profilePicData = '/img/User.png'; // Default
+            if (user.profile_pic) {
+                 // Check if it looks like base64 or buffer. new app.py cleans it up, logic/student_logic.py removed it ("del m['profile_pic']") to avoid JSON errors?
+                 // Wait, if Python removes it, we can't show it!
+                 // The Python logic `if 'profile_pic' in m: del m['profile_pic']` removes it. 
+                 // So we need to re-fetch here OR update Python to return it as base64 string.
+                 // Retrying fetch here is safer for large data.
+            }
+            return {
+                fULL_name: user.fULL_name,
+                email: user.email,
+                contact_number: user.contact_number,
+                food_type: user.food_type,
+                room_type: user.room_type,
+                amenities: user.amenities,
+                // placeholder if Python didn't send it. 
+                // We'll fix Python later if needed, but for now let's use a placeholder or handle it in Frontend if missing
+                profile_pic: '/img/User.png'
+            }; 
+        });
+
+        // Actually, to get images, we might want to query Mongo here for the IDs returned by Python?
+        // Or just let the Python side send ID and we fetch details.
+        // For efficiency, let's fetch details here based on IDs from Python.
+        
+        const matchIds = data.matches.map(m => m._id);
+        const completeMatches = await Student.find({ _id: { $in: matchIds } }).select('fULL_name email contact_number food_type room_type amenities profile_pic');
+        
+        const finalRoommates = completeMatches.map(user => {
+             let profilePicData = '/img/User.png'; 
              if (user.profile_pic) {
                  profilePicData = `data:image/jpeg;base64,${user.profile_pic.toString('base64')}`;
              }
@@ -272,8 +313,11 @@ export const getRoommateRecommendations = async (req, res) => {
                  profile_pic: profilePicData
              };
         });
-        res.json({ success: true, roommates: formattedRoommates });
+
+        res.json({ success: true, roommates: finalRoommates });
+
     } catch (err) {
+        console.error("FastAPI Roommate Error:", err.message);
         res.status(500).json({ success: false });
     }
 };
