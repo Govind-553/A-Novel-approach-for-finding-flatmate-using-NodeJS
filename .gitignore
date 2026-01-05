@@ -1,5 +1,7 @@
 # Hidden files and directories
 venv 
+__pycache__
+
 node_modules/
 .env 
 .vscode   
@@ -7,4 +9,6 @@ node_modules/
 # Migrating to new database - Mongodb Atlas
 migrate.js 
 
-uploads/
+uploads/ 
+
+start.bat  

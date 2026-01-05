@@ -2069,3 +2069,123 @@
         padding: 8px 20px;
     }
 }
+
+/* Service Cards (Mobile/Portrait View) */
+.service-cards-container {
+    display: none; /* Hidden by default (Standard Desktop) */
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.service-card-header {
+    background: linear-gradient(135deg, #f6f5ee 0%, #eaeaea 100%);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.service-icon {
+    font-size: 24px;
+    color: #D0B8A8;
+}
+
+.service-card-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+    flex: 1;
+}
+
+.service-category-tag {
+    background-color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.service-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.service-info-row strong {
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-info-row p {
+    margin: 0;
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.service-action-row {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.view-chart-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #D0B8A8;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.view-chart-btn:hover {
+    background-color: #bfa08e;
+}
+
+/* Visibility Toggles */
+@media (min-width: 769px) {
+    .service-providers-table-container {
+        display: block;
+    }
+    .service-cards-container {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .service-providers-table-container {
+        display: none;
+    }
+    .service-cards-container {
+        display: flex;
+    }
+}

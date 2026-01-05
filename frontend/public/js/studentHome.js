@@ -134,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             populateTable('services-table-body', unifiedData, ['category', 'name', 'contact', 'details', 'priceChart']);
+            populateServiceCards('service-cards-container', unifiedData);
         })
         .catch(err => {
             console.error('Error fetching recommendations:', err);
@@ -148,19 +149,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const filterValue = btn.getAttribute('data-filter');
             filterTable(filterValue);
+            filterServiceCards(filterValue);
         });
     });
 
     function filterTable(category) {
         const rows = document.querySelectorAll('#services-table-body tr');
         rows.forEach(row => {
-            const categoryText = row.children[0].textContent; // First column is category
+            const categoryText = row.children[0].textContent; 
             if (category === 'all') {
                 row.style.display = '';
             } else if (categoryText.includes(category)) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
+            }
+        });
+    }
+
+    function filterServiceCards(category) {
+        const cards = document.querySelectorAll('#service-cards-container .service-card');
+        cards.forEach(card => {
+            const categoryText = card.getAttribute('data-category');
+            if (category === 'all') {
+                card.style.display = 'flex';
+            } else if (categoryText && categoryText.includes(category)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
             }
         });
     }
@@ -175,14 +191,55 @@ function populateTable(tableId, data, keys) {
         const tr = document.createElement('tr');
         keys.forEach(key => {
             const td = document.createElement('td');
-            if (key === 'price_chart_link') {
-                td.innerHTML = `<a href="${row[key]}">View Chart</a>`;
+            if (key === 'priceChart') {
+                td.innerHTML = `<a href="${row[key]}" target="_blank" class="price-chart-link">View Chart</a>`;
             } else {
-                td.textContent = row[key] || '';
+                td.innerHTML = row[key] || ''; // Use innerHTML to allow <br> tags in contact/details
             }
             tr.appendChild(td);
         });
         tbody.appendChild(tr);
+    });
+}
+
+function populateServiceCards(containerId, data) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+
+    data.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'service-card';
+        card.setAttribute('data-category', item.category);
+
+        let iconClass = 'fa-concierge-bell';
+        if (item.category.includes('Food')) iconClass = 'fa-utensils';
+        if (item.category.includes('Laundry')) iconClass = 'fa-tshirt';
+        if (item.category.includes('Broker')) iconClass = 'fa-home';
+
+        card.innerHTML = `
+            <div class="service-card-header">
+                <i class="fas ${iconClass} service-icon"></i>
+                <h3>${item.name}</h3>
+                <span class="service-category-tag">${item.category}</span>
+            </div>
+            <div class="service-card-body">
+                <div class="service-info-row">
+                    <strong>Contact:</strong>
+                    <p>${item.contact.replace(/<br>/g, ', ')}</p>
+                </div>
+                <div class="service-info-row">
+                    <strong>Details:</strong>
+                    <p>${item.details.replace(/<br>/g, ' | ')}</p>
+                </div>
+                <div class="service-action-row">
+                    <a href="${item.priceChart}" target="_blank" class="view-chart-btn">
+                        <i class="fas fa-file-invoice-dollar"></i> View Price Chart
+                    </a>
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
     });
 }    
 
