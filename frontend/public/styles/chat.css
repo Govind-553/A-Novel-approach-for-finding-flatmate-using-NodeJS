@@ -56,13 +56,13 @@
             flex: 1;
             max-width: 900px;
             width: 100%;
-            margin: 70px auto 20px; /* Reduced top margin slightly */
+            margin: 70px auto 20px;
             background: #fff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             border-radius: 8px;
-            overflow: hidden; /* Ensure messages stay inside */
+            overflow: hidden;
             position: relative; 
-            height: calc(100vh - 90px); /* Explicit height calculation */
+            height: calc(100vh - 90px); 
         }
         .chat-header {
             background-color: #075e54;
@@ -184,12 +184,52 @@
             align-self: flex-end;
             border-top-right-radius: 0;
             cursor: pointer; 
+            margin-right: 8px;
+        }
+
+        .message.sent::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -8px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid #dcf8c6;
+            border-right: 10px solid transparent;
         }
         .message.received {
             background-color: #fff;
             align-self: flex-start;
             border-top-left-radius: 0;
+            margin-left: 8px;
         }
+
+        .message.received::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -8px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid #fff;
+            border-left: 10px solid transparent;
+        }
+        .message.sent + .message.sent {
+            border-top-right-radius: 8px;
+            margin-top: -6px;
+        }
+        .message.sent + .message.sent::after {
+            display: none;
+        }
+
+        .message.received + .message.received {
+            border-top-left-radius: 8px;
+            margin-top: -6px;
+        }
+        .message.received + .message.received::before {
+            display: none;
+        }
+
         .message-time {
             font-size: 10px;
             color: #999;
@@ -390,4 +430,152 @@
         }
         .context-option.delete-option:hover {
             background-color: #ffebee;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay[style*="display: flex"] {
+            opacity: 1;
+        }
+
+        .modal-overlay[style*="display: flex"] .delete-modal {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .delete-modal {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            transform: scale(0.95) translateY(10px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .delete-modal h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .modal-btn {
+            padding: 12px 25px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #555;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-confirm {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-confirm:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        
+        /* Edit Modal Specifics */
+        .edit-modal-adjust {
+            text-align: left;
+        }
+
+        .edit-message-textarea {
+            width: 100%;
+            height: 100px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            border: 2px solid #e1e1e1;
+            background-color: #f9f9f9;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            resize: none;
+            transition: all 0.3s ease;
+        }
+        
+        .edit-message-textarea:focus {
+            outline: none;
+            background-color: #fff;
+            border-color: #075e54;
+            box-shadow: 0 0 0 4px rgba(7, 94, 84, 0.1);
+        }
+        
+        .save-btn {
+            background-color: #075e54;
+            color: white;
+            box-shadow: 0 4px 15px rgba(7, 94, 84, 0.3);
+        }
+        .save-btn:hover {
+            background-color: #054c44;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(7, 94, 84, 0.4);
+        }
+
+        @media (max-width: 480px) {
+            .delete-modal {
+                padding: 20px;
+                width: 85%;
+            }
+            .delete-modal h3 {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+            .edit-message-textarea {
+                font-size: 0.6rem;
+                padding: 12px;
+                height: 90px;
+                margin-bottom: 15px;
+            }
+            .modal-btn {
+                font-size: 0.6rem;
+                padding: 10px 20px;
+            }
+        }
+        
+        .end-actions {
+            justify-content: flex-end;
         }

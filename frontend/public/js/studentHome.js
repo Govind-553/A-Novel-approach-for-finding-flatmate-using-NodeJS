@@ -13,6 +13,11 @@ window.addEventListener('load', function() {
 
 // Auth Check for navigation
 window.addEventListener('pageshow', async function(event) {
+    // Refresh notifications
+    if (typeof fetchUnreadCount === 'function') {
+        fetchUnreadCount();
+    }
+
     try {
         const response = await fetch('/check-auth');
         const data = await response.json();
@@ -63,6 +68,71 @@ if (closeBtn) {
         const poppingText = document.querySelector('.popping-text');
         if (poppingText) poppingText.style.display = 'none';
     });
+}
+
+// Notification Logic
+async function fetchUnreadCount() {
+    try {
+        // Add timestamp to prevent caching
+        const response = await fetch(`/api/notifications/unread-count?t=${Date.now()}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            updateNotificationBadge(data.count);
+        }
+    } catch (error) {
+        console.error('Error fetching unread count:', error);
+    }
+}
+
+function updateNotificationBadge(count) {
+    const badge = document.getElementById('notification-count');
+    if (!badge) return;
+
+    if (count > 0) {
+        badge.innerText = count;
+        badge.style.display = 'flex'; 
+    } else {
+        badge.style.display = 'none'; 
+    }
+}
+
+// Initial fetch
+fetchUnreadCount();
+
+// Refresh on tab focus/visibility change
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        fetchUnreadCount();
+    }
+});
+
+// WebSocket for real-time updates
+const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const socket = new WebSocket(`${protocol}//${window.location.host}`);
+
+socket.onopen = () => {
+    const token = getCookie('token'); 
+    if(token) {
+            socket.send(JSON.stringify({ type: 'REGISTER' })); 
+    }
+};
+
+socket.onmessage = (event) => {
+    try {
+        const data = JSON.parse(event.data);
+        if (data.type === 'NOTIFICATION') {
+            fetchUnreadCount();
+        }
+    } catch (e) {
+        console.error("Socket message error", e);
+    }
+};
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
 // Global popup functions 
