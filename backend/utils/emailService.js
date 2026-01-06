@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendVacancyEmail = async (studentEmail, studentName, providerName, serviceDetails) => {
     const mailOptions = {
-        from: `"Flatmate Alert" <${process.env.APP_EMAIL}>`,
+        from: `"Flatmate Availability Alert" <${process.env.APP_EMAIL}>`,
         to: studentEmail,
         subject: `New Room Vacancy match for you!`,
         html: `

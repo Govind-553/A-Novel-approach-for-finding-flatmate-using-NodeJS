@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const notificationList = document.getElementById('notification-list');
     
     await fetchNotifications();
+    await markNotificationsRead();
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const socket = new WebSocket(`${protocol}//${window.location.host}`);
@@ -29,6 +30,19 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+async function markNotificationsRead() {
+    try {
+        await fetch('/api/notifications/mark-read', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (error) {
+        console.error('Error marking notifications as read:', error);
+    }
 }
 
 async function fetchNotifications() {
@@ -109,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function deleteNotification() {
-    if (!notificationToDelete) return; // Should not happen
+    if (!notificationToDelete) return; 
 
     const modal = document.getElementById('deleteModal');
     // Disable button to prevent double clicks

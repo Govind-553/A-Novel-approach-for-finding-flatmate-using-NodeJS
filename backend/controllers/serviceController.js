@@ -164,11 +164,17 @@ export const updateServiceProfile = async (req, res) => {
     }
 
     try {
+        const currentService = await Service.findOne({ email });
+
         const updatedService = await Service.findOneAndUpdate({ email }, updateData, { new: true });
         
         // --- Vacancy Trigger Logic ---
-        if (serviceType === 'Broker' && extraFields.availability === 'Available') {
-            console.log('Vacancy detected, running matching logic...');
+        const currentExtras = currentService.service === 'Broker' && currentService.room_type ? currentService : {};
+        const oldAvailability = currentService.availability || '';
+        const newAvailability = extraFields.availability;
+
+        if (serviceType === 'Broker' && newAvailability === 'Available' && oldAvailability !== 'Available') {
+            console.log('Vacancy detected (Status changed to Available), running matching logic...');
             
             // Criteria to match
             const servicePrice = extraFields.pricing_value; 

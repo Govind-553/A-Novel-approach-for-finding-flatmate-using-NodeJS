@@ -27,7 +27,7 @@ async def connect_db():
         
         # Extract DB name from URI
         uri_info = parse_uri(MONGO_URI)
-        db_name = uri_info.get('database') or "MyDataBase"
+        db_name = uri_info.get('database') or "flatmate"
         
         db = client[db_name]
         logger.info(f"Using Database: {db_name}")
