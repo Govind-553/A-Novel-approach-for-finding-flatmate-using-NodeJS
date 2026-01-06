@@ -43,11 +43,26 @@
         </div>
 
         <div id="contextMenu" class="context-menu">
+            <div class="context-option edit-option" onclick="editMessageAction()">
+                <i class="fas fa-edit"></i> Edit
+            </div>
             <div class="context-option delete-option" onclick="deleteMessageAction()">
                 <i class="fas fa-trash-alt"></i> Delete
             </div>
         </div>
         
+        <!-- Edit Message Modal -->
+        <div class="modal-overlay" id="editModalOverlay">
+            <div class="delete-modal edit-modal-adjust"> <!-- Added class context -->
+                <h3>Edit Message</h3>
+                <textarea id="editMessageInput" class="edit-message-textarea"></textarea>
+                <div class="modal-actions end-actions">
+                    <button class="modal-btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button class="modal-btn btn-confirm save-btn" onclick="saveEditedMessage()">Save</button>
+                </div>
+            </div>
+        </div>
+
         <div class="chat-messages" id="chat-messages">
             <!-- Messages injected here -->
         </div>

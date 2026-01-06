@@ -36,6 +36,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Fetch previous messages
     await fetchChatHistory(currentChatId);
+
+    // Global Context Menu Delegation
+    document.getElementById('chat-messages').addEventListener('contextmenu', (e) => {
+        const msgEl = e.target.closest('.message.sent');
+        if (msgEl) {
+            e.preventDefault();
+            const msgId = msgEl.getAttribute('data-id');
+            console.log("Right click context menu. Target:", msgEl);
+            console.log("Retrieved data-id:", msgId);
+            
+            if (msgId && msgId !== 'undefined' && msgId !== 'null') {
+                showContextMenu(msgEl, msgId);
+            } else {
+                console.warn("Context menu blocked: Invalid ID", msgId);
+            }
+        } else {
+             console.log("Right click not on .message.sent");
+        }
+    });
 });
 
 function initWebSocket() {
@@ -50,18 +69,54 @@ function initWebSocket() {
     socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'MESSAGE') {
-            // Prevent duplicate appending of my own message
-            if (data.payload.sender !== currentUserType) {
-                appendMessage(data.payload, 'received');
+            const payload = data.payload;
+            if (payload.sender !== currentUserType) {
+                appendMessage(payload, 'received');
+            } else {
+                console.log("Received self-sent message confirmation. Payload:", payload);
+                const pendingMessages = document.querySelectorAll('.message.sent.pending, .message.sent:not([data-id])');
+                console.log("Pending messages found:", pendingMessages.length);
+                
+                if (pendingMessages.length > 0) {
+                     const targetMsg = pendingMessages[0];
+                     
+                     if (targetMsg) {
+                         targetMsg.setAttribute('data-id', payload._id);
+                         targetMsg.dataset.id = payload._id;
+                         targetMsg.classList.remove('pending');
+                         
+                         // Update tick to double-check
+                         const tickContainer = targetMsg.querySelector('.message-ticks');
+                         if (tickContainer) {
+                             tickContainer.innerHTML = '<i class="fas fa-check-double"></i>';
+                         }
+                         
+                         console.log("Updated optimistic message ID to:", payload._id, "on element:", targetMsg);
+                     }
+                } else {
+                    console.warn("No pending message element found to update for ID:", payload._id);
+                }
             }
         } else if (data.type === 'MESSAGES_READ') {
             markAllAsRead();
         } else if (data.type === 'MESSAGE_DELETED') {
             const msgEl = document.querySelector(`.message[data-id="${data.messageId}"]`);
             if (msgEl) msgEl.remove();
+        } else if (data.type === 'MESSAGE_EDITED') {
+            const msgEl = document.querySelector(`.message[data-id="${data.messageId}"]`);
+            if (msgEl) {
+                for(let node of msgEl.childNodes) {
+                    if(node.nodeType === Node.TEXT_NODE) {
+                        node.nodeValue = data.newContent;
+                        break;
+                    }
+                }
+            }
+            if (selectedMessageId === data.messageId) hideContextMenu();
         }
+    
     };
-
+    
     socket.onclose = () => {
         console.log('Disconnected from WebSocket');
     };
@@ -106,9 +161,9 @@ async function fetchChatHistory(chatId) {
                     if (student) {
                         nameEl.innerText = student.fULL_name || 'Student';
                         if (student.profile_pic) {
-                            imgEl.src = student.profile_pic;
+                              imgEl.src = student.profile_pic;
                         } else {
-                            imgEl.src = '/img/User.png';
+                              imgEl.src = '/img/User.png';
                         }
                         imgEl.style.display = 'block';
                         iconEl.style.display = 'none';
@@ -124,110 +179,116 @@ async function fetchChatHistory(chatId) {
     }
 }
 
-function renderSuggestions() {
-    const suggestionsContainer = document.getElementById('chat-suggestions');
-    suggestionsContainer.innerHTML = '';
+    function renderSuggestions() {
+        const suggestionsContainer = document.getElementById('chat-suggestions');
+        suggestionsContainer.innerHTML = '';
 
-    let chips = [];
-    if (currentUserType === 'student') {
-        chips = [
-            'Is this available?',
-            'I am interested.',
-            'When can I visit?',
-            'Please share details.'
-        ];
-    } else if (currentUserType === 'provider') {
-        chips = [
-            'Hello! How can I help you?',
-            'Are you interested?',
-            'When would you like to visit?',
-            'Do you have any questions?'
-        ];
-    }
-
-    chips.forEach(text => {
-        const chip = document.createElement('div');
-        chip.className = 'suggestion-chip';
-        chip.innerText = text;
-        chip.onclick = () => useSuggestion(text);
-        suggestionsContainer.appendChild(chip);
-    });
-}
-
-function sendMessage() {
-    const input = document.getElementById('message-input');
-    const text = input.value.trim();
-    if (!text) return;
-
-    // Validation for critical fields
-    if (!currentUserType) {
-        console.error("User Type is missing! Attempting to refetch.");
-        currentUserType = getCookie('userType');
-        if (!currentUserType) {
-            alert("Error: User identity invalid. Please refresh or re-login.");
-            return;
+        let chips = [];
+        if (currentUserType === 'student') {
+            chips = [
+                'Is this available?',
+                'I am interested.',
+                'When can I visit?',
+                'Please share details.'
+            ];
+        } else if (currentUserType === 'provider') {
+            chips = [
+                'Hello! How can I help you?',
+                'Are you interested?',
+                'When would you like to visit?',
+                'Do you have any questions?'
+            ];
         }
-    }
 
-    const messagePayload = {
-        type: 'MESSAGE',
-        chatId: currentChatId,
-        content: text,
-        sender: currentUserType,
-        timestamp: new Date().toISOString()
-    };
-    
-    console.log("Sending message:", messagePayload); // Debug log
-
-    // Optimistic UI update
-    appendMessage(messagePayload, 'sent');
-    
-    // Send to server
-    socket.send(JSON.stringify(messagePayload));
-    
-    input.value = '';
-    scrollToBottom();
-}
-
-function appendMessage(msg, type) {
-    const container = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.className = `message ${type}`;
-    
-    let ticksHtml = '';
-    
-    // Store ID
-    div.setAttribute('data-id', msg._id || msg.id);
-
-    if (type === 'sent') {
-        const tickClass = msg.isRead ? 'read' : ''; 
-        ticksHtml = `<span class="message-ticks ${tickClass}"><i class="fas fa-check-double"></i></span>`;
-        
-        // Add Context Menu listener for own messages
-        div.addEventListener('contextmenu', (e) => {
-            console.log("Right click detected on message:", msg._id); 
-            e.preventDefault();
-            showContextMenu(div, msg._id || msg.id);
+        chips.forEach(text => {
+            const chip = document.createElement('div');
+            chip.className = 'suggestion-chip';
+            chip.innerText = text;
+            chip.onclick = () => useSuggestion(text);
+            suggestionsContainer.appendChild(chip);
         });
-    } else {
     }
 
-    div.innerHTML = `
+    function sendMessage() {
+        const input = document.getElementById('message-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        // Validation for critical fields
+        if (!currentUserType) {
+            console.error("User Type is missing! Attempting to refetch.");
+            currentUserType = getCookie('userType');
+            if (!currentUserType) {
+                alert("Error: User identity invalid. Please refresh or re-login.");
+                return;
+            }
+        }
+
+        const messagePayload = {
+            type: 'MESSAGE',
+            chatId: currentChatId,
+            content: text,
+            sender: currentUserType,
+            timestamp: new Date().toISOString()
+        };
+    
+        console.log("Sending message:", messagePayload); // Debug log
+
+        // Optimistic UI update
+        appendMessage(messagePayload, 'sent');
+    
+        // Send to server
+        socket.send(JSON.stringify(messagePayload));
+    
+        input.value = '';
+        scrollToBottom();
+    }
+
+    function appendMessage(msg, type) {
+        if (!msg._id && !msg.id) console.warn("Message missing ID:", msg);
+        const container = document.getElementById('chat-messages');
+        const div = document.createElement('div');
+        div.className = `message ${type}`;
+    
+        let ticksHtml = '';
+    
+        if (msg._id || msg.id) {
+            div.setAttribute('data-id', msg._id || msg.id);
+        }
+
+        if (type === 'sent') {
+            if (msg._id || msg.id) {
+                 // Confirmed Sent Message
+                 const tickClass = (msg.isRead) ? 'read' : ''; 
+                 ticksHtml = `<span class="message-ticks ${tickClass}"><i class="fas fa-check-double"></i></span>`;
+            } else {
+                 div.classList.add('pending'); 
+                 ticksHtml = `<span class="message-ticks"><i class="fas fa-check"></i></span>`;
+            }
+        }
+
+
+        div.innerHTML = `
         ${msg.content}
         <div class="message-meta" style="display:flex; justify-content:flex-end; align-items:center; gap:5px; margin-top:2px;">
-            <small class="message-time">${new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</small>
+            <small class="message-time">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
             ${ticksHtml}
         </div>
     `;
-    container.appendChild(div);
-    scrollToBottom();
-}
+        container.appendChild(div);
+        scrollToBottom();
+    }
 
 let selectedMessageId = null;
 const contextMenu = document.getElementById('contextMenu');
 
 function showContextMenu(element, msgId) {
+    if (!msgId || msgId === 'null' || msgId === 'undefined') {
+        console.error("Invalid Message ID passed to Context Menu:", msgId);
+        return;
+    }
     selectedMessageId = msgId;
+    console.log("Context Menu Opened. selectedMessageId set to:", selectedMessageId);
     
     // Show first to measure dimensions
     contextMenu.style.visibility = 'hidden';
@@ -276,7 +337,13 @@ function deleteMessageAction() {
 
 function hideContextMenu() {
     contextMenu.style.display = 'none';
-    selectedMessageId = null;
+    // We do NOT clear selectedMessageId here immediately if we need it? 
+    // Actually, the edit action captures it before calling hideContextMenu.
+    // The previous implementation called hideContextMenu() at the end of editMessageAction().
+    // By the time saveEditedMessage() is called, selectedMessageId WAS null.
+    // That is why I added the data attribute to the modal above.
+    
+    selectedMessageId = null; 
 }
 
 // Global click to hide context menu
@@ -320,3 +387,65 @@ document.getElementById('message-input').addEventListener('keypress', function (
         sendMessage();
     }
 });
+
+// Global functions for Edit Modal
+function editMessageAction() {
+    console.log("Edit Action Triggered. ID:", selectedMessageId);
+    if (selectedMessageId) {
+        const msgEl = document.querySelector(`.message[data-id="${selectedMessageId}"]`);
+        if (msgEl) {
+            let currentText = "";
+            for(let node of msgEl.childNodes) {
+                if(node.nodeType === Node.TEXT_NODE) {
+                    currentText += node.nodeValue.trim();
+                }
+            }
+            
+            const input = document.getElementById('editMessageInput');
+            input.value = currentText.trim(); 
+            
+            const overlay = document.getElementById('editModalOverlay');
+            overlay.setAttribute('data-editing-id', selectedMessageId);
+            overlay.style.display = 'flex';
+            input.focus();
+            console.log("Modal opened. data-editing-id set to:", selectedMessageId);
+        }
+    }
+    
+    hideContextMenu(); 
+}
+
+function closeEditModal() {
+    document.getElementById('editModalOverlay').style.display = 'none';
+    document.getElementById('editModalOverlay').removeAttribute('data-editing-id');
+}
+
+function saveEditedMessage() {
+    const input = document.getElementById('editMessageInput');
+    const newContent = input.value.trim();
+    const editingId = document.getElementById('editModalOverlay').getAttribute('data-editing-id');
+    
+    console.log("Saving Edit. Retrieved editingId from overlay:", editingId);
+
+    if (newContent && editingId && currentChatId) {
+        socket.send(JSON.stringify({ 
+            type: 'EDIT_MESSAGE', 
+            chatId: currentChatId, 
+            messageId: editingId,
+            newContent
+        }));
+        
+        // Optimistic update
+        const msgEl = document.querySelector(`.message[data-id="${editingId}"]`);
+        if (msgEl) {
+             for(let node of msgEl.childNodes) {
+                if(node.nodeType === Node.TEXT_NODE) {
+                    node.nodeValue = newContent;
+                    break;
+                }
+            }
+        }
+    }
+    closeEditModal();
+}
+

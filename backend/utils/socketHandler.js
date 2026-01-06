@@ -96,6 +96,7 @@ export const initSocket = (server) => {
                     });
                     
                     const payload = {
+                        _id: newMessage._id,
                         content,
                         sender,
                         timestamp: newMessage.timestamp,
@@ -111,6 +112,13 @@ export const initSocket = (server) => {
                     });
                 } else if (data.type === 'DELETE_MESSAGE') {
                     const { messageId, chatId } = data;
+                    
+                    // VALIDATION
+                    if (!messageId || typeof messageId !== 'string' || messageId.length !== 24) {
+                        console.error('Invalid Message ID for delete:', messageId);
+                        return;
+                    }
+
                     try {
                         const msg = await Message.findById(messageId);
                         if (msg && msg.sender === ws.userType) {
@@ -125,6 +133,41 @@ export const initSocket = (server) => {
                         }
                     } catch (e) {
                         console.error('Error deleting message:', e);
+                    }
+                } else if (data.type === 'EDIT_MESSAGE') {
+                    const { messageId, chatId, newContent } = data;
+
+                    if (!messageId || typeof messageId !== 'string' || messageId.length !== 24) {
+                        console.error('Invalid Message ID received for edit:', messageId);
+                        return;
+                    }
+
+                    try {
+                       const msg = await Message.findById(messageId);
+                       if (!msg) {
+                           console.error("[SOCKET] Message not found for edit:", messageId);
+                           return;
+                       }
+                       
+                       if (msg.sender === ws.userType) {
+                           msg.content = newContent;
+                           const savedMsg = await msg.save();
+                           // Broadcast update
+                           wss.clients.forEach(client => {
+                               if (client.readyState === 1 && client.chatId === chatId) {
+
+                                   client.send(JSON.stringify({ 
+                                       type: 'MESSAGE_EDITED', 
+                                       messageId, 
+                                       newContent 
+                                   }));
+                               }
+                           });
+                       } else {
+                           console.warn("[SOCKET] Unauthorized edit attempt. Msg Sender:", msg.sender, "Requester:", ws.userType);
+                       }
+                    } catch (e) {
+                        console.error('Error editing message:', e);
                     }
                 }
             } catch (err) {
