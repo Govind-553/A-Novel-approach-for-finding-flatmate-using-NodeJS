@@ -12,12 +12,27 @@
 </head>
 <body>
     
-    <button class="back-btn" onclick="location.href='/serviceProfile'">
-        <i class="fas fa-arrow-left"></i> Back
-    </button>
+    <div class="header-buttons">
+        <button class="action-btn back-btn" onclick="location.href='/serviceProfile'">
+            <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <h1 class="page-title desktop-title">My Chats</h1>
+        <button class="action-btn delete-btn" id="toggleDeleteModeBtn" onclick="toggleDeleteMode()">
+            Delete Chats
+        </button>
+    </div>
 
     <div class="container">
-        <h1 class="page-title">My Chats</h1>
+        <h1 class="page-title mobile-title">My Chats</h1>
+        
+        <div id="selection-controls" style="display: none; margin-bottom: 15px;">
+            <label class="custom-checkbox">
+                <input type="checkbox" id="selectAllChats" onclick="toggleSelectAll()">
+                <span class="checkmark square"></span>
+                Select All
+            </label>
+        </div>
+
         <div id="chat-list">
             <!-- Chat list injected here -->
              <div class="empty-state">
@@ -27,25 +42,37 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Delete Selected Chats?</h3>
+            <p>Are you sure you want to delete these chats? They will reappear if the student messages you again.</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeDeleteModal()">No</button>
+                <button class="btn-confirm" onclick="confirmDeleteChats()">Yes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let chatsData = [];
+        let isDeleteMode = false;
+        let selectedChats = new Set();
+
         document.addEventListener('DOMContentLoaded', async () => {
             await fetchChats();
         });
 
         async function fetchChats() {
             try {
-                // Backend now handles auth via cookies automatically
                 const response = await fetch('/api/chats');
                 const data = await response.json();
 
-                if (data.success && data.chats.length > 0) {
-                    renderChats(data.chats);
+                if (data.success) {
+                    chatsData = data.chats; // Store for local filtering/rendering
+                    renderChats();
                 } else {
-                     document.getElementById('chat-list').innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-comments fa-3x"></i>
-                            <p>No active chats.</p>
-                        </div>`;
+                    renderEmpty();
                 }
             } catch (error) {
                 console.error('Error fetching chats:', error);
@@ -53,18 +80,30 @@
             }
         }
 
-        function renderChats(chats) {
+        function renderChats() {
             const list = document.getElementById('chat-list');
             list.innerHTML = '';
-            chats.forEach(chat => {
+            
+            if (chatsData.length === 0) {
+                renderEmpty();
+                return;
+            }
+
+            chatsData.forEach(chat => {
                 const card = document.createElement('div');
                 card.className = 'chat-list-card';
+                if (isDeleteMode) card.classList.add('delete-mode');
                 
                 // Student Details
                 const studentName = chat.studentId ? chat.studentId.fULL_name : 'Unknown Student';
                 const profilePic = (chat.studentId && chat.studentId.profile_pic) ? chat.studentId.profile_pic : '/img/User.png';
-                
+                const isSelected = selectedChats.has(chat._id);
+
                 card.innerHTML = `
+                    <label class="chat-checkbox">
+                        <input type="checkbox" ${isSelected ? 'checked' : ''} onclick="handleCheckboxClick(event, '${chat._id}')">
+                        <span class="checkmark"></span>
+                    </label>
                     <div class="card-left">
                         <img src="${profilePic}" alt="Profile" class="chat-avatar">
                         <div class="chat-info">
@@ -74,18 +113,126 @@
                             </span>
                         </div>
                     </div>
-                    <i class="fas fa-chevron-right" style="color: #aaa;"></i>
+                    <i class="fas fa-chevron-right" style="color: #aaa; ${isDeleteMode ? 'display:none;' : ''}"></i>
                 `;
                 
-                // Pass profile pic in query or rely on chat page to fetch it (Chat page currently static)
-                // For now, let's fix the name. 
-                card.onclick = () => {
-                    // We can encode the profile pic too if we want to show it immediately, but it's large.
-                    // Better to just pass ID and Name, and let chat page handle it.
-                    location.href = `/chat?chatId=${chat._id}&name=${encodeURIComponent(studentName)}`;
+                card.onclick = (e) => {
+                    if (isDeleteMode) {
+                        // Toggle Checkbox if card clicked (prevent duplicate if checkbox itself clicked)
+                        if (e.target.tagName !== 'INPUT' && e.target.className !== 'checkmark') {
+                            const checkbox = card.querySelector('input[type="checkbox"]');
+                            checkbox.checked = !checkbox.checked;
+                            handleCheckboxClick({ target: checkbox, stopPropagation: ()=>{} }, chat._id);
+                        }
+                    } else {
+                        location.href = `/chat?chatId=${chat._id}&name=${encodeURIComponent(studentName)}`;
+                    }
                 };
                 list.appendChild(card);
             });
+        }
+
+        function renderEmpty() {
+             document.getElementById('chat-list').innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-comments fa-3x"></i>
+                    <p>No active chats.</p>
+                </div>`;
+        }
+
+        function toggleDeleteMode() {
+            isDeleteMode = !isDeleteMode;
+            selectedChats.clear(); 
+            document.getElementById('selectAllChats').checked = false;
+            
+            const btn = document.getElementById('toggleDeleteModeBtn');
+            const controls = document.getElementById('selection-controls');
+
+            if (isDeleteMode) {
+                btn.innerText = 'Delete Selected (0)';
+                btn.classList.add('active-delete-btn');
+                btn.style.background = '#c62828';
+                btn.style.color = 'white';
+                controls.style.display = 'block';
+                
+                // Override click to open modal if items selected, else just toggle off
+                btn.onclick = () => {
+                    if (selectedChats.size > 0) {
+                        openDeleteModal();
+                    } else {
+                        toggleDeleteMode(); // Exit mode if nothing selected
+                    }
+                };
+            } else {
+                btn.innerText = 'Delete Chats';
+                btn.classList.remove('active-delete-btn');
+                btn.style.background = 'white';
+                btn.style.color = '#333';
+                controls.style.display = 'none';
+                btn.onclick = toggleDeleteMode; // Reset handler
+            }
+            renderChats();
+        }
+
+        function handleCheckboxClick(e, chatId) {
+            e.stopPropagation && e.stopPropagation();
+            if (selectedChats.has(chatId)) {
+                selectedChats.delete(chatId);
+            } else {
+                selectedChats.add(chatId);
+            }
+            updateDeleteButton();
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAllChats').checked;
+            if (selectAll) {
+                chatsData.forEach(chat => selectedChats.add(chat._id));
+            } else {
+                selectedChats.clear();
+            }
+            renderChats();
+            updateDeleteButton();
+        }
+
+        function updateDeleteButton() {
+            const btn = document.getElementById('toggleDeleteModeBtn');
+            if (isDeleteMode) {
+                btn.innerText = selectedChats.size > 0 ? `Delete Selected (${selectedChats.size})` : 'Cancel';
+            }
+        }
+
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        async function confirmDeleteChats() {
+            const ids = Array.from(selectedChats);
+            if (ids.length === 0) return;
+
+            try {
+                const response = await fetch('/api/chats/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ chatIds: ids })
+                });
+                
+                const res = await response.json();
+                if (res.success) {
+                    closeDeleteModal();
+                    toggleDeleteMode(); // Exit mode
+                    await fetchChats(); // Refresh list
+                } else {
+                    alert('Error deleting chats: ' + res.message);
+                }
+            } catch (err) {
+                console.error('Delete error:', err);
+                alert('Server Error');
+            }
         }
     </script>
 </body>

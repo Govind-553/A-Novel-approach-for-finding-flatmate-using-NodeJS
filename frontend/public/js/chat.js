@@ -367,10 +367,16 @@ async function clearChat() {
 }
 
 async function endChat() {
-    if(confirm("End this chat session?")) {
+    // Customize message based on user type if needed, but generic is fine
+    if(confirm("Close this chat session?")) {
         await fetch(`/api/chats/${currentChatId}/end`, { method: 'POST' });
-        alert("Chat ended.");
-        window.history.back();
+        
+        if (currentUserType === 'provider') {
+             window.location.href = '/serviceChats';
+        } else {
+             alert("Chat ended.");
+             window.history.back();
+        }
     }
 }
 
