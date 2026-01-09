@@ -153,8 +153,8 @@ window.closePopup = function(button) {
 }
 
 // Script to handle data fetching of service providers
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/service-recommendations', { credentials: 'include' })
+function fetchServiceRecommendations() {
+    fetch('/service-recommendations?t=' + Date.now(), { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
             if (!data.success) {
@@ -209,6 +209,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(err => {
             console.error('Error fetching recommendations:', err);
         });
+}
+
+document.addEventListener('DOMContentLoaded', fetchServiceRecommendations);
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+        fetchServiceRecommendations();
+    }
+});
 
     // Filter Logic
     const filterButtons = document.querySelectorAll('.filter-btn');
@@ -250,7 +258,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
 
 function populateTable(tableId, data, keys) {
     const tbody = document.getElementById(tableId);
@@ -314,14 +321,17 @@ function populateServiceCards(containerId, data) {
 }    
 
 // function to show the matching students profiles using K-Means clustering
-window.addEventListener('DOMContentLoaded', () => {
-    fetch('/roommate-recommendations', { credentials: 'include' })
+function fetchRecommendations() {
+    fetch('/roommate-recommendations?t=' + Date.now(), { credentials: 'include' })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
             const container = document.getElementById('roommate-cards-container');
             if (container) {
                 container.innerHTML = '';
+                if (data.roommates.length === 0) {
+                     container.innerHTML = '<div class="no-matches" style="text-align:center; width:100%; padding:20px;"><h6 style="font-size: 0.95rem; color: #666;">No matches found for your profile ⚠️</h6></div>';
+                }
                 data.roommates.forEach(user => {
                     const card = `
                 <div class="swiper-slide card" data-type="roommates">
@@ -351,6 +361,13 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+}
+
+window.addEventListener('DOMContentLoaded', fetchRecommendations);
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+        fetchRecommendations();
+    }
 });
 
 // search-input script for searching profiles and services

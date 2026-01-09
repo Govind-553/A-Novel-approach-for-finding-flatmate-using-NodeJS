@@ -11,7 +11,7 @@ def execute_student_clustering():
     db = get_database()
     col = db['students']
     
-    features = ['food_type', 'room_type', 'amenities', 'year', 'branch', 'pricing_value']
+    features = ['year', 'branch', 'food_type', 'room_type']
     
     projection = {feature: 1 for feature in features}
     projection['gender'] = 1
@@ -78,11 +78,27 @@ def get_roommate_matches(student_id):
         '_id': {'$ne': obj_id}
     })
     
+    # Filtering Logic
+    student_year = student.get('year')
+    student_branch = student.get('branch')
+    student_food = student.get('food_type')
+    student_room = student.get('room_type')
+
     matches = []
     for m in matches_cursor:
         m['_id'] = str(m['_id'])
-        if 'profile_pic' in m:
-            del m['profile_pic'] 
-        matches.append(m)
+        
+        # Strict Match Check
+        if (m.get('year') == student_year and 
+            m.get('branch') == student_branch and 
+            m.get('food_type') == student_food and 
+            m.get('room_type') == student_room):
+            
+            if 'profile_pic' in m:
+                del m['profile_pic'] 
+            matches.append(m)
+        else:
+            # Debug log for filtered out candidates (optional, good for tracing)
+            logger.info(f"Filtered out {m.get('email')}: Year({m.get('year')}=={student_year}), Branch({m.get('branch')}=={student_branch})")
 
     return {"count": len(matches), "matches": matches}

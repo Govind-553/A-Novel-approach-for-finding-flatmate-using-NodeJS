@@ -5,19 +5,27 @@ from ml_modules.controllers.service_controller import execute_service_clustering
 router = APIRouter(prefix="/cluster", tags=["Clustering"])
 
 @router.post("/students")
-async def cluster_students(background_tasks: BackgroundTasks):
+def cluster_students(background_tasks: BackgroundTasks, sync: bool = False):
     """
     Triggers the K-Means clustering process for students.
-    Runs in background.
+    If sync=True, waits for completion.
     """
-    background_tasks.add_task(execute_student_clustering)
-    return {"message": "Student clustering started in background"}
+    if sync:
+        execute_student_clustering()
+        return {"message": "Student clustering completed"}
+    else:
+        background_tasks.add_task(execute_student_clustering)
+        return {"message": "Student clustering started in background"}
 
 @router.post("/services")
-async def cluster_services(background_tasks: BackgroundTasks):
+def cluster_services(background_tasks: BackgroundTasks, sync: bool = False):
     """
     Triggers the K-Means clustering process for services.
-    Runs in background.
+    If sync=True, waits for completion.
     """
-    background_tasks.add_task(execute_service_clustering)
-    return {"message": "Service clustering started in background"}
+    if sync:
+        execute_service_clustering()
+        return {"message": "Service clustering completed"}
+    else:
+        background_tasks.add_task(execute_service_clustering)
+        return {"message": "Service clustering started in background"}
