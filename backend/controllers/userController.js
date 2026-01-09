@@ -38,9 +38,9 @@ export const loginStudent = async (req, res) => {
             // Generate JWT
             const token = generateToken(student._id, student.email, 'student');
             
-            res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-            res.cookie('email', email, { httpOnly: true });
-            res.cookie('userType', 'student', { httpOnly: false });
+            res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000, sameSite: 'None', secure: true });
+            res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: true });
+            res.cookie('userType', 'student', { httpOnly: false, sameSite: 'None', secure: true });
 
             res.json({ success: true, token });
         } else {
@@ -89,9 +89,9 @@ export const registerStudent = async (req, res) => {
         
         // Auto-Login
         const token = generateToken(savedStudent._id, savedStudent.email, 'student');
-        res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-        res.cookie('email', email, { httpOnly: true });
-        res.cookie('userType', 'student', { httpOnly: false });
+        res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000, sameSite: 'None', secure: true });
+        res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: true });
+        res.cookie('userType', 'student', { httpOnly: false, sameSite: 'None', secure: true });
 
         if (req.file) fs.unlink(req.file.path, () => {});
 

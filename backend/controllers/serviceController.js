@@ -39,9 +39,9 @@ export const loginService = async (req, res) => {
                 // Generate JWT
                 const token = generateToken(service._id, service.email, 'provider');
                 
-                res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-                res.cookie('email', email, { httpOnly: true });
-                res.cookie('userType', 'provider', { httpOnly: false });
+                res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000, sameSite: 'None', secure: true });
+                res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: true });
+                res.cookie('userType', 'provider', { httpOnly: false, sameSite: 'None', secure: true });
 
                 res.json({ success: true, token });
             } else {
