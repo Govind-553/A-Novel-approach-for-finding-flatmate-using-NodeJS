@@ -16,7 +16,7 @@
 ### 👨‍🎓 For Students
 - **Smart Roommate Matching:** Uses **K-Means Clustering** to find roommates with similar habits, budgets, and preferences.
 - **Service Recommendations:** Personalized suggestions for Food, Laundry, and Broker services based on location and budget.
-- **Real-time Chat:** Chat instantly with potential roommates and service providers.
+- **Real-time Chat:** Chat instantly with potential service providers.
 - **Notifications:** Get alerts when a service provider has a vacancy or when you get a new match.
 - **Secure Profile:** Verified profiles to ensure safety.
 
