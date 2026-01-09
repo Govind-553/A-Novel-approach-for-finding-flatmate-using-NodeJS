@@ -19,7 +19,7 @@ window.addEventListener('pageshow', async function(event) {
     }
 
     try {
-        const response = await fetch('/check-auth');
+        const response = await apiFetch('/check-auth');
         const data = await response.json();
         if (!data.loggedIn) {
             showSessionExpiredModal();
@@ -74,7 +74,7 @@ if (closeBtn) {
 async function fetchUnreadCount() {
     try {
         // Add timestamp to prevent caching
-        const response = await fetch(`/api/notifications/unread-count?t=${Date.now()}`);
+        const response = await apiFetch(`/api/notifications/unread-count?t=${Date.now()}`);
         const data = await response.json();
         
         if (data.success) {
@@ -108,8 +108,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // WebSocket for real-time updates
-const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-const socket = new WebSocket(`${protocol}//${window.location.host}`);
+const socket = new WebSocket('wss://flatmate-node-backend.onrender.com');
 
 socket.onopen = () => {
     const token = getCookie('token'); 
@@ -154,7 +153,7 @@ window.closePopup = function(button) {
 
 // Script to handle data fetching of service providers
 function fetchServiceRecommendations() {
-    fetch('/service-recommendations?t=' + Date.now(), { credentials: 'include' })
+    apiFetch('/service-recommendations?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
             if (!data.success) {
@@ -322,7 +321,7 @@ function populateServiceCards(containerId, data) {
 
 // function to show the matching students profiles using K-Means clustering
 function fetchRecommendations() {
-    fetch('/roommate-recommendations?t=' + Date.now(), { credentials: 'include' })
+    apiFetch('/roommate-recommendations?t=' + Date.now())
     .then(res => res.json())
     .then(data => {
         if (data.success) {
@@ -517,7 +516,7 @@ function getSwiperConfig() {
 
 // Swiper Initialization
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/data')
+    apiFetch('/data')
         .then(response => response.json())
         .then(data => {
             // Profiles Swiper
@@ -698,7 +697,7 @@ function showLogoutPopup() {
 
 async function logout() {
     try {
-        await fetch('/logout', { method: 'POST' });
+        await apiFetch('/logout', { method: 'POST' });
         sessionStorage.removeItem('userRole');
         window.location.href = '/main.html';
     } catch (error) {

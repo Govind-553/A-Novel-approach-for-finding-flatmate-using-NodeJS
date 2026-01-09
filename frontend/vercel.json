@@ -1,0 +1,22 @@
+{
+  "rewrites": [
+    { "source": "/homepage", "destination": "/studentHome.html" },
+    { "source": "/loginpage", "destination": "/studentLogin.html" },
+    { "source": "/registrationpage", "destination": "/studentRegister.html" },
+    { "source": "/servicehomepage", "destination": "/serviceHome.html" },
+    { "source": "/servicelogin", "destination": "/serviceLogin.html" },
+    { "source": "/serviceregister", "destination": "/serviceRegister.html" },
+    { "source": "/forgotPassword.html", "destination": "/forgotPassword.html" },
+    { "source": "/selection.html", "destination": "/selection.html" },
+    { "source": "/notifications", "destination": "/notification.html" },
+    { "source": "/chat", "destination": "/chat.html" },
+    { "source": "/serviceChats", "destination": "/serviceChats.html" },
+    { "source": "/studentProfile", "destination": "/studentProfile.html" },
+    { "source": "/serviceProfile", "destination": "/serviceProfile.html" },
+    { "source": "/team", "destination": "/teamProfile.html" },
+    { "source": "/data", "destination": "https://flatmate-node-backend.onrender.com/data" },
+    { "source": "/styles/:path*", "destination": "/public/styles/:path*" },
+    { "source": "/js/:path*", "destination": "/public/js/:path*" },
+    { "source": "/img/:path*", "destination": "/public/img/:path*" }
+  ]
+}

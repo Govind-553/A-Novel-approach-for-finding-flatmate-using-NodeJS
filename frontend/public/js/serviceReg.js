@@ -1,11 +1,52 @@
 document.addEventListener("DOMContentLoaded", function () {
-        const registrationForm = document.getElementById("registrationForm");
-        
-        // Form submission handler
-        registrationForm.addEventListener("submit", function (event) {
-            // Standard form submission
+    const registrationForm = document.getElementById("registrationForm");
+    const modal = document.getElementById("successModal"); // Assuming successModal exists in HTML
+
+    // Form submission handler
+    if (registrationForm) {
+        registrationForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerText;
+
+            submitBtn.innerText = "Registering...";
+            submitBtn.disabled = true;
+
+            try {
+                // Use the action attribute (e.g. /register)
+                const action = this.getAttribute('action');
+                const response = await apiFetch(action, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                // apiFetch returns the response object
+                const result = await response.json();
+
+                if (result.success) {
+                    registrationForm.reset();
+                    if (modal) {
+                         modal.classList.add("show");
+                    } else {
+                         // Fallback if no modal
+                         alert("Registration Successful! Redirecting...");
+                         window.location.href = '/servicelogin';
+                    }
+                } else {
+                    alert(result.message || 'Registration failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred during registration.');
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
         });
-    });
+    }
+});
 
   const togglePassword = document.querySelector('#togglePassword');
   const passwordInput = document.querySelector('#password');

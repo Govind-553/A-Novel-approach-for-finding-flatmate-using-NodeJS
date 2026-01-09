@@ -58,8 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function initWebSocket() {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    socket = new WebSocket(`${protocol}//${window.location.host}`);
+    socket = new WebSocket('wss://flatmate-node-backend.onrender.com');
 
     socket.onopen = () => {
         console.log('Connected to WebSocket');
@@ -125,7 +124,7 @@ function initWebSocket() {
 async function fetchChatHistory(chatId) {
     currentChatId = chatId;
     try {
-        const res = await fetch(`/api/chats/${chatId}/messages`);
+        const res = await apiFetch(`/api/chats/${chatId}/messages`);
         const data = await res.json();
         if (data.success) {
             const container = document.getElementById('chat-messages');
@@ -361,7 +360,7 @@ function scrollToBottom() {
 
 async function clearChat() {
     if(confirm("Are you sure you want to clear this chat?")) {
-        await fetch(`/api/chats/${currentChatId}/clear`, { method: 'POST' });
+        await apiFetch(`/api/chats/${currentChatId}/clear`, { method: 'POST' });
         document.getElementById('chat-messages').innerHTML = '';
     }
 }
@@ -369,7 +368,7 @@ async function clearChat() {
 async function endChat() {
     // Customize message based on user type if needed, but generic is fine
     if(confirm("Close this chat session?")) {
-        await fetch(`/api/chats/${currentChatId}/end`, { method: 'POST' });
+        await apiFetch(`/api/chats/${currentChatId}/end`, { method: 'POST' });
         
         if (currentUserType === 'provider') {
              window.location.href = '/serviceChats';

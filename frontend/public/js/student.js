@@ -15,13 +15,12 @@ const togglePassword = document.getElementById('togglePassword');
 
         const formData = new URLSearchParams(new FormData(loginForm));
 
-        fetch('/login', {
+        apiFetch('/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: formData,
-            credentials: 'include'
+            body: formData
         })
         .then(response => response.json())
         .then(data => {

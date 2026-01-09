@@ -191,7 +191,7 @@ export const saveProfileFields = async (req, res) => {
 
         // Trigger Clustering
         try {
-            await axios.post('http://localhost:8000/cluster/students?sync=true');
+            await axios.post('https://flatmate-python-backend.onrender.com/cluster/students?sync=true');
         } catch (clusterErr) {
             console.error("Clustering Error:", clusterErr.message);
         }
@@ -224,6 +224,10 @@ export const getProfilePage = async (req, res) => {
                     userObj.profile_pic = null;
                 }
 
+                if (req.query.format === 'json') {
+                    return res.json({ success: true, userData: userObj });
+                }
+
                 let modifiedContent = content.replace('{{userData}}', JSON.stringify(userObj));
                 modifiedContent = modifiedContent.replace('{{profileImage}}', userObj.profile_pic || '/img/User.png');
                 
@@ -248,7 +252,7 @@ export const getServiceRecommendations = async (req, res) => {
         if (!student) return res.status(500).json({ success: false, message: 'Student not found' });
         
         // Proxy to FastAPI
-        const response = await axios.get(`http://localhost:8000/recommend/services/${student._id}`);
+        const response = await axios.get(`https://flatmate-python-backend.onrender.com/recommend/services/${student._id}`);
         const data = response.data;
         
         res.json({ 
@@ -271,7 +275,7 @@ export const getRoommateRecommendations = async (req, res) => {
         if (!student) return res.status(500).json({ success: false, message: "Student not found" });
 
         // Proxy to FastAPI
-        const response = await axios.get(`http://localhost:8000/recommend/roommates/${student._id}`);
+        const response = await axios.get(`https://flatmate-python-backend.onrender.com/recommend/roommates/${student._id}`);
         const data = response.data;
 
         // map matches to frontend format (if needed, but FastAPI returns clean list)

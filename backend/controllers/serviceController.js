@@ -254,7 +254,7 @@ export const updateServiceProfile = async (req, res) => {
         
         // Trigger Service Clustering
         try {
-            await axios.post('http://localhost:8000/cluster/services?sync=true');
+            await axios.post('https://flatmate-python-backend.onrender.com/cluster/services?sync=true');
         } catch (clusterErr) {
             console.error("Service Clustering Error:", clusterErr.message);
         }
@@ -305,6 +305,10 @@ export const getServiceProfile = async (req, res) => {
                  return res.status(500).send('Error loading profile page');
              }
              
+             if (req.query.format === 'json') {
+                 return res.json({ success: true, serviceData: data });
+             }
+
              let filledHtml = html;
              for (const key in data) {
                  const regex = new RegExp(`{{${key}}}`, 'g');

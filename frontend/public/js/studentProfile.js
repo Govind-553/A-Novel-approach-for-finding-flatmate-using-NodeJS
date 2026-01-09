@@ -2,18 +2,22 @@
 let userData = {};
 
 // 1. Initialize logic
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
             if (window.initialUserData) {
                 userData = window.initialUserData;
             } else {
-                console.warn("No initialUserData found in window scope.");
-                // Mock data for UI testing if backend var fails
-                userData = {
-                    fULL_name: "Student Name",
-                    email: "student@example.com",
-                    contact_number: "1234567890",
-                    address: "Mumbai, India"
-                };
+                console.warn("No initialUserData found in window scope. Fetching from API...");
+                try {
+                    const res = await apiFetch('/studentprofile?format=json');
+                    const data = await res.json();
+                    if (data.success) {
+                        userData = data.userData;
+                    } else {
+                        console.error("Failed to fetch profile data");
+                    }
+                } catch (e) {
+                     console.error("Error fetching profile data", e);
+                }
             }
             populateView();
             populateForm();
@@ -163,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const res = await fetch('/saveProfile', {
+                const res = await apiFetch('/saveProfile', {
                     method: 'POST',
                     body: formData
                 });

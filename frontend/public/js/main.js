@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     try {
         try {
-            const authResponse = await fetch('/check-auth');
+            const authResponse = await apiFetch('/check-auth');
             if (authResponse.ok) {
                 const authData = await authResponse.json();
                 isUserLoggedIn = authData.loggedIn;
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             isUserLoggedIn = false;
         }
 
-        const response = await fetch('/data');
+        const response = await apiFetch('/data');
         if (!response.ok) throw new Error('Failed to fetch data');
         const { services, profiles } = await response.json();
 
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function logout() {
     try {
-        await fetch('/logout', { method: 'POST' });
+        await apiFetch('/logout', { method: 'POST' });
         sessionStorage.removeItem('userRole'); 
         window.location.href = '/'; 
     } catch (error) {
@@ -519,7 +519,8 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.innerText = "Sending...";
             submitBtn.disabled = true;
 
-            fetch(contactForm.action, {
+            const action = contactForm.getAttribute('action');
+            apiFetch(action, {
                 method: contactForm.method,
                 body: data,
                 headers: {
