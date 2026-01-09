@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { generateToken } from '../utils/tokenUtils.js';
 import { hashPassword, comparePassword } from '../utils/passwordUtils.js';
+import axios from 'axios';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -187,6 +188,14 @@ export const saveProfileFields = async (req, res) => {
         }
 
         await Student.findOneAndUpdate({ email }, updateData);
+
+        // Trigger Clustering
+        try {
+            await axios.post('http://localhost:8000/cluster/students?sync=true');
+        } catch (clusterErr) {
+            console.error("Clustering Error:", clusterErr.message);
+        }
+
         res.send('Profile updated successfully.');
     } catch (error) {
          res.status(500).send('Error updating profile: ' + error.message);
@@ -229,7 +238,7 @@ export const getProfilePage = async (req, res) => {
     }
 };
 
-import axios from 'axios';
+
 
 export const getServiceRecommendations = async (req, res) => {
     const studentEmail = req.cookies.email;

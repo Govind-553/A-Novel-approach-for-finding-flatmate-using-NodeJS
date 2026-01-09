@@ -129,12 +129,41 @@ export const endChat = async (req, res) => {
         const userType = req.cookies.userType;
 
         const update = {};
+        if (userType === 'student') {
+            update.studentDeleted = true;
+        } 
+        
+        if (Object.keys(update).length > 0) {
+             await Chat.findByIdAndUpdate(chatId, update);
+        }
+       
+        res.json({ success: true, message: 'Chat session closed' });
+   } catch (err) {
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+export const deleteChats = async (req, res) => {
+    try {
+        const { chatIds } = req.body;
+        if (!chatIds || !Array.isArray(chatIds) || chatIds.length === 0) {
+            return res.status(400).json({ success: false, message: 'No chats selected' });
+        }
+        
+        const userType = req.cookies.userType;
+        const update = {};
         if (userType === 'student') update.studentDeleted = true;
         else if (userType === 'provider') update.providerDeleted = true;
+        else return res.status(400).json({ success: false, message: 'Invalid User Type' });
 
-        await Chat.findByIdAndUpdate(chatId, update);
-        res.json({ success: true, message: 'Chat removed from list' });
+        await Chat.updateMany(
+            { _id: { $in: chatIds } },
+            { $set: update }
+        );
+
+        res.json({ success: true, message: 'Selected chats deleted' });
     } catch (err) {
+        console.error('Delete Chats Error:', err);
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };

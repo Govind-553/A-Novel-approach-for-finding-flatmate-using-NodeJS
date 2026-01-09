@@ -9,6 +9,7 @@ import Notification from '../models/Notification.js';
 import Chat from '../models/Chat.js';
 import { sendVacancyEmail } from '../utils/emailService.js';
 import { broadcastToStudents } from '../utils/socketHandler.js';
+import axios from 'axios';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -250,7 +251,13 @@ export const updateServiceProfile = async (req, res) => {
                  }
             }
         }
-        // -----------------------------
+        
+        // Trigger Service Clustering
+        try {
+            await axios.post('http://localhost:8000/cluster/services?sync=true');
+        } catch (clusterErr) {
+            console.error("Service Clustering Error:", clusterErr.message);
+        }
 
         res.send('Profile updated successfully');
     } catch (err) {

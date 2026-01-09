@@ -201,7 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
         function closeStatusModal() {
             const modal = document.getElementById('statusModal');
             modal.style.display = 'none';
-            // Reload only on success close if needed, or simply reload directly after OK
             if (document.getElementById('statusIcon').textContent === '✅') {
                  location.reload(); 
             }

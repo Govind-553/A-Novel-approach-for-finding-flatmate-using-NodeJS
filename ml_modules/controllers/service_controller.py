@@ -86,7 +86,51 @@ def get_service_matches(student_id):
         matches['Food'] = clean_docs(list(db.services.find(query)))
 
     # Laundry
-    matches['Laundry'] = clean_docs(list(db.services.find({'service': 'Laundry'})))
+    laundry_query = {'service': 'Laundry'}
+    student_amenities = student.get('amenities', '')
+    
+    logger.info(f"Student {student_id} Amenities: '{student_amenities}'")
+    
+    matches['Laundry'] = []
+    
+    # Define laundry related identifiers
+    laundry_keywords = {'Wash & Iron', 'Dry Cleaning', 'Pickup & Delivery', 'Subscription Plans'}
+    
+    needed_laundry = set()
+    if student_amenities:
+        if isinstance(student_amenities, str):
+            curr_amenities = set(x.strip() for x in student_amenities.split(','))
+        elif isinstance(student_amenities, list):
+            curr_amenities = set(student_amenities)
+        else:
+            curr_amenities = set()
+            
+        needed_laundry = curr_amenities.intersection(laundry_keywords)
+    
+    logger.info(f"Needed Laundry: {needed_laundry}")
+
+    if needed_laundry:
+        # Filter services that offer ALL needed laundry amenities
+        all_laundry = list(db.services.find(laundry_query))
+        matched_laundry = []
+        
+        for svc in all_laundry:
+            svc_offerings_str = svc.get('laundry_service', '')
+            svc_offerings = set()
+            if svc_offerings_str:
+                svc_offerings = set(x.strip() for x in svc_offerings_str.split(','))
+            
+            # Check if service covers all needs (subset logic)
+            is_match = needed_laundry.issubset(svc_offerings)
+            logger.info(f"Service {svc.get('business_Name')} Offerings: {svc_offerings} -> Match: {is_match}")
+            
+            if is_match:
+                matched_laundry.append(svc)
+        
+        matches['Laundry'] = clean_docs(matched_laundry)
+    else:
+        # No specific laundry matches requested, return all
+        matches['Laundry'] = clean_docs(list(db.services.find(laundry_query)))
 
     # Broker
     room_pref = student.get('room_type')
