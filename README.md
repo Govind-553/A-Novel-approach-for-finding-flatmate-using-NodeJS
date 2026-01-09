@@ -7,7 +7,7 @@
 ## 🚀 Overview
 **Flatmate** is a comprehensive platform designed to solve the accommodation and daily needs of college students. It connects students with compatible roommates using **Machine Learning clustering algorithms** and provides easy access to essential services like food tiffins, laundry, and brokers.
 
-**Live Demo:** [https://flatmate-connect.vercel.app]()
+**Live Demo:** **[https://flatmate-connect.vercel.app](https://flatmate-connect.vercel.app/)**
 
 ---
 
