@@ -4,8 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await fetchNotifications();
     await markNotificationsRead();
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socket = new WebSocket(`${protocol}//${window.location.host}`);
+    const socket = new WebSocket('wss://flatmate-node-backend.onrender.com');
     
     socket.onopen = () => {
         // Register user for notifications
@@ -34,7 +33,7 @@ function getCookie(name) {
 
 async function markNotificationsRead() {
     try {
-        await fetch('/api/notifications/mark-read', {
+        await apiFetch('/api/notifications/mark-read', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -47,7 +46,7 @@ async function markNotificationsRead() {
 
 async function fetchNotifications() {
     try {
-        const response = await fetch('/api/notifications'); 
+        const response = await apiFetch('/api/notifications'); 
         const data = await response.json();
 
         if (data.success && data.notifications.length > 0) {
@@ -132,7 +131,7 @@ async function deleteNotification() {
     confirmBtn.innerText = 'Deleting...';
 
     try {
-        const response = await fetch(`/api/notifications/${notificationToDelete}`, {
+        const response = await apiFetch(`/api/notifications/${notificationToDelete}`, {
             method: 'DELETE'
         });
         const data = await response.json();

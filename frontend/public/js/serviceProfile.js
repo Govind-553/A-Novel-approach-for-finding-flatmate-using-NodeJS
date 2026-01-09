@@ -1,7 +1,7 @@
 let serviceData = {};
 let extraFields = {};
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             try {
                 if (window.initialServiceData) {
                     serviceData = window.initialServiceData;
@@ -11,14 +11,21 @@ let extraFields = {};
                          extraFields = JSON.parse(serviceData.extraFields.replace(/&quot;/g,'"'));
                     }
                 } else {
-                    throw new Error("No initialServiceData found");
+                    console.log("Fetching service data from API...");
+                    const res = await apiFetch('/serviceprofile?format=json');
+                    const data = await res.json();
+                    if(data.success) {
+                        serviceData = data.serviceData;
+                        // Parse extra fields JSON
+                        if (serviceData.extraFields && serviceData.extraFields !== "undefined" && typeof serviceData.extraFields === 'string') {
+                             extraFields = JSON.parse(serviceData.extraFields.replace(/&quot;/g,'"'));
+                        }
+                    } else {
+                        throw new Error("Failed to load service data");
+                    }
                 }
             } catch (e) {
-                console.error("Error parsing serviceData", e);
-                serviceData = {
-                    business_Name: "My Business",
-                    service: "Food"
-                };
+                console.error("Error parsing/fetching serviceData", e);
             }
 
             populateView();
@@ -175,7 +182,7 @@ let extraFields = {};
             formData.append('extra_fields', JSON.stringify(updatedExtras));
 
             try {
-                const res = await fetch('/profile-update', { method: 'POST', body: formData });
+                const res = await apiFetch('/profile-update', { method: 'POST', body: formData });
                 if(res.ok) {
                     showStatusModal('Profile updated!', false);
                 } else {

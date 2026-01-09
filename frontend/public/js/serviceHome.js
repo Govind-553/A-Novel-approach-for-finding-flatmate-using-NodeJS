@@ -10,7 +10,7 @@ window.openPopup = function(button) {
 // Auth Check for navigation
 window.addEventListener('pageshow', async function(event) {
     try {
-        const response = await fetch('/check-auth');
+        const response = await apiFetch('/check-auth');
         const data = await response.json();
         if (!data.loggedIn) {
             showSessionExpiredModal();
@@ -208,7 +208,7 @@ function getSwiperConfig() {
 
 // Swiper Initialization
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/data')
+    apiFetch('/data')
         .then(response => response.json())
         .then(data => {
             // Profiles Swiper
@@ -389,7 +389,7 @@ function showLogoutPopup() {
 
 async function logout() {
     try {
-        await fetch('/logout', { method: 'POST' });
+        await apiFetch('/logout', { method: 'POST' });
         sessionStorage.removeItem('userRole');
         window.location.href = '/main.html';
     } catch (error) {

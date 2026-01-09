@@ -57,7 +57,7 @@ const successModal = document.getElementById('successModal');
             const formData = new URLSearchParams();
             formData.append('email', email);
 
-            const res = await fetch(url, {
+            const res = await apiFetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData
@@ -114,7 +114,7 @@ const successModal = document.getElementById('successModal');
             formData.append('email', email);
             formData.append('newPassword', newPass);
 
-            const res = await fetch(url, {
+            const res = await apiFetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData

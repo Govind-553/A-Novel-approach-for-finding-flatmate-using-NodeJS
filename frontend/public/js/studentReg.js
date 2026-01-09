@@ -29,7 +29,7 @@ const passwordInput = document.querySelector('#password');
       submitBtn.disabled = true;
 
       try {
-          const response = await fetch(this.action, {
+          const response = await apiFetch(this.getAttribute('action'), {
               method: 'POST',
               body: formData
           });
