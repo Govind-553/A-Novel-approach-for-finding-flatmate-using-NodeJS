@@ -36,7 +36,12 @@ app = FastAPI(title="Clustering Microservice", lifespan=lifespan)
 # CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=[
+        "https://flatmate-node-backend.onrender.com",
+        "https://flatmate-connect.vercel.app",
+        "http://localhost:3000",
+        "https://flatmate-python-backend.onrender.com"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
