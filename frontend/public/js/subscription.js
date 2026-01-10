@@ -10,7 +10,16 @@ function showModal() {
 
         async function initiatePayment(amount, planName) {
             try {
-                const sessionFileName = document.getElementById('sessionFileName').value;
+                const urlParams = new URLSearchParams(window.location.search);
+                let sessionFileName = urlParams.get('session');
+
+                if (!sessionFileName) {
+                     sessionFileName = document.getElementById('sessionFileName').value;
+                }
+                
+                if (sessionFileName === '{{sessionFileName}}') {
+                    sessionFileName = null;
+                }
 
                 if (!sessionFileName) {
                     alert('Session data is missing. Please restart registration.');

@@ -17,11 +17,10 @@ export const getSubscriptionPage = (req, res) => {
     
     if (fs.existsSync(subscriptionPath)) {
         let html = fs.readFileSync(subscriptionPath, 'utf8');
-        // If session is provided, replace placeholder. If not, maybe leave it or handle error.
         if (sessionFileName) {
-            html = html.replace(new RegExp('{{sessionFileName}}', 'g'), sessionFileName);
+            html = html.split('{{sessionFileName}}').join(sessionFileName);
         } else {
-             html = html.replace(new RegExp('{{sessionFileName}}', 'g'), '');
+             html = html.split('{{sessionFileName}}').join('');
         }
         res.send(html);
     } else {
