@@ -268,35 +268,43 @@ export const updateServiceProfile = async (req, res) => {
 
 export const getServiceProfile = async (req, res) => {
     const email = req.query.email || req.cookies.email;
-    if (!email) return res.status(400).send('Missing email');
-
+    
+    // If JSON format requested, enforce strict auth
+    if (!email && req.query.format === 'json') {
+        return res.status(401).json({ success: false, message: 'Authentication failed' });
+    }
+    
     try {
-        const service = await Service.findOne({ email });
-        if (!service) return res.status(404).send('Service provider not found');
+        const service = email ? await Service.findOne({ email }) : null;
+        if (email && !service) return res.status(404).send('Service provider not found');
 
-        let extraFields = {};
-        if (service.service === 'Food') {
-            extraFields.food_type = service.food_type || '';
-        } else if (service.service === 'Laundry') {
-            extraFields.laundry_service = service.laundry_service || '';
-        } else if (service.service === 'Broker') {
-            extraFields.room_type = (service.room_type || '').split(',').map(v => v.trim());
-            extraFields.amenities = (service.amenities || '').split(',').map(v => v.trim());
-            extraFields.pricing_value = service.pricing_value || '';
-            extraFields.landmark = (service.landmark || '').split(',').map(v => v.trim());
-            extraFields.availability = service.availability || '';
+        let data = null;
+
+        if (service) {
+            let extraFields = {};
+            if (service.service === 'Food') {
+                extraFields.food_type = service.food_type || '';
+            } else if (service.service === 'Laundry') {
+                extraFields.laundry_service = service.laundry_service || '';
+            } else if (service.service === 'Broker') {
+                extraFields.room_type = (service.room_type || '').split(',').map(v => v.trim());
+                extraFields.amenities = (service.amenities || '').split(',').map(v => v.trim());
+                extraFields.pricing_value = service.pricing_value || '';
+                extraFields.landmark = (service.landmark || '').split(',').map(v => v.trim());
+                extraFields.availability = service.availability || '';
+            }
+
+            data = {
+                businessName: service.business_Name || '',
+                email: service.email || '',
+                address: service.address || '',
+                contactNumber: service.contact_number || '',
+                service: service.service || '',
+                password: '', 
+                priceChartLink: service.price_chart_link || '',
+                extraFields: JSON.stringify(extraFields)
+            };
         }
-
-        const data = {
-            businessName: service.business_Name || '',
-            email: service.email || '',
-            address: service.address || '',
-            contactNumber: service.contact_number || '',
-            service: service.service || '',
-            password: '', 
-            priceChartLink: service.price_chart_link || '',
-            extraFields: JSON.stringify(extraFields)
-        };
 
         const profilePath = path.join(frontendDir, 'serviceProfile.html');
         fs.readFile(profilePath, 'utf8', (err, html) => {
@@ -310,10 +318,24 @@ export const getServiceProfile = async (req, res) => {
              }
 
              let filledHtml = html;
-             for (const key in data) {
-                 const regex = new RegExp(`{{${key}}}`, 'g');
-                 filledHtml = filledHtml.replace(regex, data[key]);
+             
+             if (data) {
+                 for (const key in data) {
+                     const regex = new RegExp(`{{${key}}}`, 'g');
+                     filledHtml = filledHtml.replace(regex, data[key]);
+                 }
+             } else {
+                 // Clean up placeholders if no data (optional, or let frontend handle it)
+                 // Or better: Just leave them, frontend JS will fail to find init data and show popup.
+                 // We might want to clear them to look cleaner behind the popup.
+                 // Let's replace logical ones with empty strings or reasonable defaults.
+                 const keys = ['businessName', 'email', 'address', 'contactNumber', 'service', 'priceChartLink', 'extraFields'];
+                 keys.forEach(key => {
+                     const regex = new RegExp(`{{${key}}}`, 'g');
+                     filledHtml = filledHtml.replace(regex, '');
+                 });
              }
+
              res.send(filledHtml);
         });
 

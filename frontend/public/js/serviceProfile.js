@@ -1,6 +1,52 @@
 let serviceData = {};
 let extraFields = {};
 
+// Auth Check for navigation
+window.addEventListener('pageshow', async function(event) {
+    try {
+        const response = await apiFetch('/check-auth');
+        const data = await response.json();
+        if (!data.loggedIn) {
+            showSessionExpiredModal();
+        }
+    } catch (error) {
+        console.error('Auth check failed', error);
+    }
+});
+
+function showSessionExpiredModal() {
+    if (document.getElementById('auth-modal-overlay')) return;
+
+    const modalOverlay = document.createElement('div');
+    modalOverlay.id = 'auth-modal-overlay';
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'auth-modal-content';
+
+    modalContent.innerHTML = `
+        <div class="auth-modal-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
+        </div>
+        <h3 class="auth-modal-title">Access Denied</h3>
+        <p class="auth-modal-message">Please login again to view this page.</p>
+        <button id="auth-modal-btn">Login Again</button>
+    `;
+
+    modalOverlay.appendChild(modalContent);
+    document.body.appendChild(modalOverlay);
+
+    // Prevent scrolling
+    document.body.style.overflow = 'hidden';
+
+    document.getElementById('auth-modal-btn').onclick = () => {
+        document.body.style.overflow = '';
+        window.location.href = '/main.html';
+    };
+}
+
         document.addEventListener('DOMContentLoaded', async function() {
             try {
                 if (window.initialServiceData) {
@@ -13,6 +59,12 @@ let extraFields = {};
                 } else {
                     console.log("Fetching service data from API...");
                     const res = await apiFetch('/serviceprofile?format=json');
+                    
+                    if (res.status === 401 || res.status === 403) {
+                         showSessionExpiredModal();
+                         return;
+                    }
+
                     const data = await res.json();
                     if(data.success) {
                         serviceData = data.serviceData;
