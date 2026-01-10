@@ -59,7 +59,8 @@ export const checkAuthStatus = (req, res) => {
     
     try {
         verifyToken(token);
-        return res.status(200).json({ loggedIn: true });
+        const role = req.cookies.userType || 'student'; 
+        return res.status(200).json({ loggedIn: true, role });
     } catch (err) {
         return res.status(200).json({ loggedIn: false });
     }

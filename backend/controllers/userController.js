@@ -38,9 +38,9 @@ export const loginStudent = async (req, res) => {
             // Generate JWT
             const token = generateToken(student._id, student.email, 'student');
             
-            res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-            res.cookie('email', email, { httpOnly: true });
-            res.cookie('userType', 'student', { httpOnly: false });
+            res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000, sameSite: 'None', secure: true });
+            res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: true });
+            res.cookie('userType', 'student', { httpOnly: false, sameSite: 'None', secure: true });
 
             res.json({ success: true, token });
         } else {
@@ -89,9 +89,9 @@ export const registerStudent = async (req, res) => {
         
         // Auto-Login
         const token = generateToken(savedStudent._id, savedStudent.email, 'student');
-        res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
-        res.cookie('email', email, { httpOnly: true });
-        res.cookie('userType', 'student', { httpOnly: false });
+        res.cookie('token', token, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000, sameSite: 'None', secure: true });
+        res.cookie('email', email, { httpOnly: true, sameSite: 'None', secure: true });
+        res.cookie('userType', 'student', { httpOnly: false, sameSite: 'None', secure: true });
 
         if (req.file) fs.unlink(req.file.path, () => {});
 
@@ -204,18 +204,26 @@ export const saveProfileFields = async (req, res) => {
 
 export const getProfilePage = async (req, res) => {
     const email = req.query.email || req.cookies.email;
-    if (!email) return res.status(400).send('Missing email parameter');
-    try {
-        const user = await Student.findOne({ email });
-        if (user) {
-            const profilePagePath = path.join(frontendDir, 'studentProfile.html');
-            fs.readFile(profilePagePath, 'utf8', (err, content) => {
-                if (err) return res.status(500).send('Error loading profile page');
-                
-                // Convert to plain object to modify properties safely
-                const userObj = user.toObject();
+    
+    // If JSON format requested, enforce auth strictly
+    if (!email && req.query.format === 'json') {
+        return res.status(401).json({ success: false, message: 'Authentication failed' });
+    }
 
-                // FIX: Check original Mongoose document `user.profile_pic` for buffer content
+    // The frontend JS will detect this and show the "Access Denied" popup.
+    try {
+        const user = email ? await Student.findOne({ email }) : null;
+        
+        const profilePagePath = path.join(frontendDir, 'studentProfile.html');
+        fs.readFile(profilePagePath, 'utf8', (err, content) => {
+            if (err) return res.status(500).send('Error loading profile page');
+            
+            let userObj = null;
+
+            if (user) {
+                // Convert to plain object to modify properties safely
+                userObj = user.toObject();
+
                 if (user.profile_pic) {
                     const base64Image = user.profile_pic.toString('base64');
                     userObj.profile_pic = `data:image/jpeg;base64,${base64Image}`;
@@ -223,26 +231,23 @@ export const getProfilePage = async (req, res) => {
                 } else {
                     userObj.profile_pic = null;
                 }
+            }
 
-                if (req.query.format === 'json') {
-                    return res.json({ success: true, userData: userObj });
-                }
+            if (req.query.format === 'json') {
+                return res.json({ success: true, userData: userObj });
+            }
 
-                let modifiedContent = content.replace('{{userData}}', JSON.stringify(userObj));
-                modifiedContent = modifiedContent.replace('{{profileImage}}', userObj.profile_pic || '/img/User.png');
-                
-                res.status(200).send(modifiedContent);
-            });
-        } else {
-            res.status(404).send('User not found');
-        }
+            let modifiedContent = content.replace('{{userData}}', JSON.stringify(userObj));
+            // Handle profile image replacement safely if userObj is null
+            modifiedContent = modifiedContent.replace('{{profileImage}}', (userObj && userObj.profile_pic) ? userObj.profile_pic : '/img/User.png');
+            
+            res.status(200).send(modifiedContent);
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Error fetching profile data');
     }
 };
-
-
 
 export const getServiceRecommendations = async (req, res) => {
     const studentEmail = req.cookies.email;
@@ -336,8 +341,11 @@ export const getRoommateRecommendations = async (req, res) => {
 };
 
 export const logoutStudent = (req, res) => {
-    res.clearCookie('token');
-    res.clearCookie('email');
-    res.clearCookie('userType');
+    const commonOptions = { sameSite: 'None', secure: true, expires: new Date(0) };
+    
+    res.cookie('token', '', { ...commonOptions, httpOnly: true });
+    res.cookie('email', '', { ...commonOptions, httpOnly: true });
+    res.cookie('userType', '', { ...commonOptions, httpOnly: false }); // Matches login set
+
     res.json({ success: true, message: 'Logged out successfully' });
 };

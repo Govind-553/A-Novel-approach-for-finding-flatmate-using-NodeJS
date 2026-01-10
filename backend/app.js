@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: ['https://flatmate-node-backend.onrender.com', 'https://flatmate-connect.vercel.app', 'http://localhost:3000', 'https://flatmate-python-backend.onrender.com'],
     credentials: true,
 }));
 // Connect to MongoDB
