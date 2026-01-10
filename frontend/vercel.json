@@ -18,6 +18,8 @@
     { "source": "/subscription", "destination": "/subscriptionPage.html" },
     { "source": "/team", "destination": "/teamProfile.html" },
     { "source": "/data", "destination": "https://flatmate-node-backend.onrender.com/data" },
+    { "source": "/complete", "destination": "https://flatmate-node-backend.onrender.com/complete" },
+    { "source": "/cancel", "destination": "https://flatmate-node-backend.onrender.com/cancel" },
     { "source": "/styles/:path*", "destination": "/public/styles/:path*" },
     { "source": "/js/:path*", "destination": "/public/js/:path*" },
     { "source": "/img/:path*", "destination": "/public/img/:path*" }
