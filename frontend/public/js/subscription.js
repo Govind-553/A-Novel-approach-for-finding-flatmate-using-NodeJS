@@ -8,6 +8,15 @@ function showModal() {
             modal.style.display = 'none';
         }
 
+        async function selectCard(cardId) {
+            // Remove active class from all cards
+            document.querySelectorAll('.card_content').forEach(card => {
+                card.classList.remove('active-card');
+            });
+            // Add active class to clicked card
+            document.getElementById(cardId).classList.add('active-card');
+        }
+
         async function initiatePayment(amount, planName) {
             try {
                 const urlParams = new URLSearchParams(window.location.search);

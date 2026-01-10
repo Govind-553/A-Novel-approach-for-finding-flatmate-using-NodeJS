@@ -13,7 +13,14 @@ const instance = new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
 
-const getUploadDir = () => path.join(__dirname, '../../frontend/public/uploads/');
+// Safe upload directory function
+const getUploadDir = () => {
+    const dir = path.join(__dirname, '../uploads'); 
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    return dir;
+};
 
 export const createCheckoutSession = async (req, res) => {
     const { sessionFileName, amount, planName } = req.body;
@@ -29,16 +36,19 @@ export const createCheckoutSession = async (req, res) => {
     if (!validAmounts.includes(amountInRupees)) {
         return res.status(400).send('Invalid plan amount selected');
     }
-
+    
     const sessionFilePath = path.join(getUploadDir(), sessionFileName);
     
+    if (!fs.existsSync(sessionFilePath)) {
+         return res.status(404).send('Session data not found. Please register again.');
+    }
+
     fs.readFile(sessionFilePath, 'utf-8', async (err, data) => {
         if (err) {
             return res.status(500).send(`Error reading session data: ${err.message}`);
         }
         const sessionData = JSON.parse(data);
         
-        // Store selected plan in session data for future reference
         sessionData.selectedPlan = { name: planName, amount: amountInRupees };
 
         try {
@@ -48,7 +58,6 @@ export const createCheckoutSession = async (req, res) => {
                 receipt: `receipt_${Date.now()}`
             });
 
-            // Update session file with order/plan info
             const orderFilePath = path.join(getUploadDir(), `${order.id}.json`);
             fs.writeFileSync(orderFilePath, JSON.stringify(sessionData));
             
@@ -73,6 +82,10 @@ export const completePayment = async (req, res) => {
     const orderFilePath = path.join(getUploadDir(), `${order_id}.json`);
     
     try {
+        if (!fs.existsSync(orderFilePath)) {
+            throw new Error('Order session file not found');
+        }
+
         const sessionData = JSON.parse(fs.readFileSync(orderFilePath));
         
         const newService = new Service({
@@ -100,10 +113,15 @@ export const completePayment = async (req, res) => {
         res.cookie('email', savedService.email, { httpOnly: true });
         res.cookie('userType', 'provider', { httpOnly: false });
 
-        res.redirect('/servicelogin?registration=success');
+        // Redirect using client-side replacement to fix Back button history
+        res.send(`
+            <script>
+                window.location.replace('/servicelogin?registration=success');
+            </script>
+        `);
     } catch (error) {
         console.error('Payment Completion Error:', error);
-        res.status(500).send('Error completing payment');
+        res.status(500).send(`Error completing payment: ${error.message}`);
     }
 };
 
