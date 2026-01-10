@@ -49,7 +49,12 @@ function showSessionExpiredModal() {
 
         document.addEventListener('DOMContentLoaded', async function() {
             try {
-                if (window.initialServiceData) {
+                const hasValidData = window.initialServiceData 
+                                     && window.initialServiceData.email 
+                                     && window.initialServiceData.email !== ''
+                                     && !window.initialServiceData.email.startsWith('{{');
+
+                if (hasValidData) {
                     serviceData = window.initialServiceData;
 
                     // Parse extra fields JSON
