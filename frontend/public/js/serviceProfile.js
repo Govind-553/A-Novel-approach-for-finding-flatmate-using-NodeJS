@@ -100,15 +100,15 @@ function showSessionExpiredModal() {
         }
 
         function populateView() {
-            document.getElementById('viewBusinessName').textContent = serviceData.business_Name || 'Not Set';
+            document.getElementById('viewBusinessName').textContent = serviceData.businessName || 'Not Set';
             document.getElementById('viewEmail').textContent = serviceData.email || 'Not Set';
-            document.getElementById('viewContact').textContent = serviceData.contact_number || 'Not Set';
+            document.getElementById('viewContact').textContent = serviceData.contactNumber || 'Not Set';
             document.getElementById('viewAddress').textContent = serviceData.address || 'Not Set';
             document.getElementById('viewServiceType').textContent = serviceData.service || 'Select Service';
             
             const pLink = document.getElementById('viewPriceLink');
-            if(serviceData.price_chart_link) {
-                pLink.href = serviceData.price_chart_link;
+            if(serviceData.priceChartLink) {
+                pLink.href = serviceData.priceChartLink;
                 pLink.textContent = "View Price Chart";
                 pLink.style.display = 'block';
             } else {
@@ -136,14 +136,14 @@ function showSessionExpiredModal() {
         }
 
         function populateForm() {
-            document.getElementById('editBusinessName').value = serviceData.business_Name || '';
+            document.getElementById('editBusinessName').value = serviceData.businessName || '';
             document.getElementById('editEmail').value = serviceData.email || '';
-            document.getElementById('editContact').value = serviceData.contact_number || '';
+            document.getElementById('editContact').value = serviceData.contactNumber || '';
             document.getElementById('editAddress').value = serviceData.address || '';
-            document.getElementById('editPassword').value = serviceData.password || '';
             document.getElementById('editService').value = serviceData.service || 'Food';
-            document.getElementById('editPriceLink').value = serviceData.price_chart_link || '';
+            document.getElementById('editPriceLink').value = serviceData.priceChartLink || '';
         }
+
 
         // Logic to build dynamic form fields based on Service Type
         function updateDynamicFields(type) {
