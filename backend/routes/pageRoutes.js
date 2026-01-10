@@ -3,7 +3,7 @@ import {
     getMainPage, getData, getTeamPage, getHomePage, getLoginPage, 
     getRegistrationPage, getServiceHomePage, getServiceLoginPage, getServiceRegisterPage,
     getForgotPasswordPage, checkAuthStatus, getWelcomePage, getSelectionPage,
-    getNotificationPage, getChatPage, getServiceChatsPage
+    getNotificationPage, getChatPage, getServiceChatsPage, getSubscriptionPage
 } from '../controllers/pageController.js';
 
 const router = express.Router();
@@ -17,6 +17,7 @@ router.get('/team', getTeamPage);
 router.get('/homepage', getHomePage);
 router.get('/loginpage', getLoginPage);
 router.get('/registrationpage', getRegistrationPage);
+router.get('/subscription', getSubscriptionPage);
 
 // Notification & Chat
 

@@ -8,7 +8,26 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendDir = path.join(__dirname, '../../frontend');
 
+import fs from 'fs';
 export const getMainPage = (req, res) => res.sendFile(path.join(frontendDir, 'main.html'));
+
+export const getSubscriptionPage = (req, res) => {
+    const sessionFileName = req.query.session;
+    const subscriptionPath = path.join(frontendDir, 'subscriptionPage.html');
+    
+    if (fs.existsSync(subscriptionPath)) {
+        let html = fs.readFileSync(subscriptionPath, 'utf8');
+        // If session is provided, replace placeholder. If not, maybe leave it or handle error.
+        if (sessionFileName) {
+            html = html.replace('{{sessionFileName}}', sessionFileName);
+        } else {
+             html = html.replace('{{sessionFileName}}', '');
+        }
+        res.send(html);
+    } else {
+        res.status(404).send('Page not found');
+    }
+};
 
 export const getData = async (req, res) => {
      try {

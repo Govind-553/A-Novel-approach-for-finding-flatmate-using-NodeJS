@@ -85,14 +85,7 @@ export const registerServiceSession = async (req, res) => {
         
         fs.writeFileSync(path.join(uploadDir, sessionFileName), JSON.stringify(sessionData, null, 2));
 
-        const subscriptionPath = path.join(frontendDir, 'subscriptionPage.html');
-        if (fs.existsSync(subscriptionPath)) {
-            let html = fs.readFileSync(subscriptionPath, 'utf8');
-            html = html.replace('{{sessionFileName}}', sessionFileName); 
-            res.send(html);
-        } else {
-             res.status(500).send('Subscription page not found');
-        }
+        res.json({ success: true, sessionFileName });
 
     } catch (error) {
         console.error(error);
@@ -325,10 +318,6 @@ export const getServiceProfile = async (req, res) => {
                      filledHtml = filledHtml.replace(regex, data[key]);
                  }
              } else {
-                 // Clean up placeholders if no data (optional, or let frontend handle it)
-                 // Or better: Just leave them, frontend JS will fail to find init data and show popup.
-                 // We might want to clear them to look cleaner behind the popup.
-                 // Let's replace logical ones with empty strings or reasonable defaults.
                  const keys = ['businessName', 'email', 'address', 'contactNumber', 'service', 'priceChartLink', 'extraFields'];
                  keys.forEach(key => {
                      const regex = new RegExp(`{{${key}}}`, 'g');
