@@ -131,9 +131,41 @@
                         <img src="/img/Aboutus.jpg" alt="About Us Image">
                     </div>
                     <div class="flip-card-back">
-                         <i class="fas fa-play-circle" style="font-size: 50px; margin-bottom: 20px; color: #D0B8A8;"></i>
-                        <p style="font-size: 20px; font-weight: 600;">Flatmate Features</p>
-                        <small>(Video Coming Soon)</small>
+                        <div class="video-wrapper" id="intro-video-wrapper">
+                            <video id="intro-video" src="/img/FlatmatePlatformVideo.mp4" controlsList="nodownload" style="width:100%; height:100%; object-fit:contain;">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="big-play-btn" onclick="event.stopPropagation(); togglePlay()"><i class="fas fa-play"></i></div>
+                            <div class="video-timeline-container" onclick="event.stopPropagation()">
+                                <span class="video-time" id="current-time">00:00</span>
+                                <div class="video-progress-bar" id="video-progress-bar" onclick="seekVideo(event)">
+                                    <div class="video-progress-filled" id="video-progress-filled"></div>
+                                    <div class="video-progress-thumb" id="video-progress-thumb"></div>
+                                </div>
+                                <span class="video-time" id="duration-time">00:00</span>
+                            </div>
+                            <div class="video-controls-overlay">
+                                <div class="menu-container">
+                                    <button class="control-btn menu-btn" onclick="toggleSettingsMenu(); event.stopPropagation();" title="Settings"><i class="fas fa-ellipsis-v"></i></button>
+                                    <div class="settings-menu" id="settings-menu">
+                                        <button class="menu-item" onclick="downloadVideo(); event.stopPropagation();">
+                                            <span>Download</span> <i class="fas fa-download"></i>
+                                        </button>
+                                        <button class="menu-item" onclick="toggleSpeedSubmenu(); event.stopPropagation();">
+                                            <span>Speed</span> <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                        <div class="submenu" id="speed-submenu">
+                                            <button class="menu-item" onclick="setSpeed(0.5); event.stopPropagation();">0.5x</button>
+                                            <button class="menu-item" onclick="setSpeed(1); event.stopPropagation();">Normal</button>
+                                            <button class="menu-item" onclick="setSpeed(1.5); event.stopPropagation();">1.5x</button>
+                                            <button class="menu-item" onclick="setSpeed(2); event.stopPropagation();">2x</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="control-btn minimize-btn" onclick="minimizeVideo(); event.stopPropagation();" title="Minimize Video" style="display: none;"><i class="fas fa-compress"></i></button>
+                                <button class="control-btn expand-btn" onclick="expandVideo(); event.stopPropagation();" title="Expand Video"><i class="fas fa-expand"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -259,5 +291,18 @@
 <script src="/js/api.js"></script>
 <script src="/js/serviceHome.js"></script>
 
+<script>
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="rLOWoRbV6BD2nVkjJOl0l";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+
+<!-- Video Modal -->
+<div id="video-modal" class="video-modal" style="display:none;">
+    <button class="close-modal-video" onclick="minimizeVideo()">&times;</button>
+    <div class="video-modal-content" id="modal-video-container">
+        <!-- Video moves here -->
+    </div>
+</div>
+
+<script src="/js/videoHandler.js"></script>
 </body>
 </html>

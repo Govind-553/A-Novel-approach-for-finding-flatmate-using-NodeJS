@@ -8,9 +8,27 @@ function showModal() {
             modal.style.display = 'none';
         }
 
+        async function selectCard(cardId) {
+            // Remove active class from all cards
+            document.querySelectorAll('.card_content').forEach(card => {
+                card.classList.remove('active-card');
+            });
+            // Add active class to clicked card
+            document.getElementById(cardId).classList.add('active-card');
+        }
+
         async function initiatePayment(amount, planName) {
             try {
-                const sessionFileName = document.getElementById('sessionFileName').value;
+                const urlParams = new URLSearchParams(window.location.search);
+                let sessionFileName = urlParams.get('session');
+
+                if (!sessionFileName) {
+                     sessionFileName = document.getElementById('sessionFileName').value;
+                }
+                
+                if (sessionFileName === '{{sessionFileName}}') {
+                    sessionFileName = null;
+                }
 
                 if (!sessionFileName) {
                     alert('Session data is missing. Please restart registration.');

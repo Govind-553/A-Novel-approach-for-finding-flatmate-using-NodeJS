@@ -17,7 +17,7 @@
         <div class="card_container">
             
             <!-- Plan 1: 1 Month -->
-            <article class="card_content">
+            <article class="card_content" id="card-1" onclick="selectCard('card-1')">
                 <div class="card_pricing">
                     <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>299</div>
                     <span class="card_pricing-month">/1 mo</span>
@@ -32,12 +32,15 @@
                 <ul class="card_list">
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Full Access</p></li>
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Basic Support</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Mobile Access</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Ad-free Experience</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Cancel Anytime</p></li>
                 </ul>
-                <button type="button" onclick="initiatePayment(299, '1 Month Plan')" class="button">Select Plan</button>
+                <button type="button" onclick="initiatePayment(299, '1 Month Plan'); event.stopPropagation();" class="button">Select Plan</button>
             </article>
 
             <!-- Plan 2: 3 Months -->
-            <article class="card_content">
+            <article class="card_content" id="card-2" onclick="selectCard('card-2')">
                 <div class="card_pricing">
                     <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>799</div>
                     <span class="card_pricing-month">/3 mo</span>
@@ -52,12 +55,15 @@
                 <ul class="card_list">
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Save 11%</p></li>
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Expanded Reach</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Priority Email Support</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Profile Highlighting</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Analytics Dashboard</p></li>
                 </ul>
-                <button type="button" onclick="initiatePayment(799, '3 Month Plan')" class="button">Select Plan</button>
+                <button type="button" onclick="initiatePayment(799, '3 Month Plan'); event.stopPropagation();" class="button">Select Plan</button>
             </article>
 
             <!-- Plan 3: 6 Months (Popular) -->
-            <article class="card_content best-value">
+            <article class="card_content" id="card-3" onclick="selectCard('card-3')">
                 <div class="card_pricing">
                     <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>1499</div>
                     <span class="card_pricing-month">/6 mo</span>
@@ -73,12 +79,15 @@
                 <ul class="card_list">
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Save 16%</p></li>
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Priority Support</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Featured Listings</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Advanced Analytics</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Verified Badge</p></li>
                 </ul>
-                <button type="button" onclick="initiatePayment(1499, '6 Month Plan')" class="button">Select Plan</button>
+                <button type="button" onclick="initiatePayment(1499, '6 Month Plan'); event.stopPropagation();" class="button">Select Plan</button>
             </article>
 
             <!-- Plan 4: 12 Months -->
-            <article class="card_content">
+            <article class="card_content" id="card-4" onclick="selectCard('card-4')">
                 <div class="card_pricing">
                     <div class="card_pricing-number"><span class="card_pricing-symbol">₹</span>2999</div>
                     <span class="card_pricing-month">/1 yr</span>
@@ -93,8 +102,11 @@
                 <ul class="card_list">
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Max Savings</p></li>
                     <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">VIP Visibility</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">24/7 Phone Support</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">Dedicated Manager</p></li>
+                    <li class="card_list-item"><i class="uil uil-check card_list-icon"></i><p class="card_list-description">All Premium Features</p></li>
                 </ul>
-                <button type="button" onclick="initiatePayment(2999, '12 Month Plan')" class="button">Select Plan</button>
+                <button type="button" onclick="initiatePayment(2999, '12 Month Plan'); event.stopPropagation();" class="button">Select Plan</button>
             </article>
 
         </div>

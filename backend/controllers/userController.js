@@ -283,18 +283,9 @@ export const getRoommateRecommendations = async (req, res) => {
         const response = await axios.get(`https://flatmate-python-backend.onrender.com/recommend/roommates/${student._id}`);
         const data = response.data;
 
-        // map matches to frontend format (if needed, but FastAPI returns clean list)
-        // Frontend expects: { success: true, roommates: [...] }
-        // Each roommate needs: fULL_name, email, contact_number, food_type, room_type, amenities, profile_pic
-        
         const formattedRoommates = data.matches.map(user => {
             let profilePicData = '/img/User.png'; // Default
             if (user.profile_pic) {
-                 // Check if it looks like base64 or buffer. new app.py cleans it up, logic/student_logic.py removed it ("del m['profile_pic']") to avoid JSON errors?
-                 // Wait, if Python removes it, we can't show it!
-                 // The Python logic `if 'profile_pic' in m: del m['profile_pic']` removes it. 
-                 // So we need to re-fetch here OR update Python to return it as base64 string.
-                 // Retrying fetch here is safer for large data.
             }
             return {
                 fULL_name: user.fULL_name,
@@ -303,15 +294,9 @@ export const getRoommateRecommendations = async (req, res) => {
                 food_type: user.food_type,
                 room_type: user.room_type,
                 amenities: user.amenities,
-                // placeholder if Python didn't send it. 
-                // We'll fix Python later if needed, but for now let's use a placeholder or handle it in Frontend if missing
                 profile_pic: '/img/User.png'
             }; 
         });
-
-        // Actually, to get images, we might want to query Mongo here for the IDs returned by Python?
-        // Or just let the Python side send ID and we fetch details.
-        // For efficiency, let's fetch details here based on IDs from Python.
         
         const matchIds = data.matches.map(m => m._id);
         const completeMatches = await Student.find({ _id: { $in: matchIds } }).select('fULL_name email contact_number food_type room_type amenities profile_pic');

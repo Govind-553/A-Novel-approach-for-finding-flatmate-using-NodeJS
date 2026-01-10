@@ -9,15 +9,15 @@ const togglePassword = document.getElementById('togglePassword');
     window.addEventListener('DOMContentLoaded', () => {
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('registration') === 'success') {
+            window.history.replaceState(null, '', '/main.html');
+            window.history.pushState(null, '', '/servicelogin');
+            
             successModal.style.display = 'flex';
-            // Clean up URL
-            window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
 
     function closeSuccessModal() {
         successModal.style.display = 'none';
-        window.location.href = '/servicelogin'; // Ensure they stay/reload here
     }
 
     /* ---------- Utility: Clear Form ---------- */

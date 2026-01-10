@@ -27,11 +27,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (result.success) {
                     registrationForm.reset();
-                    if (modal) {
-                         modal.classList.add("show");
+                    // Redirect to subscription page with session file name
+                    if (result.sessionFileName) {
+                        window.location.href = `/subscription?session=${result.sessionFileName}`;
                     } else {
-                         // Fallback if no modal
-                         alert("Registration Successful! Redirecting...");
                          window.location.href = '/servicelogin';
                     }
                 } else {
@@ -65,7 +64,7 @@ const urlInput = document.querySelector('#priceChartLink');
 const priceChartContainer = document.getElementById('priceChartContainer');
 
 trashButton.addEventListener('click', (e) => {
-    e.stopPropagation(); // Prevent opening modal when clicking trash
+    e.stopPropagation();
     urlInput.value = '';
     console.log('Price chart link cleared');
 });

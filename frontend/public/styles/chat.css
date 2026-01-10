@@ -574,6 +574,21 @@
                 font-size: 0.6rem;
                 padding: 10px 20px;
             }
+            
+            /* Fix for Input Area Overflow */
+            .chat-input-area {
+                padding: 8px 10px;
+                gap: 8px;
+            }
+            .chat-input-area input {
+                padding: 10px;
+                min-width: 0; 
+                font-size: 14px; 
+            }
+            .chat-input-area button {
+                padding: 10px 12px;
+                flex-shrink: 0; 
+            }
         }
         
         .end-actions {

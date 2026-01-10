@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Rubik&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Rubik:wght@400;500&display=swap');
         * {
             box-sizing: border-box;
             padding: 0;
@@ -6,9 +6,9 @@
         }
 
         body {
-            font-family: 'Lato', sans-serif;
+            font-family: 'Poppins', sans-serif;
             font-size: 1rem; 
-            background-color: hsl(250, 100%, 99%);
+            background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
             color: hsl(250, 12%, 35%);
             display: flex;
             justify-content: center;
@@ -34,7 +34,7 @@
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem; /* Larger Title */
+            font-size: 2.5rem; 
             font-weight: 700;
             margin-bottom: 3rem;
             color: hsl(250, 12%, 15%);
@@ -54,75 +54,78 @@
         .card_content {
             position: relative;
             background-color: #fff;
-            padding: 2.5rem 2rem 3rem; /* Larger padding */
-            border-radius: 2rem; /* Rounder corners */
+            padding: 2rem 1.5rem 2rem; 
+            border-radius: 1.5rem; 
             box-shadow: 0 12px 24px hsla(250, 61%, 16%, .1);
             transition: .4s;
-            max-width: 340px; 
+            max-width: 320px; 
             width: 100%;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .card_content:hover {
             box-shadow: 0 16px 32px hsla(250, 61%, 16%, .2);
-            transform: translateY(-10px);
+            transform: translateY(-5px); /* Reduced movement */
         }
 
         .card_header-img {
-            width: 36px; /* Larger icons */
-            height: 36px;
+            width: 30px; /* Smaller icon */
+            height: 30px;
         }
 
         .card_header-circle {
-            width: 50px; /* Larger circle */
-            height: 50px;
+            width: 40px; /* Smaller circle */
+            height: 40px;
             background-color: hsl(250, 14%, 96%);
             border-radius: 50%;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             display: grid;
             place-items: center;
         }
 
         .card_header-subtitle {
             display: block;
-            font-size: 0.9rem;
+            font-size: 0.75rem; /* Smaller subtitle */
             color: hsl(250, 12%, 65%);
             text-transform: uppercase;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             font-weight: 700;
         }
 
         .card_header-title {
-            font-size: 1.75rem; /* Larger font */
+            font-size: 1.5rem; /* Smaller title */
             color: hsl(250, 12%, 15%);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .card_pricing {
             position: absolute;
             background: linear-gradient(157deg, hsl(250, 96%, 69%) -12%, hsl(250, 96%, 54%) 109%);
-            width: 70px; /* Larger tag */
-            height: 100px;
+            width: 75px; /* Increased width to fit 4 digits */
+            height: 90px; /* Slightly taller */
             right: 1.5rem;
             top: -1rem;
-            padding-top: 1.5rem;
+            padding-top: 1.25rem;
             text-align: center;
-            border-radius: 0 0 25px 25px;
+            border-radius: 0 0 20px 20px;
+            z-index: 10; /* Ensure it stays on top */
+            overflow: visible; /* Prevent clipping */
         }
 
         .card_pricing-number {
             font-family: 'Rubik', sans-serif;
-            font-size: 1.4rem; /* Larger pricing */
+            font-size: 1.1rem; /* Smaller pricing */
         }
 
         .card_pricing-symbol {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .card_pricing-month {
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.6rem;
         }
 
         .card_pricing-month,
@@ -131,9 +134,9 @@
         }
 
         .card_list {
-            row-gap: 0.75rem; /* More spacing */
+            row-gap: 0.4rem; /* Tight spacing between features */
             margin-bottom: auto; 
-            margin-top: 1.5rem;
+            margin-top: 1rem;
             display: grid;
         }
 
@@ -143,20 +146,21 @@
         }
 
         .card_list-icon {
-            font-size: 1.75rem;
+            font-size: 1.25rem; /* Smaller check icon */
             color: hsl(250, 96%, 54%);
-            margin-right: 0.75rem;
+            margin-right: 0.5rem;
         }
 
         .card_list-description {
-            font-size: 1.05rem;
+            font-size: 0.85rem; /* Smaller feature text */
+            line-height: 1.2;
         }
 
         .button {
             width: 100%;
-            height: 55px;
+            height: 45px; /* Shorter button */
             border: none;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 700;
             border-radius: 1rem;
             background: linear-gradient(157deg, hsl(250, 96%, 69%) -12%, hsl(250, 96%, 54%) 109%);
@@ -171,21 +175,25 @@
             filter: brightness(1.1);
         }
 
-        /* Best Value Tag */
-        .best-value {
+        .active-card {
             border: 2px solid hsl(250, 96%, 54%);
-            transform: scale(1.02); /* Slightly larger by default */
+            transform: scale(1.03); 
+            box-shadow: 0 16px 32px hsla(250, 96%, 54%, .25);
         }
         
         .popular-badge {
-            background-color: hsl(250, 96%, 54%);
+            position: absolute;
+            top: -15px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, hsl(250, 96%, 60%) 0%, hsl(250, 96%, 45%) 100%);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 6px 16px;
+            border-radius: 30px;
             font-size: 0.8rem;
             font-weight: 700;
-            display: inline-block;
-            margin-bottom: 0.75rem;
+            box-shadow: 0 4px 10px rgba(110, 87, 224, 0.4);
+            white-space: nowrap;
         }
 
         /* Modal */
@@ -251,6 +259,7 @@
             .card_container {
                 flex-wrap: nowrap; 
                 justify-content: space-between;
+                align-items: stretch;
                 gap: 2rem;
             }
             .card_content {

@@ -9,6 +9,6 @@ node_modules/
 # Migrating to new database - Mongodb Atlas
 migrate.js 
 
-uploads/ 
+frontend/public/uploads/ 
 
 start.bat  
