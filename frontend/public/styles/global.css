@@ -2127,30 +2127,39 @@
     padding: 15px 20px;
     display: flex;
     align-items: center;
+    justify-content: space-between; 
     gap: 15px;
     border-bottom: 1px solid #eee;
+    flex-wrap: wrap; 
 }
 
 .service-icon {
     font-size: 24px;
     color: #D0B8A8;
+    flex-shrink: 0;
 }
 
 .service-card-header h3 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 0.75rem; 
     color: #333;
     flex: 1;
+    min-width: 120px; 
 }
 
 .service-category-tag {
     background-color: #fff;
     padding: 4px 10px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     color: #666;
     font-weight: 600;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    white-space: nowrap;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .service-card-body {
@@ -2172,8 +2181,10 @@
 .service-info-row p {
     margin: 0;
     color: #444;
-    font-size: 0.95rem;
+    font-size: 0.6rem;
     line-height: 1.4;
+    word-break: break-word; 
+    overflow-wrap: anywhere; 
 }
 
 .service-action-row {
@@ -2182,15 +2193,19 @@
 }
 
 .view-chart-btn {
-    display: inline-block;
-    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
     background-color: #D0B8A8;
     color: #fff;
     text-decoration: none;
     border-radius: 6px;
-    font-size: 0.9rem;
+    font-size: 0.6rem;
     font-weight: 600;
     transition: background-color 0.2s;
+    white-space: nowrap; /* Prevent button text wrapping */
 }
 
 .view-chart-btn:hover {

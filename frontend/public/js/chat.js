@@ -11,23 +11,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (partnerName) {
         document.getElementById('chat-partner-name').innerText = partnerName;
     }
-    currentUserType = getCookie('userType'); 
+    // Priority 1: Session Storage
+    currentUserType = sessionStorage.getItem('userRole');
+    if (!currentUserType) {
+        // Priority 2: Cookie 
+        currentUserType = getCookie('userType');
+    }
+
+    try {
+        // Priority 3 (Authoritative): API Check
+        const authRes = await apiFetch('/check-auth');
+        const authData = await authRes.json();
+        if (authData.loggedIn && authData.role) {
+            currentUserType = authData.role;
+            sessionStorage.setItem('userRole', currentUserType);
+            console.log("User Role Confirmed via API:", currentUserType);
+        }
+    } catch (e) {
+        console.warn("Auth check failed in chat.js", e);
+    }
     
-    // Set Profile Image
+    // UI Setup based on Role
     const imgEl = document.getElementById('chat-partner-img');
     const iconEl = document.getElementById('chat-partner-icon');
     
-    if (currentUserType === 'student') {
-        // Student viewing Provider -> Use broker img
+    // Case-insensitive check just in case
+    const type = (currentUserType || '').toLowerCase();
+    
+    if (type === 'student') {
+        // Student viewing Provider -> Use broker img or generic
         imgEl.src = '/img/brokerservice.jpg';
         imgEl.style.display = 'block';
         iconEl.style.display = 'none';
-    } else if (currentUserType === 'provider') {
-        imgEl.src = '/img/User.jpg'; 
+        
+        // Correct internal usage
+        currentUserType = 'student'; 
+    } else if (type === 'provider' || type === 'serviceprovider') {
+        imgEl.src = '/img/User.png'; 
         imgEl.style.display = 'block';
         iconEl.style.display = 'none';
+        
+        // Normalize for sender check
+        currentUserType = 'provider'; 
     } else {
-        imgEl.style.display = 'none';
+        // Default / Error state
+        console.warn("Unknown user type:", currentUserType);
         iconEl.style.display = 'block';
     } 
 
