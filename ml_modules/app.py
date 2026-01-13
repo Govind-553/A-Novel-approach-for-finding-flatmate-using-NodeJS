@@ -17,7 +17,6 @@ import asyncio
 from ml_modules.controllers.student_controller import execute_student_clustering
 from ml_modules.controllers.service_controller import execute_service_clustering
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Connect DB on startup
@@ -59,11 +58,9 @@ app.add_middleware(
 app.include_router(cluster_routes.router)
 app.include_router(recommendation_routes.router)
 
-
 @app.get("/")
 def home():
     return {"message": "Clustering Service is Running (Modular Version)"}
-
 
 # ✅ Health endpoint for Render keep-alive pings
 @app.get("/health", tags=["Health"])
@@ -72,7 +69,6 @@ async def health_check():
         "status": "ok",
         "service": "clustering-microservice"
     }
-
 
 if __name__ == "__main__":
     # Used only for local development
